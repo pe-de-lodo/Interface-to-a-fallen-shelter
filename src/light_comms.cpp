@@ -7,10 +7,10 @@ extern CRGB leds[1];
 
 void lightCommsLoop(){
     buffer.push( analogRead(A2) );
-    uint min=INT16_MAX;
-    uint max=0;
+    int min=INT16_MAX;
+    int max=0;
     for(int i=0;i<buffer.size();i++){
-        uint val=buffer[i];
+        int val=buffer[i];
         
         if(val>max){
             max=val;
@@ -21,6 +21,9 @@ void lightCommsLoop(){
 
     }
     bool isHigh = buffer.last() > (min+(max-min)/2);
+    if((max-min)<50){
+        isHigh = true;
+    }
     leds[0] = isHigh ? CRGB::Red : CRGB::Green;
     Serial.print(isHigh?"HIGH ":"LOW  ");
     Serial.print(min);
