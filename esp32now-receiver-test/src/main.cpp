@@ -2,6 +2,7 @@
 #include <esp_now.h>
 #include "WiFi.h"
 
+#define LEDPIN GPIO_NUM_2
 
 // void setup(){
 
@@ -59,9 +60,9 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
   Serial.println();
 
-  // digitalWrite(1,HIGH);
-  // delay(100);
-  // digitalWrite(1,LOW);
+  digitalWrite(LEDPIN,HIGH);
+  delay(100);
+  digitalWrite(LEDPIN,LOW);
 
 }
 
@@ -70,13 +71,16 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 void setup() {
 
   // Initialize Serial Monitor
+  
+
+  pinMode(LEDPIN,OUTPUT);
+  digitalWrite(LEDPIN,HIGH);
+  delay(500);
+  digitalWrite(LEDPIN,LOW);
+  delay(500);
 
   Serial.begin(115200);
-
-  pinMode(1,OUTPUT);
-  digitalWrite(1,HIGH);
-  delay(500);
-  digitalWrite(1,LOW);
+  Serial.println(WiFi.macAddress());
   
 
 
