@@ -9,6 +9,8 @@
 #define MOSFET_PIN 5
 #define WAKEUP_PIN 10
 
+Adafruit_FlashTransport_QSPI flashTransport;
+
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_RGB + NEO_KHZ800);
 
 
@@ -22,13 +24,22 @@ uint32_t colors[] = {
     pixels.Color(255,255,255)
 };
 
+void QSPIF_sleep(void)
+{
+  flashTransport.begin();
+  flashTransport.runCommand(0xB9);
+  flashTransport.end();
+}
+
 const int numCols = 7;
 
 void setup() {
   pixels.begin(); 
   pinMode(MOSFET_PIN,OUTPUT);
   digitalWrite(MOSFET_PIN,HIGH);
-  pinMode(WAKEUP_PIN, INPUT_PULLUP_SENSE);
+  pinMode(WAKEUP_PIN, INPUT_SENSE_HIGH);
+
+  QSPIF_sleep();
 }
 
 void loop() {
@@ -48,5 +59,11 @@ void loop() {
 
     delay(500); // Pause before next pass through loop
 
+    
+
   }
+
+  digitalWrite(MOSFET_PIN,LOW);
+  pinMode(LED_PIN,INPUT);
+  NRF_POWER->SYSTEMOFF=1;
 }
