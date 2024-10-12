@@ -1,0 +1,36 @@
+#include <Arduino.h>
+#include <FastLED.h>
+
+#define NUM_LEDS 1
+
+#define DATA_PIN 2
+
+CRGB leds[NUM_LEDS];
+
+CRGB colors[] = {
+  CRGB::Red,
+  CRGB::Green,
+  CRGB::Blue,
+  CRGB::Cyan,
+  CRGB::Yellow,
+  CRGB::Magenta
+};
+
+const int numCols = 6;
+
+void setup() {
+  // put your setup code here, to run once:
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);  
+}
+
+void loop() {
+  for(int i=0;i<numCols;i++){
+    leds[0] = colors[i];
+    FastLED.show();
+    delay(1000);
+    leds[0] = CRGB::Black;
+    FastLED.show();
+    delay(500);    
+  }
+}
+
