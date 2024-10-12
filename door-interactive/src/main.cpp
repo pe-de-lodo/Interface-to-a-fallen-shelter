@@ -10,19 +10,6 @@ uint32_t lastLoop;
 
 void (*loopFunc) (void) = NULL;
 
-uint32_t colors[] = {
-    pixels.Color(255,0,0),
-    pixels.Color(0,255,0),
-    pixels.Color(0,0,255),
-    pixels.Color(255,255,0),
-    pixels.Color(0,255,255),
-    pixels.Color(255,0,255),
-    pixels.Color(255,255,255)
-};
-
-
-const int numCols = 7;
-
 void setup() 
 {
   pixels.begin(); 
@@ -36,11 +23,16 @@ void setLoopFunc(void func ())
   loopFunc = func;
 }
 
-void loop() 
+inline void calcDeltaTime()
 {
   uint32_t time = millis();
   deltaTime = time-lastLoop;
   lastLoop = time;
+}
+
+void loop() 
+{
+  calcDeltaTime();
   if(loopFunc!=NULL){
     loopFunc();  
   }

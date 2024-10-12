@@ -10,6 +10,18 @@ extern uint32_t deltaTime;
 
 int32_t elapsed;
 
+uint32_t colors[] = {
+    pixels.Color(255,0,0),
+    pixels.Color(0,255,0),
+    pixels.Color(0,0,255),
+    pixels.Color(255,255,0),
+    pixels.Color(0,255,255),
+    pixels.Color(255,0,255),
+    pixels.Color(255,255,255)
+};
+const int numCols = 7;
+
+
 void celebrate1()
 {
     elapsed=0;
