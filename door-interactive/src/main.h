@@ -1,5 +1,5 @@
 #define LED_PIN 2 
-#define NUMPIXELS 16 
+#define NUM_LEDS 16 
 #define MOSFET_PIN 5
 #define WAKEUP_PIN 8
 #define ALARM_PIN 9

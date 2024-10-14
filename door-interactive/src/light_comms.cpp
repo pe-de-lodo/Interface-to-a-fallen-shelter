@@ -1,11 +1,10 @@
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
+#include <FastLED.h>
 #include <CircularBuffer.hpp>
 #include <main.h>
 #include <light_comms.h>
 
 CircularBuffer<int,512> buffer;
-extern Adafruit_NeoPixel pixels;
 
 const double ease = 0.001; //out of 255
 double minVal=INT16_MAX;
@@ -55,9 +54,8 @@ void lightCommsLoop(){
     if((maxVal-minVal)<50){
         isHigh = true;
     }
-    uint32_t color = isHigh ? pixels.Color(0,255,0) : pixels.Color(255,0,0);
-    pixels.setPixelColor(0,color);
-    pixels.show();
+    CRGB color = isHigh ? CRGB::Green : CRGB::Red;
+    FastLED.showColor(color);
     Serial.print(isHigh?"HIGH ":"LOW  ");
     Serial.print(minVal);
     Serial.print(", ");

@@ -1,12 +1,10 @@
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
+#include <FastLED.h>
 #include <main.h>
 #include <knocking/knockdetection.h>
 #include <sleep.h>
 #include <CircularBuffer.hpp>
 #include <visuals.h>
-
-extern Adafruit_NeoPixel pixels;
 
 const uint32_t shortInterval = 600;
 const uint32_t longInterval = 1200;
@@ -18,7 +16,7 @@ uint32_t intervalTypes[] = {
     timeout
 };
 
-uint32_t intervalColors[3];
+CRGB intervalColors[3];
 
 int numIntervalTypes = 3;
 
@@ -34,13 +32,11 @@ void initKnock()
 {
     setLoopFunc(listenForKnock);
 
-    intervalColors[0] = pixels.Color(0,255,0);
-    intervalColors[1] = pixels.Color(150,0,0);
-    intervalColors[2] = pixels.Color(0,0,0);
+    intervalColors[0] = CRGB::Green;
+    intervalColors[1] = CRGB::Red;
+    intervalColors[2] = CRGB::Black;
     
-    pixels.clear();
-    pixels.setPixelColor(0, pixels.Color(150,0,150));
-    pixels.show();
+    FastLED.showColor(CRGB(150,0,150));
 
     Serial.begin(115200);
 
@@ -90,11 +86,9 @@ void knockDetected(uint32_t interval)
 
     Serial.println(intervalType);
 
-    pixels.setPixelColor(0, intervalColors[intervalType] );
-    pixels.show();  
+    FastLED.showColor(intervalColors[intervalType]);
     delay(20);
-    pixels.setPixelColor(0, pixels.Color(0,0,0));
-    pixels.show();
+    FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
         setLoopFunc(celebrate1);

@@ -1,24 +1,24 @@
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
+#include <FastLED.h>
 #include <main.h>
 #include <knocking/knockdetection.h>
 #include <sleep.h>
 #include <visuals.h>
 
-extern Adafruit_NeoPixel pixels;
+extern CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 
 int32_t elapsed;
 
-uint32_t colors[] = {
-    pixels.Color(255,0,0),
-    pixels.Color(0,255,0),
-    pixels.Color(0,0,255),
-    pixels.Color(255,255,0),
-    pixels.Color(0,255,255),
-    pixels.Color(255,0,255),
-    pixels.Color(255,255,255)
+CRGB colors[] = {
+  CRGB::Red,
+  CRGB::Green,
+  CRGB::Blue,
+  CRGB::Cyan,
+  CRGB::Yellow,
+  CRGB::Magenta
 };
+
 const int numCols = 7;
 
 
@@ -31,11 +31,9 @@ void celebrate1()
 void celebrate1Loop()
 {
     elapsed+=deltaTime;    
-    pixels.setPixelColor(0,pixels.Color(128,0,128));
-    pixels.show();
+    FastLED.showColor(CRGB(255,0,255));
     delay(100);
-    pixels.setPixelColor(0,pixels.Color(0,255,0));
-    pixels.show();
+    FastLED.showColor(CRGB::Black);
     delay(100);
     if(elapsed>=5000L){
         sleep();
