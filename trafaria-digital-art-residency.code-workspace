@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "door-interactive",
+			"path": "door-interactive"
+		},
+		{
+			"name": "fastled-test",
+			"path": "fastled-test"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.tpp": "cpp",
+			"array": "cpp",
+			"chrono": "cpp",
+			"deque": "cpp",
+			"format": "cpp",
+			"forward_list": "cpp",
+			"initializer_list": "cpp",
+			"list": "cpp",
+			"vector": "cpp",
+			"xhash": "cpp",
+			"xstring": "cpp",
+			"xtree": "cpp",
+			"xutility": "cpp"
+		}
+	}
+}
