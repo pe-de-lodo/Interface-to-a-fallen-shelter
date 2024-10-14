@@ -26,7 +26,11 @@
 			"xhash": "cpp",
 			"xstring": "cpp",
 			"xtree": "cpp",
-			"xutility": "cpp"
+			"xutility": "cpp",
+			"xlocmon": "cpp",
+			"algorithm": "cpp",
+			"limits": "cpp",
+			"utility": "cpp"
 		}
 	}
 }
