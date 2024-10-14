@@ -1,0 +1,3 @@
+[submodule "fastled-test/lib/FastLED"]
+	path = fastled-test/lib/FastLED
+	url = git@github.com:paulhayes/FastLED.git
