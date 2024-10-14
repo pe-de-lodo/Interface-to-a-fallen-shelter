@@ -1,0 +1,47 @@
+{
+    "name": "FastLED",
+    "description": "FastLED is a library for programming addressable rgb led strips (APA102/Dotstar, WS2812/Neopixel, LPD8806, and a dozen others) acting both as a driver and as a library for color management and fast math.",
+    "keywords": "led,noise,rgb,math,fast",
+    "authors": [
+        {
+            "name": "Paul Hayes",
+            "url": "https://github.com/paulhayes",
+            "maintainer": true
+        },
+        {
+            "name": "João Cabral",
+            "url": "https://github.com/pe-de-lodo",
+            "maintainer": true
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TODO"
+    },
+    "version": "0.1.0",
+    "frameworks": "arduino",
+    "platforms": "atmelavr, atmelsam, freescalekinetis, nordicnrf51, nxplpc, ststm32, teensy, espressif8266, espressif32, nordicnrf52",
+    "headers": "ledpatterns.h",
+    "export": {
+        "exclude": [
+            "docs",
+            "extras",
+            "ci",
+            ".*",
+            "compile.bat",
+            "compile",
+            "lint",
+            "test",
+            "platformio.ini",
+            "**/*.exe"
+        ]
+    },
+    "build": {
+        "srcFilter": [
+            "+<*.c>",
+            "+<*.cpp>",
+            "+<*.h>"
+        ],
+        "libArchive": false
+    }
+}
