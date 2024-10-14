@@ -1,0 +1,3 @@
+
+void initLightComms();
+void lightCommsLoop();
