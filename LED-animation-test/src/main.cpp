@@ -5,7 +5,7 @@
 #define LED_PIN A3
 #define NUM_LEDS 16
 
-CRGB *leds;
+CRGB leds[NUM_LEDS];
 ledData *data;
 
 PatternCanvas canvas(leds,data,NUM_LEDS);
@@ -24,11 +24,16 @@ class BlinkPattern : public AbstractPattern
         m_timeline.start();
     }
 
-    CRGB Evaluate(ledData)
+    void Update()
     {
         m_timeline.update();
+    }
+
+    CRGB Evaluate(ledData)
+    {
         
-        return CHSV(0,128,(int)(blinkVal*128));
+        return CRGB(128,0,0);
+        //return CHSV(0,128,(int)(blinkVal*128));
     }
 };
 
@@ -37,8 +42,8 @@ BlinkPattern blinkPattern;
 void setup()
 {
     FastLED.addLeds<WS2812, 25, GRB>(leds, 1);
-    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
-    FastLED.clear();
+    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, 1, NUM_LEDS-1);
+    FastLED.showColor(CRGB(255,0,255));
 
     Serial.begin(115200);
 
@@ -47,14 +52,22 @@ void setup()
 
 void loop()
 {
-    FastLED.showColor(CRGB(255,0,255));
+    //FastLED.showColor(CRGB(255,0,255));
     Serial.println("test");
     delay(500);
-    // long frameDuration = 33;
-    // long updateStartTime = millis();
-    // canvas.Update(lastUpdateTime - updateStartTime);
-    // FastLED.show();
-    // lastUpdateTime = updateStartTime;
-    // long elapsed = millis()-updateStartTime; 
-    // delay(frameDuration-elapsed);    
+    long frameDuration = 33;
+    long updateStartTime = millis();
+    canvas.Update(lastUpdateTime - updateStartTime);
+    FastLED.show();
+    lastUpdateTime = updateStartTime;
+    long elapsed = millis()-updateStartTime; 
+    delay(frameDuration-elapsed);    
+    Serial.println();
+    // for(int i=0;i<NUM_LEDS;i++){
+    //     Serial.print(leds[i].red);
+    //     Serial.print(" ");  
+    //     Serial.print(leds[i].green);
+    //     Serial.print(" ");  
+    //     Serial.println(leds[i].blue);
+    // }
 }

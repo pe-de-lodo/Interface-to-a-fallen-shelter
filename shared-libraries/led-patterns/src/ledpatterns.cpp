@@ -37,6 +37,11 @@ void PatternCanvas::Update(long deltaTime)
         }
         else {
             pixel = m_transitionStack[0].targetPattern->Evaluate(m_ledData[i]);
+            Serial.print(pixel.red);
+            Serial.print(" ");
+            Serial.print(pixel.green);
+            Serial.print(" ");
+            Serial.println(pixel.blue);
         }
         m_leds[i] = pixel;
     }
