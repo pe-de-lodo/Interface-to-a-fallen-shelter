@@ -1,3 +1,5 @@
+#pragma once
+
 #include <CircularBuffer.hpp>
 #include <FastLED.h>
 #include <abstractpattern.hpp>
@@ -5,7 +7,6 @@
 typedef struct {
     AbstractPattern *targetPattern;
     long duration;
-    long elapsed;
 } patternTransition;
 
 
@@ -14,6 +15,7 @@ class PatternCanvas {
     int m_length;
     CRGB *m_leds;
     ledData *m_ledData;
+    long m_transitionElapsedTime = 0;
 
     public:
     PatternCanvas(CRGB *leds, ledData *ledData, int len);
