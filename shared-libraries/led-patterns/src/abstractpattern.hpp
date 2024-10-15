@@ -11,7 +11,7 @@ class AbstractPattern
 {
     public :
 
-    virtual CRGB Evaluate(ledData);
+    virtual CRGB Evaluate(ledData) = 0;
 
     protected:
     Tween::Timeline m_timeline;

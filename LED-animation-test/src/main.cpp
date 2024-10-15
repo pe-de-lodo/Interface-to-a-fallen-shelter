@@ -8,7 +8,7 @@
 CRGB *leds;
 ledData *data;
 
-PatternCanvas canvas = PatternCanvas(leds,data,NUM_LEDS);
+PatternCanvas canvas(leds,data,NUM_LEDS);
 
 long lastUpdateTime = 0; 
 
@@ -16,6 +16,7 @@ class BlinkPattern : public AbstractPattern
 {
     float blinkVal;
 
+    public:
     BlinkPattern()
     {
         m_timeline.add(blinkVal).init(0).hold(1000).then(1,0).hold(1000);
@@ -35,7 +36,7 @@ BlinkPattern blinkPattern;
 
 void setup()
 {
-    canvas.TransitionToPattern(blinkPatter,0);
+    canvas.TransitionToPattern(&blinkPattern,0);
 }
 
 void loop()
