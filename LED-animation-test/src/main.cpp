@@ -36,16 +36,25 @@ BlinkPattern blinkPattern;
 
 void setup()
 {
+    FastLED.addLeds<WS2812, 25, GRB>(leds, 1);
+    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
+    FastLED.clear();
+
+    Serial.begin(115200);
+
     canvas.TransitionToPattern(&blinkPattern,0);
 }
 
 void loop()
 {
-    long frameDuration = 33;
-    long updateStartTime = millis();
-    canvas.Update(lastUpdateTime - updateStartTime);
-    FastLED.show();
-    lastUpdateTime = updateStartTime;
-    long elapsed = millis()-updateStartTime; 
-    delay(frameDuration-elapsed);    
+    FastLED.showColor(CRGB(255,0,255));
+    Serial.println("test");
+    delay(500);
+    // long frameDuration = 33;
+    // long updateStartTime = millis();
+    // canvas.Update(lastUpdateTime - updateStartTime);
+    // FastLED.show();
+    // lastUpdateTime = updateStartTime;
+    // long elapsed = millis()-updateStartTime; 
+    // delay(frameDuration-elapsed);    
 }
