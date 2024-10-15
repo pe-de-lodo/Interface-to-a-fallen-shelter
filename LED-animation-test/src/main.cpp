@@ -6,6 +6,12 @@
 
 #define LED_PIN A3
 #define NUM_LEDS 450
+#define USE_W5100                           false
+#define CUR_PIN_MISO              20
+#define CUR_PIN_MOSI              23
+#define CUR_PIN_SCK               22
+#define CUR_PIN_SS                21
+#define USE_THIS_SS_PIN           21
 
 EthernetUDP Udp;
 
@@ -70,7 +76,7 @@ void setup()
     delay(1000);
     Serial.println("A");
     Ethernet.init (21);
-    
+
     byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x01 };
     arduino::IPAddress ip = arduino::IPAddress("192.168.0.3");
     Ethernet.begin(mac, ip);
