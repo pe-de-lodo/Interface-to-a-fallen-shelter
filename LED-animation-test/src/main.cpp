@@ -2,9 +2,12 @@
 #include <ledpatterns.h>
 #include <Tween.h>
 #include <structData.h>
+#include <Ethernet_Generic.h>
 
 #define LED_PIN A3
 #define NUM_LEDS 16
+
+EthernetUDP Udp;
 
 CRGB leds[NUM_LEDS];
 ledData *data = structData;
@@ -44,6 +47,15 @@ Ripples ripplePattern;
 BlinkPattern blinkPattern;
 BlankPattern blankPattern;
 
+void SendSimulatorData()
+{
+    //char ReplyBuffer[] = "ACK";      // a string to send back
+    Udp.beginPacket("192.168.0.2", 6000);
+    // Udp.write((char*)leds);
+    Udp.write("ACK");
+    Udp.endPacket();
+}
+
 void setup()
 {
     FastLED.addLeds<WS2812, 25, GRB>(leds, 1);
@@ -52,9 +64,20 @@ void setup()
 
     Serial.begin(115200);
 
+    Serial.println("A");
+    Ethernet.init (21);
+    Serial.println("B");
+    Udp.begin(1234);
+    Serial.println("C");
+    delay(2000);
+    SendSimulatorData();
+    Serial.println("D");
+
+
     canvas.TransitionToPattern(&blinkPattern,0);
     canvas.TransitionToPattern(&blankPattern,4000);
     canvas.TransitionToPattern(&ripplePattern,4000);
+    
 }
 
 void loop()
@@ -69,3 +92,4 @@ void loop()
     delay(frameDuration-elapsed); 
     
 }
+
