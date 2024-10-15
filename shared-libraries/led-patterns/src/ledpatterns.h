@@ -2,20 +2,10 @@
 #include <FastLED.h>
 #include <abstractpattern.hpp>
 
-typedef struct{
-    float a;
-    float b;
-    float c;
-    float time;
-} tweenData;
-
-// typedef CRGB (*pattern) (ledData,tweenData); 
-
 typedef struct {
     AbstractPattern *targetPattern;
     long duration;
     long elapsed;
-    tweenData *tweenDataPtr;
 } patternTransition;
 
 
@@ -27,6 +17,6 @@ class PatternCanvas {
 
     public:
     PatternCanvas(CRGB *leds, ledData *ledData, int len);
-    void TransitionToPattern(AbstractPattern *ptrn,long duration,tweenData *dataPtr);
+    void TransitionToPattern(AbstractPattern *ptrn,long duration);
     void Update(long deltaTime);
 };
