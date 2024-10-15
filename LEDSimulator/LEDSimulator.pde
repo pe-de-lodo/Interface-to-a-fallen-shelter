@@ -25,11 +25,10 @@ void setup() {
   //println(file.getChildCount());
   
   image(house, 0, 0);
+  allData.append("header");
   
   for(int j = 0; j < file.getChildCount(); j++)
-  {
-    
-    
+  { 
     aichi = file.getChild(j);
     //println(aichi.getVertexCount());
     
@@ -54,13 +53,21 @@ void setup() {
     // Draw the points
     int sectionLED = 0;
     
+    //allData = "tweenData ledData[ = {
+      
+    
     fill((255 / file.getChildCount()) * j, 255, 255);
-    for (PVector p : equallySpacedPoints) {
+    for (int i = 0; i < equallySpacedPoints.size(); i++)
+    {
+      PVector p = equallySpacedPoints.get(i);
       leds.add(p);
       
       PVector n = NormalizePoint(p);
-      String ledData = "[" + j + ", " + sectionLED + ", " + n.x + ", " + n.y + "],";
-      print(ledData);
+      String ledData = "{" + j + ", " + sectionLED + ", " + n.x + ", " + n.y + "}";
+      if(j != file.getChildCount()-1 || i != equallySpacedPoints.size()-1)
+        ledData += ",";
+      
+      println(ledData);
       allData.append(ledData);      
       //allData += ledData;
       sectionLED++;
@@ -70,6 +77,9 @@ void setup() {
     
     ledPositions.add(leds);
   }
+  
+  allData.set(0, "tweenData ledData[" + totalLED + "] = {");
+  allData.append(";");
   
   println(totalLED);
   saveStrings(structData, allData.toArray());
