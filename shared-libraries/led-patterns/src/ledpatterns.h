@@ -1,12 +1,6 @@
 #include <CircularBuffer.hpp>
 #include <FastLED.h>
-
-typedef struct{
-    char section;
-    int index;
-    float x;
-    float y;
-} ledData;
+#include <abstractpattern.hpp>
 
 typedef struct{
     float a;
@@ -15,10 +9,10 @@ typedef struct{
     float time;
 } tweenData;
 
-typedef CRGB (*pattern) (ledData,tweenData); 
+// typedef CRGB (*pattern) (ledData,tweenData); 
 
 typedef struct {
-    pattern targetPattern;
+    AbstractPattern *targetPattern;
     long duration;
     long elapsed;
     tweenData *tweenDataPtr;
@@ -33,6 +27,6 @@ class PatternCanvas {
 
     public:
     PatternCanvas(CRGB *leds, ledData *ledData, int len);
-    void TransitionToPattern(pattern ptrn,long duration,tweenData *dataPtr);
+    void TransitionToPattern(AbstractPattern *ptrn,long duration,tweenData *dataPtr);
     void Update(long deltaTime);
 };

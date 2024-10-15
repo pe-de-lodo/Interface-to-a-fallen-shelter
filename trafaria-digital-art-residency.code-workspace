@@ -10,6 +10,10 @@
 		{
 			"name": "fastled-test",
 			"path": "fastled-test"
+		},
+		{
+			"name": "LED-animation-test",
+			"path": "LED-animation-test"
 		}
 	],
 	"settings": {
@@ -30,7 +34,9 @@
 			"xlocmon": "cpp",
 			"algorithm": "cpp",
 			"limits": "cpp",
-			"utility": "cpp"
+			"utility": "cpp",
+			"functional": "cpp",
+			"cmath": "cpp"
 		}
 	}
 }
