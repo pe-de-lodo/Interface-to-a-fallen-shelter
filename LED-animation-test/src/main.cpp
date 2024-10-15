@@ -63,7 +63,10 @@ void setup()
     FastLED.showColor(CRGB(255,0,255));
 
     Serial.begin(115200);
+    while(!Serial){
 
+    }
+    delay(1000);
     Serial.println("A");
     Ethernet.init (21);
     Serial.println("B");
@@ -82,7 +85,6 @@ void setup()
 
 void loop()
 {
-    //FastLED.showColor(CRGB(255,0,255));
     long frameDuration = 33;
     long updateStartTime = millis();
     canvas.Update(updateStartTime-lastUpdateTime);
@@ -90,6 +92,5 @@ void loop()
     lastUpdateTime = updateStartTime;
     long elapsed = millis()-updateStartTime; 
     delay(frameDuration-elapsed); 
-    
 }
 
