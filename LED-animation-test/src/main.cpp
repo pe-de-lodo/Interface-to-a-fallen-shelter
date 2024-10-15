@@ -1,12 +1,13 @@
 #include <FastLED.h>
 #include <ledpatterns.h>
 #include <Tween.h>
+#include <structData.h>
 
 #define LED_PIN A3
 #define NUM_LEDS 16
 
 CRGB *leds;
-ledData *data;
+ledData *data = structData;
 
 PatternCanvas canvas(leds,data,NUM_LEDS);
 
