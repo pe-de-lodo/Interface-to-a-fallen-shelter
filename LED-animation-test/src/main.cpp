@@ -5,7 +5,7 @@
 #include <Ethernet_Generic.h>
 
 #define LED_PIN A3
-#define NUM_LEDS 16
+#define NUM_LEDS 450
 
 EthernetUDP Udp;
 
@@ -38,7 +38,7 @@ class Ripples : public AbstractPattern
 {
     CRGB Evaluate(ledData ledInfo)
     {
-        uint16_t pulse=beatsin16(120,0,255,0,uint16_t(0xff*ledInfo.x));
+        uint16_t pulse=beatsin16(120,0,255,0,uint16_t(0xfffFFL*ledInfo.x));
         return CHSV(180,255,pulse);
     }
 };
