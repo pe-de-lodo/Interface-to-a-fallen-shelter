@@ -1,8 +1,13 @@
+import hypermedia.net.*;
+
 PImage house;
 PShape file;
 PShape aichi;
 
-ArrayList<ArrayList<PVector>> ledPositions = new ArrayList<ArrayList<PVector>>();
+UDP udp;  // define the UDP object
+
+ArrayList<PVector> leds = new ArrayList<PVector>();
+byte[] colors;
 
 float spacing = 2.28;  // Specific distance between points
 
@@ -11,6 +16,8 @@ StringList allData = new StringList();
 
 PVector xLimits = new PVector(220, 1200);
 PVector yLimits = new PVector(140, 580);
+
+Boolean outputData = false;
 
 int totalLED = 0;
 
@@ -38,8 +45,7 @@ void setup() {
     for(int i = 0; i < aichi.getVertexCount(); i++)
       vertices[i] = aichi.getVertex(i);
     
-    equallySpacedPoints = getEquallySpacedPoints(vertices, spacing);
-    ArrayList<PVector> leds = new ArrayList<PVector>();    
+    equallySpacedPoints = getEquallySpacedPoints(vertices, spacing); 
     
     // Draw the shape
     beginShape();
@@ -67,30 +73,44 @@ void setup() {
       if(j != file.getChildCount()-1 || i != equallySpacedPoints.size()-1)
         ledData += ",";
       
-      println(ledData);
+      //println(ledData);
       allData.append(ledData);      
       //allData += ledData;
       sectionLED++;
       totalLED++;
       ellipse(p.x, p.y, 5, 5);
     }
-    
-    ledPositions.add(leds);
   }
+  
+  colors = new byte[totalLED*3];
   
   allData.set(0, "tweenData ledData[" + totalLED + "] = {");
   allData.append(";");
   
-  println(totalLED);
-  saveStrings(structData, allData.toArray());
+  //println(totalLED);
+  if(outputData);
+    saveStrings(structData, allData.toArray());
   
+  
+  udp = new UDP( this, 6000 );
+  //udp.log( true );     // <-- printout the connection activity
+  udp.listen( true );
 } 
 
 void draw(){
+  background(10);
+  //image(house, 0, 0);
+  strokeWeight(.1);
+  //shape(aichi, 0, 0);
   
-  //background(102);
-  //shape(aichi, 0, 0);  
-       
+    //fill((255 / file.getChildCount()) * j, 255, 255);
+    int cIndex = 0;
+    for (int i = 0; i < leds.size(); i++)
+    {
+      fill(colors[cIndex++], colors[cIndex++], colors[cIndex++]);
+      PVector p = leds.get(i);
+      ellipse(p.x, p.y, 5, 5);
+    }
 }
 
 
@@ -151,4 +171,9 @@ PVector NormalizePoint(PVector p)
 
 void mouseClicked() {
   println("mouse:" + mouseX + ", " + mouseY);
+}
+
+void receive( byte[] data, String ip, int port ) {  // <-- extended handler
+  
+  System.arraycopy(data, 0, colors, 0, data.length);
 }
