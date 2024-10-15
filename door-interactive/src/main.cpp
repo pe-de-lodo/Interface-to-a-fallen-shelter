@@ -1,11 +1,11 @@
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
 #include <main.h>
 #include <knocking/knockdetection.h>
 #include <sleep.h>
 #include <light_comms.h>
+#include <FastLED.h>
 
-Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_RGB + NEO_KHZ800);
+CRGB leds[NUM_LEDS];
 uint32_t deltaTime;
 uint32_t lastLoop;
 
@@ -13,7 +13,8 @@ void (*loopFunc) (void) = NULL;
 
 void setup() 
 {
-  pixels.begin(); 
+  FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);  
+  FastLED.clear();
   configSleep();
   setLoopFunc(initKnock);
   lastLoop=millis();

@@ -1,8 +1,7 @@
 #include <FastLED>
 #include <ledpatterns.h>
-#include <Tween.h>
 
-#define LED_PIN = A3
+#define LED_PIN = 2
 #define NUM_LEDS = 16
 
 CRGB *leds;
@@ -14,26 +13,9 @@ tweenData tweenData;
 
 long lastUpdateTime = 0; 
 
-class BlinkPattern : public AbstractPattern
-{
-    float blinkVal;
-
-    BlinkPattern()
-    {
-        m_timeline.add(blinkVal).init(0).hold(1000).then(1,0).hold(1000);
-        m_timeline.mode(Tween::Mode::REPEAT_SQ);
-        m_timeline.start();
-    }
-
-    CRGB Evaluate(ledData)
-    {
-        m_timeline.update();
-        
-        return CHSV(0,128,(int)(blinkVal*128));
-    }
+CRGB blinkPatter(ledData,tweenData){
+    return CHSV(0,0,0);
 }
-
-BlinkPattern blinkPattern;
 
 void setup()
 {
