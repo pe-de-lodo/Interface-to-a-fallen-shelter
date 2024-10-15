@@ -1,27 +1,37 @@
+PImage house;
 PShape file;
 PShape aichi;
 
 ArrayList<ArrayList<PVector>> ledPositions = new ArrayList<ArrayList<PVector>>();
 
-float spacing = 10;  // Specific distance between points
+float spacing = 2.28;  // Specific distance between points
+
+String structData = "structData.txt";
+StringList allData = new StringList();
+
+PVector xLimits = new PVector(220, 1200);
+PVector yLimits = new PVector(140, 580);
+
+int totalLED = 0;
 
 void setup() {
-  size(640, 360);
+  size(1402, 631);
   // The file "bot1.svg" must be in the data folder
   // of the current sketch to load successfully
-  file = loadShape("Untitled.svg");
+  house = loadImage("house.jpg");
+  file = loadShape("house.svg");
   colorMode(HSB);
   
-  println(file.getChildCount());
+  //println(file.getChildCount());
   
-  
+  image(house, 0, 0);
   
   for(int j = 0; j < file.getChildCount(); j++)
   {
     
     
     aichi = file.getChild(j);
-    println(aichi.getVertexCount());
+    //println(aichi.getVertexCount());
     
     PVector[] vertices = new PVector[aichi.getVertexCount()];
     ArrayList<PVector> equallySpacedPoints = new ArrayList<PVector>();
@@ -42,14 +52,27 @@ void setup() {
     endShape();
     
     // Draw the points
+    int sectionLED = 0;
+    
     fill((255 / file.getChildCount()) * j, 255, 255);
     for (PVector p : equallySpacedPoints) {
       leds.add(p);
+      
+      PVector n = NormalizePoint(p);
+      String ledData = "[" + j + ", " + sectionLED + ", " + n.x + ", " + n.y + "],";
+      print(ledData);
+      allData.append(ledData);      
+      //allData += ledData;
+      sectionLED++;
+      totalLED++;
       ellipse(p.x, p.y, 5, 5);
     }
     
     ledPositions.add(leds);
   }
+  
+  println(totalLED);
+  saveStrings(structData, allData.toArray());
   
 } 
 
@@ -107,4 +130,15 @@ ArrayList<PVector> getEquallySpacedPoints(PVector[] vertices, float spacing) {
   
   
   return points;
+}
+
+PVector NormalizePoint(PVector p)
+{
+  float xx = ((p.x - xLimits.x) / (xLimits.y - xLimits.x));
+  float yy = ((p.y - yLimits.x) / (yLimits.y - yLimits.x));
+  return new PVector(xx, yy);
+}
+
+void mouseClicked() {
+  println("mouse:" + mouseX + ", " + mouseY);
 }
