@@ -8,9 +8,9 @@ PatternCanvas::PatternCanvas(CRGB *leds, ledData *ledData, int length)
     m_ledData = ledData;
 }
 
-void PatternCanvas::TransitionToPattern(AbstractPattern *pattern,long duration,tweenData *dataPtr)
+void PatternCanvas::TransitionToPattern(AbstractPattern *pattern,long duration)
 {
-    m_transitionStack.push( patternTransition{pattern,duration,0,dataPtr} );
+    m_transitionStack.push( patternTransition{pattern,duration,0} );
 }
 
 void PatternCanvas::Update(long deltaTime)
