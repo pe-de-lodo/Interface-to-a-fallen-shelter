@@ -36,7 +36,8 @@
 			"limits": "cpp",
 			"utility": "cpp",
 			"functional": "cpp",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"ostream": "cpp"
 		}
 	}
 }
