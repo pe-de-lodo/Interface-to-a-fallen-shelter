@@ -9,6 +9,10 @@ void sleep()
 {
     digitalWrite(MOSFET_PIN,LOW);
     pinMode(LED_PIN,INPUT);
+    pinMode(KNOCK_PIN,INPUT);  
+    // pinMode(SDA,INPUT);
+    // pinMode(SCL,INPUT);
+    NRF_POWER->TASKS_LOWPWR=1;
     NRF_POWER->SYSTEMOFF=1;
 }
 
@@ -26,7 +30,7 @@ void configSleep()
     pinMode(MOSFET_PIN,OUTPUT);
     digitalWrite(MOSFET_PIN,HIGH);
     pinMode(WAKEUP_PIN, INPUT_SENSE_HIGH);
-    pinMode(ALARM_PIN, INPUT_SENSE_HIGH);
+    pinMode(ALARM_PIN, INPUT_PULLUP_SENSE);
 
     QSPIF_sleep();
 }

@@ -3,18 +3,7 @@ RTC_DS3231 rtc;
 
 void initWakeAtTime()
 {
-
-    Wire.setPins(SDA,SCL);
-    Wire.begin();
-    while(false){
-        Wire.requestFrom(0x68, 1);     
-        while(Wire.available())    // secondary may send less than requested
-        { 
-            char c = Wire.read(); // receive a byte as character
-            Serial.print(c);         // print the character
-        }
-        delay(1000);
-    }
+    
     // initializing the rtc
     if(!rtc.begin(&Wire)) {
         Serial.println("Couldn't find RTC!");
@@ -23,14 +12,19 @@ void initWakeAtTime()
     }
 
     if(rtc.lostPower()) {
+        Serial.println("Settings date time");
         // this will adjust to the date and time at compilation
         rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     }
 
-     rtc.disable32K();
+    rtc.disable32K();
 
     rtc.clearAlarm(1);
     rtc.clearAlarm(2);
+
+    rtc.writeSqwPinMode(DS3231_OFF);
+    rtc.disableAlarm(2);
+    
 
     if(!rtc.setAlarm1(
             rtc.now() + TimeSpan(60),
@@ -38,6 +32,10 @@ void initWakeAtTime()
     )) {
         Serial.println("Error, alarm wasn't set!");
     }else {
-        Serial.println("Alarm will happen in 10 seconds!");
+        Serial.println("Alarm will happen in 60 seconds!");
     }
+
+    
+    char buf2[] = "YYMMDD-hh:mm:ss";
+    Serial.println(rtc.now().toString(buf2));
 }
