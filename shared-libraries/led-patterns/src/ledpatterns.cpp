@@ -11,7 +11,7 @@ PatternCanvas::PatternCanvas(CRGB *leds, ledData *ledData, int length)
 void PatternCanvas::TransitionToPattern(AbstractPattern *pattern,long duration)
 {
     m_transitionStack.push( patternTransition{pattern,duration} );
-    pattern->Start();
+    pattern->Start();   
 }
 
 void PatternCanvas::Update(long deltaTime)

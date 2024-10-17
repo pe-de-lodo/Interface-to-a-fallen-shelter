@@ -30,20 +30,19 @@ BlankPattern blankPattern;
 
 void setup()
 {
-    FastLED.addLeds<WS2812, 25, GRB>(leds, 1);
-    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, 1, NUM_LEDS-1);
+    FastLED.addLeds<WS2812, 25, GRB>(leds, 1).setCorrection(TypicalLEDStrip);
+    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, 1, NUM_LEDS-1).setCorrection(TypicalLEDStrip);
     FastLED.showColor(CRGB(255,0,255));
 
-    Serial.begin(921600);
-    while(!Serial){
+    // Serial.begin(921600);
+    // while(!Serial){}
 
-    }
-    delay(1000);
+    delay(500);
     
     //initSendPixelsEthernet();
     initSendPixelsUart();
 
-    canvas.TransitionToPattern(&blinkPattern,0);
+    //canvas.TransitionToPattern(&blinkPattern,0);
     canvas.TransitionToPattern(&blankPattern,4000);
     canvas.TransitionToPattern(&ripplePattern,4000);
     
@@ -55,10 +54,11 @@ void loop()
     long updateStartTime = millis();
     canvas.Update(updateStartTime-lastUpdateTime);
     FastLED.show();
+    //sendPixelsUart((char*)leds,NUM_LEDS*sizeof(CRGB));
+    //sendPixelsEthernet((char*)leds,NUM_LEDS*sizeof(CRGB));
     lastUpdateTime = updateStartTime;
     long elapsed = millis()-updateStartTime; 
-    delay(frameDuration-elapsed); 
-    sendPixelsUart((char*)leds,NUM_LEDS*sizeof(CRGB));
-    //sendPixelsEthernet((char*)leds,NUM_LEDS*sizeof(CRGB));
+    delay(constrain( frameDuration-elapsed,0,frameDuration)); 
+    
 }
 
