@@ -22,6 +22,7 @@ void QSPIF_sleep(void)
 
 void configSleep()
 {
+    pinMode(KNOCK_PIN,INPUT_PULLDOWN);   
     pinMode(MOSFET_PIN,OUTPUT);
     digitalWrite(MOSFET_PIN,HIGH);
     pinMode(WAKEUP_PIN, INPUT_SENSE_HIGH);
