@@ -4,6 +4,7 @@
 #include <sleep.h>
 #include <light_comms.h>
 #include <FastLED.h>
+#include <alarm.h>
 //#include <ledpatterns.h>
 
 CRGB leds[NUM_LEDS];
@@ -14,9 +15,14 @@ void (*loopFunc) (void) = NULL;
 
 void setup() 
 {
+  Serial.begin(115200);
+  while(!Serial){}
+  delay(1000);
+  Serial.println("INIT");
   FastLED.addLeds<WS2812, LED_PIN>(leds, NUM_LEDS, GRB);  
   FastLED.clear();
   configSleep();
+  initWakeAtTime();
   setLoopFunc(initKnock);
   lastLoop=millis();
 }

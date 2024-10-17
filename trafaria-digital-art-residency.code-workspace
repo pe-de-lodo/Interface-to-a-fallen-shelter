@@ -17,6 +17,10 @@
 		},
 		{
 			"path": "shared-libraries/led-patterns"
+		},
+		{
+			"name": "i2c-test",
+			"path": "i2c-test"
 		}
 	],
 	"settings": {
