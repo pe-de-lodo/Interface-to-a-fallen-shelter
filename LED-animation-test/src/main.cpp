@@ -22,9 +22,6 @@ PatternCanvas canvas(leds,data,NUM_LEDS);
 
 long lastUpdateTime = 0; 
 
-
-
-
 void setup()
 {
     FastLED.addLeds<WS2812, 25, GRB>(leds, 1).setCorrection(TypicalLEDStrip);
@@ -53,7 +50,7 @@ void loop()
     long updateStartTime = millis();
     canvas.Update(updateStartTime-lastUpdateTime);
     FastLED.show();
-    //sendPixelsUart((char*)leds,NUM_LEDS*sizeof(CRGB));
+    sendPixelsUart((char*)leds,NUM_LEDS*sizeof(CRGB));
     //sendPixelsEthernet((char*)leds,NUM_LEDS*sizeof(CRGB));
     lastUpdateTime = updateStartTime;
     long elapsed = millis()-updateStartTime; 
