@@ -43,7 +43,7 @@ void PatternCanvas::Update(long deltaTime)
         Serial.print(" ");
         Serial.println(alpha);
         
-        if(m_transitionElapsedTime==destinationPattern.duration){
+        if(m_transitionElapsedTime>=destinationPattern.duration){
             m_transitionStack.shift();
             isTransitioning = false;
             m_transitionElapsedTime = 0;

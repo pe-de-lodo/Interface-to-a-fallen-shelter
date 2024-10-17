@@ -45,7 +45,7 @@ void setup()
     //canvas.TransitionToPattern(&blinkPattern,0);
     canvas.TransitionToPattern(&blankPattern,4000);
     canvas.TransitionToPattern(&ripplePattern,4000);
-    
+    lastUpdateTime  = millis();
 }
 
 void loop()
