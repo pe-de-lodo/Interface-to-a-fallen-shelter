@@ -1,13 +1,24 @@
-import hypermedia.net.*;
+import processing.serial.*;
+import java.util.Arrays;
 
 PImage house;
 PShape file;
 PShape aichi;
 
-UDP udp;  // define the UDP object
+Serial myPort;  // Create object from Serial class
+
 
 ArrayList<PVector> leds = new ArrayList<PVector>();
 byte[] colors;
+
+String header = "\nHEADER >>\n";
+byte[] headerBytes = header.getBytes();
+
+byte[] serialData = new byte[2000];
+byte[] headerData = new byte[headerBytes.length];
+
+int bytesMissing = 0; 
+boolean drawFrame = false;
 
 float spacing = 2.28;  // Specific distance between points
 
@@ -23,6 +34,14 @@ int totalLED = 0;
 
 void setup() {
   size(1402, 631);
+  
+  printArray(Serial.list());
+  
+  String portName = Serial.list()[1];
+  myPort = new Serial(this, portName, 115200);  
+  
+  
+  
   // The file "bot1.svg" must be in the data folder
   // of the current sketch to load successfully
   house = loadImage("house.jpg");
@@ -91,10 +110,6 @@ void setup() {
   if(outputData);
     saveStrings(structData, allData.toArray());
   
-  
-  udp = new UDP( this, 6000 );
-  //udp.log( true );     // <-- printout the connection activity
-  udp.listen( true );
 } 
 
 void draw(){
@@ -103,6 +118,59 @@ void draw(){
   strokeWeight(.1);
   //shape(aichi, 0, 0);
   
+  
+  if(myPort.available() > 0)
+  {
+    if(bytesMissing == 0)
+    {
+      print("read: ");
+      println(myPort.available());
+      
+      int readStart = 0;
+      myPort.readBytes(serialData);
+      arrayCopy(serialData, readStart, headerData, 0, headerBytes.length);
+  
+      
+      /*while(!Arrays.equals(headerData, headerBytes))
+      {
+        if(readStart < (serialData.length - headerBytes.length))
+          return;
+        readStart++;
+        arrayCopy(serialData, readStart, headerData, 0, headerBytes.length);
+      }
+      */
+      
+      if(Arrays.equals(headerData, headerBytes))
+      {
+        print("read: ");
+        println(myPort.available());
+        println("equals!");
+        
+        byte[] size = new byte[2];
+        arrayCopy(serialData, headerBytes.length, size, 0, 2);
+        
+        int numBytes = ((size[1] & 0xFF) << 8) | (size[0] & 0xFF);
+        
+        int totalHeaderSize = (headerBytes.length + size.length);
+        int lengthToCopy = min((serialData.length - totalHeaderSize), numBytes);
+        arrayCopy(serialData, totalHeaderSize, colors, 0, lengthToCopy);
+        
+        bytesMissing = numBytes - lengthToCopy;
+        if(bytesMissing == 0)
+          drawFrame = true;
+      }
+    }
+    else
+    {
+      byte[] missingBytes = myPort.readBytes(bytesMissing);
+      arrayCopy(missingBytes, 0, colors, colors.length, bytesMissing);
+      bytesMissing = 0;
+      drawFrame = true;
+    }
+  }
+  
+  if(drawFrame)
+  {
     //fill((255 / file.getChildCount()) * j, 255, 255);
     int cIndex = 0;
     for (int i = 0; i < leds.size(); i++)
@@ -111,6 +179,8 @@ void draw(){
       PVector p = leds.get(i);
       ellipse(p.x, p.y, 5, 5);
     }
+    drawFrame = false;
+  }
 }
 
 
@@ -171,9 +241,4 @@ PVector NormalizePoint(PVector p)
 
 void mouseClicked() {
   println("mouse:" + mouseX + ", " + mouseY);
-}
-
-void receive( byte[] data, String ip, int port ) {  // <-- extended handler
-  
-  System.arraycopy(data, 0, colors, 0, data.length);
 }
