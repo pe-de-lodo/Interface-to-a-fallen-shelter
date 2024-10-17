@@ -23,9 +23,6 @@ PatternCanvas canvas(leds,data,NUM_LEDS);
 long lastUpdateTime = 0; 
 
 
-Ripples ripplePattern;
-BlinkPattern blinkPattern;
-BlankPattern blankPattern;
 
 
 void setup()
@@ -44,7 +41,9 @@ void setup()
 
     //canvas.TransitionToPattern(&blinkPattern,0);
     canvas.TransitionToPattern(&blankPattern,4000);
-    canvas.TransitionToPattern(&ripplePattern,4000);
+    //canvas.TransitionToPattern(&ripplePattern,4000);
+    canvas.TransitionToPattern(&meteorPattern,4000);
+    
     lastUpdateTime  = millis();
 }
 

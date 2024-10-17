@@ -25,11 +25,6 @@ void PatternCanvas::Update(long deltaTime)
     }
     if(isTransitioning){
         patternTransition destinationPattern = m_transitionStack[1];
-        // Serial.print(destinationPattern->elapsed);
-        // Serial.print(" ");
-        // Serial.print(destinationPattern->duration);
-        // Serial.print(" ");
-        // Serial.println(alpha);
 
         m_transitionElapsedTime += deltaTime;
         if(m_transitionElapsedTime>destinationPattern.duration){

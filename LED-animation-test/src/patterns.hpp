@@ -14,12 +14,15 @@ DEFINE_GRADIENT_PALETTE( icePalette ) {
     255, 255, 255, 255 
 };
 
-DEFINE_GRADIENT_PALETTE( es_rivendell_15_gp ) {
-    0,   1, 14,  5,
-  101,  16, 36, 14,
-  165,  56, 68, 30,
-  242, 150,156, 99,
-  255, 150,156, 99};
+DEFINE_GRADIENT_PALETTE( asteroidPalette ) {
+    0,   0, 0,  0,
+  8,  255, 168, 0,
+  12,  255, 220, 64,
+  20,  255, 168, 0,
+  64,  64, 32, 0,
+  128,  32, 8, 0,
+  255, 0,0, 0};
+
 
 
 class BlinkPattern : public AbstractPattern
@@ -51,11 +54,6 @@ class Ripples : public AbstractPattern
         m_timeline.mode(Tween::Mode::REPEAT_SQ);
     }
 
-    void Update() 
-    {
-        AbstractPattern::Update();
-    }
-
     CRGB Evaluate(ledData ledInfo)
     {
         //uint16_t pulse=beatsin16(120,0,255,0,uint16_t(0xfffL*ledInfo.x));
@@ -75,3 +73,32 @@ class Ripples : public AbstractPattern
         //return CHSV(5*ledInfo.index,255,pulse);
     }
 };
+
+class MeteorPattern : public AbstractPattern 
+{
+    float pos = 0;
+    const CRGBPalette16 m_colorPalette = asteroidPalette;
+
+    public:
+    void Start()
+    {
+        AbstractPattern::Start();
+        m_timeline.mode(Tween::Mode::REPEAT_SQ);
+        m_timeline.add(pos).init(0).then(0.5,4000);
+
+    }
+
+    CRGB Evaluate(ledData ledInfo)
+    {        
+        
+        float d = this->ledDistanceFrom(0.5,0.5,ledInfo);
+        float k = constrain(20*(pos-d),0,1);
+
+        return ColorFromPalette(m_colorPalette,uint8_t(k*0xff));
+    }
+};
+
+Ripples ripplePattern;
+BlinkPattern blinkPattern;
+BlankPattern blankPattern;
+MeteorPattern meteorPattern;

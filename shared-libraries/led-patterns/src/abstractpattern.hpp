@@ -32,6 +32,12 @@ class AbstractPattern
     protected:
     Tween::Timeline m_timeline;
 
+    static float ledDistanceFrom(float x, float y, ledData led)
+    {
+        float dx = led.x - x;
+        float dy = led.y - y;
+        return sqrtf((dx*dx) + (dy*dy));
+    }
     
 };
 
