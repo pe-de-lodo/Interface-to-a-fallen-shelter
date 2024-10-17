@@ -36,11 +36,11 @@ void initKnock()
     intervalColors[1] = CRGB::Red;
     intervalColors[2] = CRGB::Black;
     
-    FastLED.showColor(CRGB(150,0,150));
+    FastLED.showColor(CRGB(0,150,0));
 
     Serial.begin(115200);
 
-    pinMode(A0,INPUT);
+    pinMode(KNOCK_PIN,INPUT);
 }
 
 void listenForKnock()
