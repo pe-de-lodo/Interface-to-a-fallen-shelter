@@ -11,7 +11,7 @@ PatternCanvas::PatternCanvas(CRGB *leds, ledData *ledData, int length)
 void PatternCanvas::TransitionToPattern(AbstractPattern *pattern,long duration)
 {
     m_transitionStack.push( patternTransition{pattern,duration} );
-    pattern->Start();
+    pattern->Start();   
 }
 
 void PatternCanvas::Update(long deltaTime)
@@ -25,11 +25,6 @@ void PatternCanvas::Update(long deltaTime)
     }
     if(isTransitioning){
         patternTransition destinationPattern = m_transitionStack[1];
-        // Serial.print(destinationPattern->elapsed);
-        // Serial.print(" ");
-        // Serial.print(destinationPattern->duration);
-        // Serial.print(" ");
-        // Serial.println(alpha);
 
         m_transitionElapsedTime += deltaTime;
         if(m_transitionElapsedTime>destinationPattern.duration){
@@ -43,7 +38,7 @@ void PatternCanvas::Update(long deltaTime)
         Serial.print(" ");
         Serial.println(alpha);
         
-        if(m_transitionElapsedTime==destinationPattern.duration){
+        if(m_transitionElapsedTime>=destinationPattern.duration){
             m_transitionStack.shift();
             isTransitioning = false;
             m_transitionElapsedTime = 0;

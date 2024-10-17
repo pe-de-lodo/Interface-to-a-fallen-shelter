@@ -4,6 +4,7 @@
 #include <sleep.h>
 #include <light_comms.h>
 #include <FastLED.h>
+//#include <ledpatterns.h>
 
 CRGB leds[NUM_LEDS];
 uint32_t deltaTime;
@@ -13,7 +14,7 @@ void (*loopFunc) (void) = NULL;
 
 void setup() 
 {
-  FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);  
+  FastLED.addLeds<WS2812, LED_PIN>(leds, NUM_LEDS, GRB);  
   FastLED.clear();
   configSleep();
   setLoopFunc(initKnock);

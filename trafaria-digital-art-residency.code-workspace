@@ -14,6 +14,9 @@
 		{
 			"name": "LED-animation-test",
 			"path": "LED-animation-test"
+		},
+		{
+			"path": "shared-libraries/led-patterns"
 		}
 	],
 	"settings": {
@@ -36,7 +39,8 @@
 			"limits": "cpp",
 			"utility": "cpp",
 			"functional": "cpp",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"ostream": "cpp"
 		}
 	}
 }
