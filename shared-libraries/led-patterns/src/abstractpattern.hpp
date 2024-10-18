@@ -38,6 +38,11 @@ class AbstractPattern
         float dy = led.y - y;
         return sqrtf((dx*dx) + (dy*dy));
     }
+
+    static uint8_t ledSection(ledData led)
+    {
+        return led.section;
+    }
     
 };
 

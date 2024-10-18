@@ -1,6 +1,8 @@
 import processing.serial.*;
 import java.util.Arrays;
 
+boolean debug = true;
+
 PImage house;
 PShape file;
 PShape aichi;
@@ -9,7 +11,7 @@ Serial myPort;  // Create object from Serial class
 
 
 ArrayList<PVector> leds = new ArrayList<PVector>();
-byte[] colors;
+byte[] colors = new byte[1350];
 
 String header = "\nHEADER >>\n";
 byte[] headerBytes = header.getBytes();
@@ -46,7 +48,7 @@ void setup() {
   // of the current sketch to load successfully
   house = loadImage("house.jpg");
   file = loadShape("house.svg");
-  colorMode(HSB);
+  colorMode(RGB, 255, 255, 255);
   
   //println(file.getChildCount());
   
@@ -67,6 +69,7 @@ void setup() {
     equallySpacedPoints = getEquallySpacedPoints(vertices, spacing); 
     
     // Draw the shape
+    /*
     beginShape();
     stroke(0);
     noFill();
@@ -74,6 +77,7 @@ void setup() {
       vertex(v.x, v.y);
     }
     endShape();
+    */
     
     // Draw the points
     int sectionLED = 0;
@@ -101,6 +105,8 @@ void setup() {
     }
   }
   
+  println("Total LED: " + totalLED);
+  
   colors = new byte[totalLED*3];
   
   allData.set(0, "tweenData ledData[" + totalLED + "] = {");
@@ -110,41 +116,46 @@ void setup() {
   if(outputData);
     saveStrings(structData, allData.toArray());
   
+  
 } 
 
 void draw(){
-  background(10);
+  
   //image(house, 0, 0);
-  strokeWeight(.1);
+  
   //shape(aichi, 0, 0);
   
   
   if(myPort.available() > 0)
   {
-    if(bytesMissing == 0)
+    int bytesAvailable = myPort.available();
+    
+    //if(bytesMissing == 0)
+    if(bytesAvailable == 1363)
     {
-      print("read: ");
-      println(myPort.available());
       
       int readStart = 0;
+      println("myPort: " + myPort.available());
+      
       myPort.readBytes(serialData);
       arrayCopy(serialData, readStart, headerData, 0, headerBytes.length);
-  
       
-      /*while(!Arrays.equals(headerData, headerBytes))
-      {
-        if(readStart < (serialData.length - headerBytes.length))
-          return;
-        readStart++;
-        arrayCopy(serialData, readStart, headerData, 0, headerBytes.length);
-      }
-      */
+      
+      
+      //while(!Arrays.equals(headerData, headerBytes))
+      //{
+      //  if(readStart < (serialData.length - headerBytes.length))
+      //    return;
+      //  readStart++;
+      //  arrayCopy(serialData, readStart, headerData, 0, headerBytes.length);
+      //}
+      
+      
       
       if(Arrays.equals(headerData, headerBytes))
       {
-        print("read: ");
-        println(myPort.available());
-        println("equals!");
+        if(debug)
+          println("equals!");
         
         byte[] size = new byte[2];
         arrayCopy(serialData, headerBytes.length, size, 0, 2);
@@ -152,34 +163,63 @@ void draw(){
         int numBytes = ((size[1] & 0xFF) << 8) | (size[0] & 0xFF);
         
         int totalHeaderSize = (headerBytes.length + size.length);
-        int lengthToCopy = min((serialData.length - totalHeaderSize), numBytes);
+        int lengthToCopy = min((bytesAvailable - totalHeaderSize), numBytes);
         arrayCopy(serialData, totalHeaderSize, colors, 0, lengthToCopy);
         
         bytesMissing = numBytes - lengthToCopy;
-        if(bytesMissing == 0)
+        
+        
+        /*if(bytesMissing == 0)
+        {
           drawFrame = true;
+        }*/
+        drawFrame = true;
       }
     }
     else
     {
-      byte[] missingBytes = myPort.readBytes(bytesMissing);
-      arrayCopy(missingBytes, 0, colors, colors.length, bytesMissing);
-      bytesMissing = 0;
-      drawFrame = true;
+      myPort.clear();
     }
+    /*else
+    {
+      if(debug)
+      {
+        println("available: " + myPort.available() + " bytes missing: " + bytesMissing);
+      }
+        
+      if(myPort.available() >= bytesMissing)
+      {
+        if(debug)
+          println("read missing!");
+        byte[] missingBytes = myPort.readBytes(bytesMissing);
+        arrayCopy(missingBytes, 0, colors, colors.length - bytesMissing, bytesMissing);
+        bytesMissing = 0;
+        drawFrame = true;
+      }
+    }*/
   }
   
   if(drawFrame)
   {
+    background(0);
+    image(house, 0, 0);
+    noStroke();
+    //strokeWeight(1);
+    
+    if(debug)
+      println("draw frame!");
+    
     //fill((255 / file.getChildCount()) * j, 255, 255);
     int cIndex = 0;
     for (int i = 0; i < leds.size(); i++)
     {
-      fill(colors[cIndex++], colors[cIndex++], colors[cIndex++]);
+      
+      fill(UByte(colors[cIndex++]), UByte(colors[cIndex++]), UByte(colors[cIndex++]));
       PVector p = leds.get(i);
-      ellipse(p.x, p.y, 5, 5);
+      circle(p.x, p.y, 5);
     }
     drawFrame = false;
+    
   }
 }
 
@@ -240,5 +280,36 @@ PVector NormalizePoint(PVector p)
 }
 
 void mouseClicked() {
-  println("mouse:" + mouseX + ", " + mouseY);
+  //println("mouse:" + mouseX + ", " + mouseY);
+  int closestIndex = ClosestLED(mouseX, mouseY);
+  int cIdx = closestIndex * 3;
+  println(UByte(colors[cIdx]) + ", " + UByte(colors[cIdx+1]) + ", " + UByte(colors[cIdx+2]));
+}
+
+
+int ClosestLED(float xx, float yy)
+{
+  float minDist = 999999999;
+  int minIndex = -1;
+  for(int i = 0; i < leds.size(); i++)
+  {
+    float lX = leds.get(i).x;
+    float lY = leds.get(i).y;
+    
+    float lDist = dist(xx, yy, lX, lY);
+    if(lDist < minDist)
+    {
+      minDist = lDist;
+      minIndex = i;
+    }
+  }
+  
+  return minIndex;
+}
+
+int UByte(byte b)
+{
+  float fColor = Byte.toUnsignedInt(b);
+  float correctedColor = pow(fColor, 1.2); 
+  return round(correctedColor);
 }

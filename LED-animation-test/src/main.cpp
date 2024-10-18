@@ -36,10 +36,11 @@ void setup()
     //initSendPixelsEthernet();
     initSendPixelsUart();
 
-    //canvas.TransitionToPattern(&blinkPattern,0);
-    canvas.TransitionToPattern(&blankPattern,4000);
-    //canvas.TransitionToPattern(&ripplePattern,4000);
-    canvas.TransitionToPattern(&meteorPattern,4000);
+    canvas.TransitionToPattern(&testPattern,0);
+    // canvas.TransitionToPattern(&blinkPattern,0);
+    // canvas.TransitionToPattern(&blankPattern,4000);
+    // canvas.TransitionToPattern(&ripplePattern,4000);
+    // canvas.TransitionToPattern(&meteorPattern,4000);
     
     lastUpdateTime  = millis();
 }
