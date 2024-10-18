@@ -10,7 +10,6 @@ const double ease = 0.001; //out of 255
 double minVal=INT16_MAX;
 double maxVal=0;
 double average = 0;
-#define LIGHT_SENSOR_PIN A3
 
 const uint32_t shortPulse = 200;
 const uint32_t longPulse = 600;
