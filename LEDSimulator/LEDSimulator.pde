@@ -1,6 +1,10 @@
 import processing.serial.*;
 import java.util.Arrays;
 
+import ch.bildspur.postfx.builder.*;
+import ch.bildspur.postfx.pass.*;
+import ch.bildspur.postfx.*;
+
 boolean debug = true;
 
 PImage house;
@@ -9,6 +13,7 @@ PShape aichi;
 
 Serial myPort;  // Create object from Serial class
 
+PostFX fx;
 
 ArrayList<PVector> leds = new ArrayList<PVector>();
 byte[] colors = new byte[1350];
@@ -36,7 +41,7 @@ int totalLED = 0;
 
 
 void setup() {
-  size(1402, 631);
+  size(1402, 631, P3D);
   
   printArray(Serial.list());
   
@@ -44,7 +49,8 @@ void setup() {
   myPort = new Serial(this, portName, 115200);  
   
   
-  
+  fx = new PostFX(this); 
+  fx.preload(BloomPass.class);
   // The file "bot1.svg" must be in the data folder
   // of the current sketch to load successfully
   house = loadImage("house.jpg");
@@ -217,10 +223,12 @@ void draw(){
       
       fill(UByte(colors[cIndex++]), UByte(colors[cIndex++]), UByte(colors[cIndex++]));
       PVector p = leds.get(i);
-      circle(p.x, p.y, 5);
+      circle(p.x, p.y, 3);
     }
     drawFrame = false;
-    
+    fx.render()
+    .bloom(0.7, 20, 40)
+    .compose();
   }
 }
 
