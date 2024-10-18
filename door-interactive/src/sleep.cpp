@@ -12,7 +12,6 @@ void sleep()
     pinMode(KNOCK_PIN,INPUT);  
     // pinMode(SDA,INPUT);
     // pinMode(SCL,INPUT);
-    NRF_POWER->TASKS_LOWPWR=1;
     NRF_POWER->SYSTEMOFF=1;
 }
 
