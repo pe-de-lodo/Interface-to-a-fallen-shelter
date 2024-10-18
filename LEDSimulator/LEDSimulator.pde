@@ -34,12 +34,13 @@ Boolean outputData = false;
 
 int totalLED = 0;
 
+
 void setup() {
   size(1402, 631);
   
   printArray(Serial.list());
   
-  String portName = Serial.list()[1];
+  String portName = Serial.list()[Serial.list().length-1];
   myPort = new Serial(this, portName, 115200);  
   
   
@@ -120,7 +121,7 @@ void setup() {
 } 
 
 void draw(){
-  
+  if(myPort==null) return;
   //image(house, 0, 0);
   
   //shape(aichi, 0, 0);
@@ -310,6 +311,6 @@ int ClosestLED(float xx, float yy)
 int UByte(byte b)
 {
   float fColor = Byte.toUnsignedInt(b);
-  float correctedColor = pow(fColor, 1.2); 
+  float correctedColor = pow(fColor/255.0, 1/2.2)*255.0;
   return round(correctedColor);
 }
