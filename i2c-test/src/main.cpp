@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <Adafruit_I2CDevice.h>
+#include <SdFat.h>
 #include <Wire.h>
 
 void setup()
