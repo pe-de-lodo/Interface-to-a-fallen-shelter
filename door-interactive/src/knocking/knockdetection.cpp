@@ -38,7 +38,7 @@ void initKnock()
     
     FastLED.showColor(CRGB(0,150,0));
 
-    Serial.begin(115200);
+    
 
     pinMode(KNOCK_PIN,INPUT);
 }
