@@ -1,1 +1,1 @@
-void initWakeAtTime();
+bool initWakeAlarm();

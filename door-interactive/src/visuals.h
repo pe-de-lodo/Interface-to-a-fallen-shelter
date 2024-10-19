@@ -1,2 +1,5 @@
-void celebrate1Loop(void);
-void celebrate1();
+void initVisuals();
+void alarmAttractor();
+void loopAlarmAttractor();
+void tryDoorKnobPatternLoop(void);
+void playPatternTryDoorKnobPattern();

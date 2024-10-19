@@ -30,6 +30,8 @@ int knockThreshold = 200;
 
 void initKnock()
 {
+    delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
+    Serial.println("listening for knock");
     setLoopFunc(listenForKnock);
 
     intervalColors[0] = CRGB::Green;
@@ -91,7 +93,7 @@ void knockDetected(uint32_t interval)
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
-        setLoopFunc(celebrate1);
+        setLoopFunc(playPatternTryDoorKnobPattern);
     }
     
 }

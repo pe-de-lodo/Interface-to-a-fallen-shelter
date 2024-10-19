@@ -21,4 +21,5 @@ class PatternCanvas {
     PatternCanvas(CRGB *leds, ledData *ledData, int len);
     void TransitionToPattern(AbstractPattern *ptrn,long duration);
     void Update(long deltaTime);
+    void Clear();
 };

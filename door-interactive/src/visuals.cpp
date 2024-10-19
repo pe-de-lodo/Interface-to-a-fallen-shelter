@@ -4,10 +4,14 @@
 #include <knocking/knockdetection.h>
 #include <sleep.h>
 #include <visuals.h>
+#include <ledpatterns.h>
+#include <ledLocationData.h>
 
 extern CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
+PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
+CRGB leds[NUM_LEDS];
 int32_t elapsed;
 
 CRGB colors[] = {
@@ -20,22 +24,55 @@ CRGB colors[] = {
 };
 
 const int numCols = 7;
+DEFINE_GRADIENT_PALETTE( alarmAttractorGradient_p ) {
+     0,    0,   0,   0,  /* at index 0,   black(0,0,0) */
+    192, 255,   0,   0,  /* at index 192, red(255,0,0) */
+    255, 0, 0, 0   /* at index 255, white(255,255,255) */
+};
+CRGBPalette16 alarmAttractorGradient = alarmAttractorGradient_p;
 
-
-void celebrate1()
+void initVisuals()
 {
-    elapsed=0;
-    setLoopFunc(celebrate1Loop);
+    FastLED.addLeds<WS2812, LED_PIN_1>(leds, NUM_LEDS, GRB);  
+    FastLED.clear();
 }
 
-void celebrate1Loop()
+void alarmAttractor()
 {
-    elapsed+=deltaTime;    
-    FastLED.showColor(CRGB(255,0,255));
-    delay(100);
-    FastLED.showColor(CRGB::Black);
-    delay(100);
-    if(elapsed>=5000L){
+    Serial.println("playing alarm attractor");
+
+    elapsed = 0;
+    setLoopFunc(loopAlarmAttractor);
+    canvas.Clear();
+    FastLED.clear();
+}
+
+void loopAlarmAttractor()
+{
+    leds[0] = ColorFromPalette(alarmAttractorGradient,(uint8_t)(millis()*3*255/1000));
+    FastLED.show();
+    elapsed+=deltaTime; 
+    if(digitalRead(WAKEUP_PIN)==HIGH){
+        setLoopFunc(initKnock);
+        return;
+    }
+    if(elapsed>30000){
         sleep();
     }
 }
+
+
+class TryDoorKnobPattern : public AbstractPattern {
+    
+    CRGB Evaluate(ledData data)
+    {
+        return CRGB::Black;
+    }
+};
+TryDoorKnobPattern tryDoorKnobPattern;
+
+void playPatternTryDoorKnobPattern()
+{
+    canvas.TransitionToPattern(&tryDoorKnobPattern,500);
+}
+

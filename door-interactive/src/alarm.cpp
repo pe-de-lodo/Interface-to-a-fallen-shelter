@@ -1,9 +1,12 @@
 #include <RTClib.h>
+#include <main.h>
 RTC_DS3231 rtc;
 
-void initWakeAtTime()
+bool initWakeAlarm()
 {
-    
+    pinMode(ALARM_PIN,INPUT_PULLUP);
+    bool wokeFromAlarm = digitalRead( ALARM_PIN ) == LOW;
+
     // initializing the rtc
     if(!rtc.begin(&Wire)) {
         Serial.println("Couldn't find RTC!");
@@ -38,4 +41,6 @@ void initWakeAtTime()
     
     char buf2[] = "YYMMDD-hh:mm:ss";
     Serial.println(rtc.now().toString(buf2));
+
+    return wokeFromAlarm;
 }

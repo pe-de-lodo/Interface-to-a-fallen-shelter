@@ -14,12 +14,21 @@ void PatternCanvas::TransitionToPattern(AbstractPattern *pattern,long duration)
     pattern->Start();   
 }
 
+void PatternCanvas::Clear()
+{
+    m_transitionStack.clear();
+    m_transitionElapsedTime = 0;
+}
+
 void PatternCanvas::Update(long deltaTime)
 {
     CRGB pixel;
     float alpha = 0;
-            
     bool isTransitioning = m_transitionStack.size()>=2;
+
+    if(m_transitionStack.size()==0){
+        return;
+    }
     for(int i=m_transitionStack.size()-1;i>=0;i--){
         m_transitionStack[i].targetPattern->Update();
     }

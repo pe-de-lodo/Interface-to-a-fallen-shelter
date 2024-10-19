@@ -1,7 +1,7 @@
 #include <FastLED.h>
 #include <ledpatterns.h>
 #include <Tween.h>
-#include <structData.h>
+#include <ledLocationData.h>
 #include <sendpixelsUart.h>
 //#include <sendPixelsEthernet.h>
 #include <patterns.hpp>
@@ -16,7 +16,7 @@
 #define USE_THIS_SS_PIN           21
 
 CRGB leds[NUM_LEDS];
-ledData *data = structData;
+ledData *data = ledLocationData;
 
 PatternCanvas canvas(leds,data,NUM_LEDS);
 
@@ -25,7 +25,7 @@ long lastUpdateTime = 0;
 void setup()
 {
     FastLED.addLeds<WS2812, 25, GRB>(leds, 1).setCorrection(TypicalLEDStrip);
-    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, 1, NUM_LEDS-1).setCorrection(TypicalLEDStrip);
+    FastLED.addLeds<WS2812, LED_PIN_1, GRB>(leds, 1, NUM_LEDS-1).setCorrection(TypicalLEDStrip);
     FastLED.showColor(CRGB(255,0,255));
 
     // Serial.begin(921600);

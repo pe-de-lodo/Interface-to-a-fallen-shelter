@@ -26,14 +26,12 @@ void QSPIF_sleep(void)
 void enablePeripherals()
 {
   pinMode(MOSFET_PIN,OUTPUT);
-  digitalWrite(MOSFET_PIN,HIGH);
 }
 
 void configSleep()
 {
-    pinMode(KNOCK_PIN,INPUT_PULLDOWN); 
     pinMode(WAKEUP_PIN, INPUT_PULLUP_SENSE);
-    pinMode(ALARM_PIN, INPUT_PULLUP_SENSE); //INPUT_PULLUP_SENSE
+    pinMode(ALARM_PIN, INPUT_PULLUP_SENSE);
 
     QSPIF_sleep();
 }

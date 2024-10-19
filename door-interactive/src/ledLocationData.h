@@ -1,6 +1,7 @@
+
 #include <ledpatterns.h>
 
-ledData structData[450] = {
+ledData ledLocationData[450] = {
 {0, 0, 0.4402847, 0.301275},
 {0, 1, 0.4379621, 0.30097318},
 {0, 2, 0.43563956, 0.30067125},

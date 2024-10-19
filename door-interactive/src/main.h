@@ -1,12 +1,14 @@
-#define LED_PIN 2 
+
+#define LED_PIN_1 0
 #define MOSFET_PIN 7
-#define WAKEUP_PIN 8
-#define ALARM_PIN 9
-#define KNOCK_PIN A0
+#define WAKEUP_PIN 9
+#define ALARM_PIN 6
+#define KNOCK_PIN A2
 #define LIGHT_SENSOR_PIN A3
-#define NUM_LEDS 16 
-#define DOOR_KNOB 10
-#define KEY_SENSOR 1
+#define NUM_LEDS 2
+#define DOOR_KNOB 8
+#define KEY_SENSOR 10
+#define LED_PIN_2 1
 
 #pragma once
 

@@ -21,6 +21,9 @@
 		{
 			"name": "i2c-test",
 			"path": "i2c-test"
+		},
+		{
+			"path": "sensor-tests"
 		}
 	],
 	"settings": {
@@ -44,7 +47,9 @@
 			"utility": "cpp",
 			"functional": "cpp",
 			"cmath": "cpp",
-			"ostream": "cpp"
+			"ostream": "cpp",
+			"mstd_iterator": "cpp",
+			"*.rh": "cpp"
 		}
 	}
 }
