@@ -33,5 +33,5 @@ void configSleep()
     pinMode(WAKEUP_PIN, INPUT_PULLUP_SENSE);
     pinMode(ALARM_PIN, INPUT_PULLUP_SENSE);
 
-    QSPIF_sleep();
+    //QSPIF_sleep();
 }

@@ -5,6 +5,7 @@
 #include <main.h>
 #include <light_comms.h>
 #include <sleep.h>
+#include <alarm.h>
 
 CRGB leds[NUM_LEDS];
 
@@ -12,21 +13,32 @@ void (*loopFunc) () = NULL;
 
 void setup() {
 
-
-
-  FastLED.addLeds<NEOPIXEL, LED_PIN_1>(leds, 1);
-  FastLED.addLeds<NEOPIXEL, LED_PIN_2>(leds, 1,1);
   // put your setup code here, to run once:
-  Serial.begin(115200,SERIAL);
-  Serial.write("serial1");
+  Serial.begin(115200);
   
   //set battery charging to 100mA
-  digitalWrite(P0_13, LOW);
+  // pinMode(22,OUTPUT);
+  // digitalWrite(22, LOW);
+  // pinMode(23,INPUT);
 
   //enable mosfet 
   enablePeripherals();
+
+  //init clock and set alarm
+  initWakeAlarm();
+
   //config wake pins, disable Flash
   configSleep();
+
+  // while(true){
+  //   printDateTime();
+  //   Serial.println("meep");
+  //   delay(5);
+  // }
+
+  FastLED.addLeds<NEOPIXEL, LED_PIN_1>(leds, 1);
+  FastLED.addLeds<NEOPIXEL, LED_PIN_2>(leds, 1,1);
+
 
   pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
   pinMode(KNOCK_PIN,INPUT);
@@ -75,6 +87,7 @@ void allTests()
   bool doorKnobHeld = digitalRead(DOOR_KNOB);
 
   bool flash = (millis()/1000L)%2 == 0;
+  bool isCharging = digitalRead(23)==HIGH;
 
   Serial.print("knockSensor=");
   Serial.print(knockSensorValue);  
@@ -84,8 +97,14 @@ void allTests()
   Serial.print(keyInserted);  
   Serial.print(" doorKnob=");
   Serial.print(doorKnobHeld);  
+  Serial.print(" isCharging=");
+  Serial.print(isCharging);
   Serial.print(" ");
-  Serial.println(flash);
+  printDateTime();
+  Serial.println(" ");
+//  Serial.println(flash);
+
+  
   //test leds
   FastLED.clear();
   FastLED.showColor( flash ? CRGB::Red : CRGB::Blue );
