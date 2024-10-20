@@ -8,10 +8,12 @@ Adafruit_FlashTransport_QSPI flashTransport;
 void sleep()
 {
     digitalWrite(MOSFET_PIN,LOW);
+    digitalWrite(LED_BLUE,HIGH);
     pinMode(LED_PIN_1,INPUT);
     pinMode(KNOCK_PIN,INPUT);  
     // pinMode(SDA,INPUT);
     // pinMode(SCL,INPUT);
+    NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos; 
     NRF_POWER->SYSTEMOFF=1;
 }
 
@@ -26,6 +28,7 @@ void QSPIF_sleep(void)
 void enablePeripherals()
 {
   pinMode(MOSFET_PIN,OUTPUT);
+  digitalWrite(MOSFET_PIN,HIGH);
 }
 
 void configSleep()

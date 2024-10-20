@@ -15,20 +15,31 @@ void setup() {
 
   // put your setup code here, to run once:
   Serial.begin(115200);
-  
+  Serial.println("Starting");
+  delay(1000);
+  pinMode(LED_BLUE,OUTPUT);
+  digitalWrite(LED_BLUE,LOW);
   //set battery charging to 100mA
   // pinMode(22,OUTPUT);
   // digitalWrite(22, LOW);
   // pinMode(23,INPUT);
+  Serial.println("Waking");
+  delay(2000);
 
   //enable mosfet 
   enablePeripherals();
-
+  Serial.println("enablePeripherals");
+  delay(2000);
   //init clock and set alarm
-  initWakeAlarm();
+  bool m = initWakeAlarm();
+  Serial.print("initWakeAlarm ");
+  Serial.println(m);
+  delay(2000);
 
   //config wake pins, disable Flash
   configSleep();
+  Serial.println("configSleep");
+  delay(2000);
 
   // while(true){
   //   printDateTime();

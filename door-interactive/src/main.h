@@ -10,7 +10,5 @@
 #define KEY_SENSOR 10
 #define LED_PIN_2 1
 
-#pragma once
-
 void setLoopFunc(void loopFunc());
 inline void calcDeltaTime();

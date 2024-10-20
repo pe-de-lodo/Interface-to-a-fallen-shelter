@@ -5,19 +5,24 @@ RTC_DS3231 rtc;
 void printDateTime()
 {
     char buf2[] = "hh:mm:ss DD/MM/YY";
-    Serial.print(rtc.now().toString(buf2));
+    bool noClock = rtc.now().unixtime()==946688640;
+    if(noClock){
+        Serial.print("no time");
+    }
+    else {
+        Serial.print(rtc.now().toString(buf2));
+    }
 }
 
 bool initWakeAlarm()
 {
-    pinMode(ALARM_PIN,INPUT_PULLUP);
+    //pinMode(ALARM_PIN,INPUT_PULLUP);
     bool wokeFromAlarm = digitalRead( ALARM_PIN ) == LOW;
 
     // initializing the rtc
     if(!rtc.begin(&Wire)) {
-        Serial.println("Couldn't find RTC!");
-        Serial.flush(); 
-        while (1) delay(10);
+        Serial.println("??? Couldn't find RTC! ???");
+        return wokeFromAlarm;
     }
 
     if(rtc.lostPower()) {

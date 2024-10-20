@@ -93,8 +93,14 @@ void knockDetected(uint32_t interval)
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
-        setLoopFunc(playPatternTryDoorKnobPattern);
+        playPatternTryDoorKnobPattern();
+        setLoopFunc(waitForDoorKnobTouch());
     }
+    
+}
+
+void waitForDoorKnobTouch()
+{
     
 }
 

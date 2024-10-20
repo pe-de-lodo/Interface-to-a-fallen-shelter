@@ -31,7 +31,6 @@ void enablePeripherals()
 
 void configSleep()
 {
-    pinMode(KNOCK_PIN,INPUT_PULLDOWN); 
     pinMode(WAKEUP_PIN, INPUT_PULLUP_SENSE);
     pinMode(ALARM_PIN, INPUT_PULLUP_SENSE); //INPUT_PULLUP_SENSE
 

@@ -23,6 +23,7 @@ void setup()
   Serial.println("INIT");
   
   enablePeripherals();
+  delay(20);
   bool wokeFromAlarm = initWakeAlarm();
   configSleep();
   initVisuals();
