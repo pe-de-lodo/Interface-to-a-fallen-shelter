@@ -5,7 +5,7 @@ RTC_DS3231 rtc;
 void printDateTime()
 {
     char buf2[] = "hh:mm:ss DD/MM/YY";
-    bool noClock = rtc.now().unixtime()==946688640;
+    bool noClock = rtc.now().year()==2000;
     if(noClock){
         Serial.print("no time");
     }
