@@ -8,12 +8,12 @@
 #include <ledLocationData.h>
 #include <patterns.hpp>
 
-extern CRGB leds[NUM_LEDS];
+CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
 
-CRGB leds[NUM_LEDS];
+
 int32_t elapsed;
 
 CRGB colors[] = {

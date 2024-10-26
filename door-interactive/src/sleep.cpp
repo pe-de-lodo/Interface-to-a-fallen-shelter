@@ -10,6 +10,8 @@ void sleep()
     digitalWrite(MOSFET_PIN,LOW);
     digitalWrite(LED_BLUE,HIGH);
     pinMode(LED_PIN_1,INPUT);
+    pinMode(LED_PIN_2,INPUT);
+    pinMode(LIGHT_SENSOR_PIN,INPUT);
     pinMode(KNOCK_PIN,INPUT);  
     // pinMode(SDA,INPUT);
     // pinMode(SCL,INPUT);

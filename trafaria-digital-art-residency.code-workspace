@@ -21,9 +21,6 @@
 		{
 			"name": "i2c-test",
 			"path": "i2c-test"
-		},
-		{
-			"path": "sensor-tests"
 		}
 	],
 	"settings": {
