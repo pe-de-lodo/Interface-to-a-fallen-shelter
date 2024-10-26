@@ -1,2 +1,0 @@
-void printDateTime();
-bool initWakeAlarm();
