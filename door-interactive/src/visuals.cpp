@@ -6,10 +6,12 @@
 #include <visuals.h>
 #include <ledpatterns.h>
 #include <ledLocationData.h>
+#include <patterns.hpp>
 
 extern CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
+
 
 CRGB leds[NUM_LEDS];
 int32_t elapsed;
@@ -33,8 +35,16 @@ CRGBPalette16 alarmAttractorGradient = alarmAttractorGradient_p;
 
 void initVisuals()
 {
-    FastLED.addLeds<WS2812, LED_PIN_1>(leds, NUM_LEDS, GRB);  
+    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 250);
+      
+    //FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 250, 250);  
     FastLED.clear();
+}
+
+Ripples waitForKnockPattern;
+void waitForKnockVisuals()
+{
+    canvas.TransitionToPattern(&waitForKnockPattern,500);
 }
 
 void alarmAttractor()
@@ -62,17 +72,16 @@ void loopAlarmAttractor()
 }
 
 
-class TryDoorKnobPattern : public AbstractPattern {
-    
-    CRGB Evaluate(ledData data)
-    {
-        return CRGB::Black;
-    }
-};
-TryDoorKnobPattern tryDoorKnobPattern;
+SolidColorPattern tryDoorKnobPattern(CRGB(0x28,0x8c,0x13));
+SolidColorPattern torchAttratorPattern(CRGB(0x84,0x6d,0x12));
 
 void playPatternTryDoorKnobPattern()
 {
     canvas.TransitionToPattern(&tryDoorKnobPattern,500);
+}
+
+void playPatternTryDoorKnob()
+{
+    
 }
 

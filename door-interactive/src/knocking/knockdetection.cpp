@@ -10,6 +10,8 @@ const uint32_t shortInterval = 600;
 const uint32_t longInterval = 1200;
 const uint32_t timeout = 30000;
 
+extern uint32_t deltaTime;
+
 uint32_t intervalTypes[] = {
     shortInterval,
     longInterval,
@@ -28,20 +30,21 @@ CircularBuffer<long, 10> recordedIntervals;
 int knockThreshold = 200;
 
 
+
 void initKnock()
 {
     delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
     Serial.println("listening for knock");
     setLoopFunc(listenForKnock);
-
-    intervalColors[0] = CRGB::Green;
-    intervalColors[1] = CRGB::Red;
-    intervalColors[2] = CRGB::Black;
+    waitForKnockVisuals();
     
-    FastLED.showColor(CRGB(0,150,0));
-
+    // intervalColors[0] = CRGB::Green;
+    // intervalColors[1] = CRGB::Red;
+    // intervalColors[2] = CRGB::Black;
     
-
+    //FastLED.showColor(CRGB(0,150,0));
+    
+    
     pinMode(KNOCK_PIN,INPUT);
 }
 
@@ -94,14 +97,28 @@ void knockDetected(uint32_t interval)
 
     if(intervalType==0){
         playPatternTryDoorKnobPattern();
-        setLoopFunc(waitForDoorKnobTouch());
+        setLoopFunc(waitForDoorKnobTouch);
     }
     
 }
 
+
+long doorKnobHeldElapsed = 0;
 void waitForDoorKnobTouch()
 {
+    bool isHeld = digitalRead(DOOR_KNOB);
     
+    if(isHeld){
+        doorKnobHeldElapsed += deltaTime;
+    }
+    else {
+        doorKnobHeldElapsed = 0;
+    }
+
+    if(doorKnobHeldElapsed > 200){
+        //setLoopFunc();
+    }
+
 }
 
 // pixels.clear();

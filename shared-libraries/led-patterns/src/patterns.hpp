@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <common.h>
+//#include <common.h>
 #include <FastLED.h>
 
 DEFINE_GRADIENT_PALETTE( icePalette ) {

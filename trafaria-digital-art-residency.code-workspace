@@ -49,7 +49,8 @@
 			"cmath": "cpp",
 			"ostream": "cpp",
 			"mstd_iterator": "cpp",
-			"*.rh": "cpp"
+			"*.rh": "cpp",
+			"cstddef": "cpp"
 		}
 	}
 }

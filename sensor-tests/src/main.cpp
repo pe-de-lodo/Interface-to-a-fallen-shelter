@@ -47,9 +47,10 @@ void setup() {
   //   delay(5);
   // }
 
-  FastLED.addLeds<NEOPIXEL, LED_PIN_1>(leds, 1);
-  FastLED.addLeds<NEOPIXEL, LED_PIN_2>(leds, 1,1);
-
+  FastLED.addLeds<NEOPIXEL,LED_PIN_1>(leds, 250);
+  FastLED.addLeds<NEOPIXEL,LED_PIN_2>(leds, 250, 250);
+  //FastLED.addLeds<NEOPIXEL, LED_PIN_1, GRB>(leds, 250);
+  //FastLED.addLeds<NEOPIXEL, LED_PIN_2, GRB>(leds, 250, 250);
 
   pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
   pinMode(KNOCK_PIN,INPUT);
@@ -108,8 +109,8 @@ void allTests()
   Serial.print(keyInserted);  
   Serial.print(" doorKnob=");
   Serial.print(doorKnobHeld);  
-  Serial.print(" isCharging=");
-  Serial.print(isCharging);
+  Serial.print(" flashing=");
+  Serial.print(flash);
   Serial.print(" ");
   printDateTime();
   Serial.println(" ");
@@ -120,7 +121,7 @@ void allTests()
   FastLED.clear();
   FastLED.showColor( flash ? CRGB::Red : CRGB::Blue );
   //FastLED.showColor( !flash ? CRGB::Red : CRGB::Blue );
-  if(millis()>20000){
+  if(millis()>60000){
     sleep();
   }
 }

@@ -19,15 +19,13 @@ extern PatternCanvas canvas;
 void setup() 
 {
   Serial.begin(115200);
-  //while(!Serial) delay(5);
+  while(!Serial) delay(5);
   Serial.println("INIT");
-  
   enablePeripherals();
   delay(20);
   bool wokeFromAlarm = initWakeAlarm();
   configSleep();
   initVisuals();
-
 
   if(wokeFromAlarm){
     setLoopFunc(alarmAttractor);

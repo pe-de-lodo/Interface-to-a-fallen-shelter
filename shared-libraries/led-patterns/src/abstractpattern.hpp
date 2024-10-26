@@ -60,3 +60,19 @@ class BlankPattern : public AbstractPattern
         return CRGB(0,0,0);
     }
 };
+
+class SolidColorPattern : public AbstractPattern
+{
+
+    CRGB m_color;
+    public:
+    SolidColorPattern(CRGB color)
+    {
+        m_color = color;
+    }
+
+    CRGB Evaluate(ledData)
+    {
+        return m_color;
+    }
+};
