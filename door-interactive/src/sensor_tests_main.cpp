@@ -50,8 +50,8 @@ void setup() {
   //   delay(5);
   // }
 
-  FastLED.addLeds<NEOPIXEL,LED_PIN_1>(leds, 80);
-  FastLED.addLeds<NEOPIXEL,LED_PIN_2>(leds, 80, 80);
+  FastLED.addLeds<NEOPIXEL,LED_PIN_1>(leds, 200);
+  FastLED.addLeds<NEOPIXEL,LED_PIN_2>(leds, 200, 200);
   //FastLED.addLeds<NEOPIXEL, LED_PIN_1, GRB>(leds, 250);
   //FastLED.addLeds<NEOPIXEL, LED_PIN_2, GRB>(leds, 250, 250);
 
@@ -123,7 +123,6 @@ void allTests()
   //test leds
   FastLED.clear();
   FastLED.showColor( flash ? CRGB::Red : CRGB::Blue );
-  //FastLED.showColor( !flash ? CRGB::Red : CRGB::Blue );
   if(millis()>30000){
     sleep();
   }

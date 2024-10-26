@@ -35,9 +35,8 @@ CRGBPalette16 alarmAttractorGradient = alarmAttractorGradient_p;
 
 void initVisuals()
 {
-    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 250);
-      
-    //FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 250, 250);  
+    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 200);  
+    FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 200, 200);  
     FastLED.clear();
 }
 
