@@ -12,11 +12,12 @@ CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
-CycleLeds alarmAttractorPattern(CRGB(0xd4,0x62,0x55));
-Ripples waitForKnockPattern;
-CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13));
-CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12));
-CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4));
+CycleLeds alarmAttractorPattern(CRGB(0xd4,0x62,0x55)); //reddish
+CycleLeds waitForKnockPattern(CRGB(0xcc,0x55,0xd4)); //magenta
+CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13)); //greenish
+CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12)); //dim yellow
+CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4)); //blue
+Ripples finalePattern;
 
 void initVisuals()
 {
@@ -56,4 +57,7 @@ void playPatternKeyAttractor()
     canvas.TransitionToPattern(&keyAttractorPattern,500);
 }
 
-
+void playPatternFinale()
+{
+    canvas.TransitionToPattern(&finalePattern,500);    
+}

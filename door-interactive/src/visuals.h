@@ -6,3 +6,4 @@ void tryDoorKnobPatternLoop(void);
 void playPatternTryDoorKnobPattern();
 void playPatternTorchAttractor();
 void playPatternKeyAttractor();
+void playPatternFinale();
