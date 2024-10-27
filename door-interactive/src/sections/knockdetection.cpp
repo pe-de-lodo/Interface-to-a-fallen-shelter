@@ -1,10 +1,11 @@
 #include <Arduino.h>
 #include <FastLED.h>
-#include <main.h>
-#include <knocking/knockdetection.h>
-#include <sleep.h>
 #include <CircularBuffer.hpp>
-#include <visuals.h>
+#include "main.h"
+#include "sections/knockdetection.h"
+#include "sleep.h"
+#include "visuals.h"
+#include "light_comms.h"
 
 const uint32_t shortInterval = 600;
 const uint32_t longInterval = 1200;
@@ -117,6 +118,7 @@ void waitForDoorKnobTouch()
 
     if(doorKnobHeldElapsed > 200){
         //setLoopFunc();
+        setLoopFunc(initLightComms);
     }
 
 }

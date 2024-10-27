@@ -3,6 +3,8 @@
 #include <CircularBuffer.hpp>
 #include <main.h>
 #include <light_comms.h>
+#include <visuals.h>
+#include <keys.h>
 
 CircularBuffer<int,512> buffer;
 
@@ -18,6 +20,9 @@ const uint32_t pattern[] = {
     shortPulse, shortPulse, shortPulse, longPulse, longPulse
 };
 
+uint32_t duration = 0;
+extern uint32_t deltaTime;
+
 void playPattern()
 {
     
@@ -29,8 +34,13 @@ void listenForPattern()
 }
 
 void initLightComms(){
-    pinMode(LIGHT_SENSOR_PIN,INPUT);
+    Serial.print("initLightComms");
+
+    playPatternKeyAttractor();
+    pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
     setLoopFunc(lightCommsLoop);
+
+    duration = 0;
 }
 
 void lightCommsLoop(){
@@ -53,16 +63,26 @@ void lightCommsLoop(){
     if((maxVal-minVal)<50){
         isHigh = true;
     }
-    CRGB color = isHigh ? CRGB::Green : CRGB::Red;
-    FastLED.showColor(color);
-    Serial.print(isHigh?"HIGH ":"LOW  ");
-    Serial.print(minVal);
-    Serial.print(", ");
-    Serial.print(maxVal);
-    Serial.print(", ");
-    Serial.print(average);
-    Serial.print(", ");
-    Serial.print(val);
-    Serial.println();
-    delay(10);
+    if(isHigh){
+        duration=0;
+    }
+    else {
+        duration += deltaTime;
+    }
+
+    if(duration>1000){
+        setLoopFunc(initWaitForKey);
+    }
+    
+    // CRGB color = isHigh ? CRGB::Green : CRGB::Red;
+    // FastLED.showColor(color);
+    // Serial.print(isHigh?"HIGH ":"LOW  ");
+    // Serial.print(minVal);
+    // Serial.print(", ");
+    // Serial.print(maxVal);
+    // Serial.print(", ");
+    // Serial.print(average);
+    // Serial.print(", ");
+    // Serial.print(val);
+    // Serial.println();
 }

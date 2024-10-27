@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "main.h"
 #include "sleep.h"
-#include "knocking/knockdetection.h"
+#include "sections/knockdetection.h"
 #include "light_comms.h"
 #include "alarm.h"
 #include "visuals.h"
@@ -30,7 +30,7 @@ void setup()
   initVisuals();
 
   if(wokeFromAlarm){
-    setLoopFunc(alarmAttractor);
+    setLoopFunc(initAlarmAttractor);
   } {
     setLoopFunc(initKnock);
   }

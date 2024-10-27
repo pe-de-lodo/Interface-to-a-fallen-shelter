@@ -1,5 +1,8 @@
 #include <RTClib.h>
-#include <main.h>
+#include "main.h"
+#include "visuals.h"
+#include "sections/knockdetection.h"
+#include "sleep.h"
 RTC_DS3231 rtc;
 
 struct Time{
@@ -92,4 +95,30 @@ bool initWakeAlarm()
     Serial.println(rtc.now().toString(buf2));
 
     return wokeFromAlarm;
+}
+
+
+uint32_t alarmElapsed;
+extern uint32_t deltaTime;
+void initAlarmAttractor()
+{
+    Serial.println("playing alarm attractor");
+
+    alarmElapsed = 0;
+    setLoopFunc(loopAlarmAttractor);
+    playPatternAlarmAttractorPattern();
+}
+
+void loopAlarmAttractor()
+{
+    // leds[0] = ColorFromPalette(alarmAttractorGradient,(uint8_t)(millis()*3*255/1000));
+    // FastLED.show();
+    alarmElapsed+=deltaTime; 
+    if(digitalRead(WAKEUP_PIN)==HIGH){
+        setLoopFunc(initKnock);
+        return;
+    }
+    if(alarmElapsed>30000){
+        sleep();
+    }
 }
