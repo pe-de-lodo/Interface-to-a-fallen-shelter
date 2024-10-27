@@ -71,8 +71,9 @@ void loopAlarmAttractor()
 }
 
 
-SolidColorPattern tryDoorKnobPattern(CRGB(0x28,0x8c,0x13));
-SolidColorPattern torchAttratorPattern(CRGB(0x84,0x6d,0x12));
+CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13));
+CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12));
+CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4));
 
 void playPatternTryDoorKnobPattern()
 {
@@ -81,6 +82,17 @@ void playPatternTryDoorKnobPattern()
 
 void playPatternTryDoorKnob()
 {
-    
+    canvas.TransitionToPattern(&tryDoorKnobPattern,500);
 }
+
+void playPatternTorchAttractor()
+{
+    canvas.TransitionToPattern(&torchAttratorPattern,500);
+}
+
+void playPatternKeyAttractor()
+{
+    canvas.TransitionToPattern(&keyAttractorPattern,500);
+}
+
 

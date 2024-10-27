@@ -63,7 +63,6 @@ class BlankPattern : public AbstractPattern
 
 class SolidColorPattern : public AbstractPattern
 {
-
     CRGB m_color;
     public:
     SolidColorPattern(CRGB color)
@@ -74,5 +73,27 @@ class SolidColorPattern : public AbstractPattern
     CRGB Evaluate(ledData)
     {
         return m_color;
+    }
+};
+
+class CycleLeds : public AbstractPattern
+{
+    CRGB m_color;
+    int index;
+    public:
+
+    CycleLeds(CRGB color)
+    {
+        m_color = color;
+    }
+
+    void Start(){
+        AbstractPattern::Start();        
+    }
+
+    CRGB Evaluate(ledData data)
+    {
+        bool highlight = data.index==(index++%200);
+        return highlight ? m_color : CRGB::Black;
     }
 };
