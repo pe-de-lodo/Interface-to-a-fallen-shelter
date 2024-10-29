@@ -15,7 +15,10 @@ void sleep()
     pinMode(KNOCK_PIN,INPUT);  
     // pinMode(SDA,INPUT);
     // pinMode(SCL,INPUT);
-    NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos;
+    
+    //This was weirdly setting one of the LED pins to GND
+    //NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos;
+    
     NRF_POWER->SYSTEMOFF=1;
 }
 

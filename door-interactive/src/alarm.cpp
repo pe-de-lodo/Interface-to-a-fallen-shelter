@@ -12,8 +12,13 @@ struct Time{
 
 struct Time alarmTimes[] = {
         {19,00},
+        {19,30},
         {20,00},
-        {21,00}
+        {20,30},
+        {21,00},
+        {21,30},
+        {22,00},
+        {22,30}
 };
 
 void printDateTime()
@@ -81,13 +86,13 @@ bool initWakeAlarm()
 
     if(!rtc.setAlarm1(
             nextAlarm,
-            DS3231_A1_Second // this mode triggers the alarm when the seconds match. See Doxygen for other options
+            DS3231_A1_Date // this mode triggers the alarm when the seconds match. See Doxygen for other options
     )) {
         Serial.println("Error, alarm wasn't set!");
     }else {
         Serial.println("Alarm will happen at ");
         printDateTime(nextAlarm);
-        Serial.println(" seconds!");
+        Serial.println("!");
     }
 
     
