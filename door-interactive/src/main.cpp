@@ -10,6 +10,7 @@
 #include "alarm.h"
 #include "visuals.h"
 #include "ledpatterns.h"
+#include <SimpleSerialShell.h>
 
 uint32_t deltaTime;
 uint32_t lastLoop;
@@ -42,12 +43,12 @@ void loop()
 {
   calcDeltaTime();
 
+
   if(loopFunc!=NULL){
     loopFunc();
   }
-  else {
-    sleep();
-  }
+  shell.executeIfInput();
+  
   canvas.Update(deltaTime);
 }
 
