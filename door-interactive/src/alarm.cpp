@@ -18,7 +18,8 @@ struct Time alarmTimes[] = {
         {21,00},
         {21,30},
         {22,00},
-        {22,30}
+        {22,30},
+        {23,00}
 };
 
 void printDateTime()
@@ -55,11 +56,11 @@ bool initWakeAlarm()
         return wokeFromAlarm;
     }
 
-    if(rtc.lostPower()) {
-        Serial.println("Settings date time");
-        // this will adjust to the date and time at compilation
-        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    }
+    // if(rtc.lostPower()) {
+    //     Serial.println("Settings date time");
+    //     // this will adjust to the date and time at compilation
+    //     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // }
 
     rtc.disable32K();
 
@@ -71,7 +72,7 @@ bool initWakeAlarm()
     
     
     int alarmTimeIndex = 0;
-    DateTime now = rtc.now() + TimeSpan(60*10);
+    DateTime now = rtc.now() + TimeSpan(60*5);
     DateTime nextAlarm(now.year(),now.month(),now.day(),alarmTimes[alarmTimeIndex].hour,alarmTimes[alarmTimeIndex].minutes);
 
     int len = sizeof(alarmTimes)/sizeof(Time);
@@ -80,13 +81,13 @@ bool initWakeAlarm()
         alarmTimeIndex++;
     }
     if(nextAlarm<now){
-        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[0].hour,alarmTimes[0].minutes);
+        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[0].hour,alarmTimes[0].minutes)+TimeSpan(60*60*24);
     }
 
 
     if(!rtc.setAlarm1(
             nextAlarm,
-            DS3231_A1_Date // this mode triggers the alarm when the seconds match. See Doxygen for other options
+            DS3231_A1_Date 
     )) {
         Serial.println("Error, alarm wasn't set!");
     }else {

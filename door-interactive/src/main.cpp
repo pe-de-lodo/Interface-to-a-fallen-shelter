@@ -11,6 +11,7 @@
 #include "visuals.h"
 #include "ledpatterns.h"
 #include <SimpleSerialShell.h>
+#include "shell_commands.h"
 
 uint32_t deltaTime;
 uint32_t lastLoop;
@@ -22,8 +23,10 @@ extern PatternCanvas canvas;
 void setup() 
 {
   Serial.begin(115200);
-  while(!Serial) delay(5);
+  //while(!Serial && millis()<5000) delay(5);
+  shell.attach(Serial);
   Serial.println("INIT");
+  
   enablePeripherals();
   delay(20);
   bool wokeFromAlarm = initWakeAlarm();
@@ -36,6 +39,8 @@ void setup()
     setLoopFunc(initKnock);
   }
   
+  addCommands();
+
   lastLoop=millis();
 }
 

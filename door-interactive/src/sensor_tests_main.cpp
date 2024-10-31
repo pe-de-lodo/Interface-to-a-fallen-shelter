@@ -6,18 +6,21 @@
 #include "light_comms.h"
 #include "sleep.h"
 #include "alarm.h"
+#include <SimpleSerialShell.h>
+#include "shell_commands.h"
 
 extern CRGB leds[NUM_LEDS];
 
 void (*loopFunc) () = NULL;
-void allTests();
+void sensorTestsLoop();
 
 void setup() {
 
   // put your setup code here, to run once:
   Serial.begin(115200);
+  while(!Serial) delay(5);
   Serial.println("Starting");
-  
+  shell.attach(Serial);
   pinMode(LED_BLUE,OUTPUT);
   digitalWrite(LED_BLUE,LOW);
   
@@ -61,7 +64,9 @@ void setup() {
   pinMode(DOOR_KNOB,INPUT_PULLDOWN);
   pinMode(KEY_SENSOR,INPUT_PULLDOWN);
 
-  loopFunc = allTests;
+  addCommands();
+
+  loopFunc = sensorTestsLoop;
 }
 
 void manageCharge()
@@ -72,6 +77,7 @@ void manageCharge()
 
 void loop() {
   //checkBtns();
+  shell.executeIfInput();
   manageCharge();
   if(loopFunc!=NULL){
     loopFunc();
@@ -92,40 +98,18 @@ void blankLoop(){
   Serial.println("meep");
 }
 
-
-void allTests()
+void sensorTestsLoop()
 {
-  int knockSensorValue = analogRead(KNOCK_PIN);
-  int lightSensorValue = analogRead(LIGHT_SENSOR_PIN);
-
-  bool keyInserted = digitalRead(KEY_SENSOR);
-  bool doorKnobHeld = digitalRead(DOOR_KNOB);
-
-  bool flash = (millis()/1000L)%2 == 0;
-  bool isCharging = digitalRead(23)==HIGH;
-
-  Serial.print("knockSensor=");
-  Serial.print(knockSensorValue);  
-  Serial.print(" lightSensor=");
-  Serial.print(lightSensorValue);  
-  Serial.print(" key=");
-  Serial.print(keyInserted);  
-  Serial.print(" doorKnob=");
-  Serial.print(doorKnobHeld);  
-  Serial.print(" flashing=");
-  Serial.print(flash);
-  Serial.print(" ");
-  printDateTime();
-  Serial.println(" ");
-//  Serial.println(flash);
-
   
+  printAllSensorValues();
+  Serial.print("\r");
+  bool flash = (millis()/1000L)%2 == 0;
   //test leds
   FastLED.clear();
   FastLED.showColor( flash ? CRGB::Red : CRGB::Blue );
-  if(millis()>30000){
-    sleep();
-  }
+  // if(millis()>30000){
+  //   sleep();
+  // }
 }
 
 

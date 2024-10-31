@@ -12,3 +12,4 @@
 
 void setLoopFunc(void loopFunc());
 inline void calcDeltaTime();
+void printAllSensorValues();
