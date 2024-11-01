@@ -14,18 +14,18 @@ CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
-CycleLeds alarmAttractorPattern(CRGB(0xd4,0x62,0x55),NUM_LEDS); //reddish
-CycleLeds waitForKnockPattern(CRGB(0xcc,0x55,0xd4),NUM_LEDS); //magenta
-CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13),NUM_LEDS); //greenish
-CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12),NUM_LEDS); //dim yellow
-CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),NUM_LEDS); //blue
+CycleLeds alarmAttractorPattern(CRGB(0xd4,0x62,0x55),16); //reddish
+CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),16); //magenta
+CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13),16); //greenish
+CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12),16); //dim yellow
+CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),16); //blue
 Ripples finalePattern;
 bool sendVisualsOverUart = false;
 
 void initVisuals()
 {
-    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 200);  
-    FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 200, 200);  
+    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 210);  
+    FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 210, 210);  
 }
 
 void updateVisuals()

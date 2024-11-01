@@ -104,7 +104,7 @@ class CycleLeds : public AbstractPattern
 
     CRGB Evaluate(ledData data)
     {
-        bool highlight = data.index==(index%m_cycleLength);
+        bool highlight = (data.index%m_cycleLength)==(index%m_cycleLength);
         return highlight ? m_color : CRGB::Black;
     }
 };
