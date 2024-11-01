@@ -26,10 +26,11 @@ int drawRate = 30;
 
 void setup() 
 {
-  // Serial.begin(115200);
-  // shell.attach(Serial);
+  Serial.begin(115200);
+  shell.attach(Serial);
   
   enablePeripherals();
+  Serial.println("enablePeripherals");
   delay(20);
   bool wokeFromAlarm = initWakeAlarm();
   configSleep();
@@ -44,6 +45,8 @@ void setup()
   addCommands();
 
   lastLoop=millis();
+
+  
 }
 
 void loop() 
@@ -53,6 +56,7 @@ void loop()
   if(Serial){
     shell.executeIfInput();
   }
+  
   if(loopFunc!=NULL){
     loopFunc();
   }

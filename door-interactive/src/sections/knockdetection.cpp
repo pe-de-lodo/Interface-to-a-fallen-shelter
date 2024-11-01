@@ -51,6 +51,7 @@ void initKnock()
 
 void listenForKnock()
 {
+    Serial.print("listen for knock");
     // pixels.clear();
     // pixels.setPixelColor(0, pixels.Color(255,0,255));
     // pixels.show();
@@ -58,7 +59,7 @@ void listenForKnock()
     uint32_t time = millis();
     uint32_t interval = time-lastKnock;
         
-    long val =  analogRead(A0);
+    long val =  analogRead(KNOCK_PIN);
     if(interval>timeout){
         sleep();        
     }
