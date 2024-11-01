@@ -35,7 +35,6 @@ int knockThreshold = 200;
 void initKnock()
 {
     delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
-    Serial.println("listening for knock");
     setLoopFunc(listenForKnock);
     waitForKnockVisuals();
     
@@ -51,7 +50,6 @@ void initKnock()
 
 void listenForKnock()
 {
-    Serial.print("listen for knock");
     // pixels.clear();
     // pixels.setPixelColor(0, pixels.Color(255,0,255));
     // pixels.show();

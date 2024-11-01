@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include <nrf52840.h>
-#include <main.h>
 #include <Adafruit_SPIFlash.h>
+#include "main.h"
+#include "sleep.h"
 
 Adafruit_FlashTransport_QSPI flashTransport;
 
@@ -9,8 +10,10 @@ void sleep()
 {
     digitalWrite(MOSFET_PIN,LOW);
     digitalWrite(LED_BLUE,HIGH);
-    pinMode(LED_PIN_1,INPUT);
-    pinMode(LED_PIN_2,INPUT);
+    // pinMode(LED_PIN_1,INPUT);
+    // pinMode(LED_PIN_2,INPUT);
+    disconnectPin(LED_PIN_1);
+    disconnectPin(LED_PIN_2);
     pinMode(LIGHT_SENSOR_PIN,INPUT);
     pinMode(KNOCK_PIN,INPUT);
  
@@ -47,4 +50,18 @@ void configSleep()
     pinMode(ALARM_PIN, INPUT_PULLUP_SENSE); //INPUT_PULLUP_SENSE
 
     //QSPIF_sleep();
+}
+
+void disconnectPin(uint32_t ulPin)
+{
+    ulPin = g_ADigitalPinMap[ulPin];
+
+    NRF_GPIO_Type * port = nrf_gpio_pin_port_decode(&ulPin);
+
+    port->PIN_CNF[ulPin] = ((uint32_t)GPIO_PIN_CNF_DIR_Input        << GPIO_PIN_CNF_DIR_Pos)
+                           | ((uint32_t)GPIO_PIN_CNF_INPUT_Disconnect    << GPIO_PIN_CNF_INPUT_Pos)
+                           | ((uint32_t)GPIO_PIN_CNF_PULL_Disabled    << GPIO_PIN_CNF_PULL_Pos)
+                           | ((uint32_t)GPIO_PIN_CNF_DRIVE_S0S1       << GPIO_PIN_CNF_DRIVE_Pos)
+                           | ((uint32_t)GPIO_PIN_CNF_SENSE_Disabled   << GPIO_PIN_CNF_SENSE_Pos);
+  
 }
