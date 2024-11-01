@@ -24,8 +24,8 @@ bool sendVisualsOverUart = false;
 
 void initVisuals()
 {
-    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 210);  
-    FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 210, 210);  
+    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 270);  
+    FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 270, 270);  
 }
 
 void updateVisuals()
