@@ -32,29 +32,35 @@ int commandDate(int argc, char **argv)
 int commandAlarm(int argc, char **argv)
 {
     DateTime alarm;
+    bool alarmSet=false;
     if(argc==2){
         alarm=(DateTime(argv[1]));
+        alarmSet=true;
     }
     if(argc==3){
         alarm=(DateTime(argv[1],argv[2]));
+        alarmSet=true;
+    }
+    else {
+        alarm=rtc.getAlarm1();
     }
     if(!alarm.isValid()){
         Serial.println("Invalid Alarm");
         return 1;
     }
 
-    if(!rtc.setAlarm1(
+    if(alarmSet && !rtc.setAlarm1(
         alarm,
         DS3231_A1_Date
-        //DS3231_A1_Second
-        )){
-            Serial.println("Error, alarm wasn't set!");
-        }
-        else {
-            char buf[] = "hh:mm:ss DD/MM/YY";
-            Serial.print("Alarm set for ");
-            Serial.println(alarm.toString(buf));
-        }
+    )){
+        Serial.println("Error, alarm wasn't set!");
+        return 1;
+    }
+    
+    char buf[] = "hh:mm:ss DD/MM/YY";
+    Serial.print("Alarm set for ");
+    Serial.println(alarm.toString(buf));
+    
 
 }
 

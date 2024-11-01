@@ -22,7 +22,7 @@ void sleep()
     
     //This was weirdly setting one of the LED pins to GND
     //NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos;
-    
+    delay(10);
     NRF_POWER->SYSTEMOFF=1;
 }
 
