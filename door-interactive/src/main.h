@@ -11,5 +11,5 @@
 #define LED_PIN_2 1
 
 void setLoopFunc(void loopFunc());
-inline void calcDeltaTime();
+inline bool calcDeltaTime();
 void printAllSensorValues();

@@ -1,12 +1,14 @@
 #include <Arduino.h>
 #include <FastLED.h>
-#include <main.h>
-#include <sections/knockdetection.h>
-#include <sleep.h>
-#include <visuals.h>
-#include <ledpatterns.h>
-#include <ledLocationData.h>
-#include <patterns.hpp>
+#include "main.h"
+#include "sections/knockdetection.h"
+#include "sleep.h"
+#include "visuals.h"
+#include "ledpatterns.h"
+#include "led_location_data.h"
+#include "patterns.hpp"
+#include "send_pixels_uart.h"
+
 
 CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
@@ -18,6 +20,7 @@ CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13)); //greenish
 CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12)); //dim yellow
 CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4)); //blue
 Ripples finalePattern;
+bool sendVisualsOverUart = false;
 
 void initVisuals()
 {
@@ -26,6 +29,16 @@ void initVisuals()
     FastLED.clear();
 }
 
+void updateVisuals()
+{
+  canvas.Update(deltaTime);
+
+  if( sendVisualsOverUart ){
+    sendPixelsUart((char*)leds,NUM_LEDS*sizeof(CRGB));
+  }
+  FastLED.show();
+
+}
 
 void playPatternAlarmAttractorPattern()
 {

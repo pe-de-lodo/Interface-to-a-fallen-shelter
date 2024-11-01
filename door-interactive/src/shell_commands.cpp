@@ -82,11 +82,37 @@ int commandSleep(int argc, char **argv)
     return 0;
 }
 
+int commandStop(int argc, char **argv)
+{
+    setLoopFunc(NULL);
+    return 0;
+}
+
+extern bool sendVisualsOverUart;
+int commandVisuals(int argc, char **argv)
+{
+    if(argc==2){
+        if( strncmp(argv[1], "uart", 4)==0 ){
+            Serial.println("enabling uart output");
+            sendVisualsOverUart = true;
+        }
+        else {
+            Serial.println("enabling led output");
+            sendVisualsOverUart = false;
+        }
+    }
+    else {
+        Serial.println("visuals uart|led");
+    }
+    return 0;
+}
+
 void addCommands()
 {
     shell.addCommand(F("date"),commandDate);
     shell.addCommand(F("sensors"),commandSensors);
     shell.addCommand(F("sleep"),commandSleep);
     shell.addCommand(F("alarm"),commandAlarm);
-    
+    shell.addCommand(F("stop"),commandStop);
+    shell.addCommand(F("visuals"),commandVisuals);
 }

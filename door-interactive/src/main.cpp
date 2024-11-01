@@ -15,10 +15,14 @@
 
 uint32_t deltaTime;
 uint32_t lastLoop;
+uint32_t lastRedraw;
+uint32_t redrawDeltaTime;
 
 void (*loopFunc) (void) = NULL;
 
 extern PatternCanvas canvas;
+
+int drawRate = 30;
 
 void setup() 
 {
@@ -46,15 +50,18 @@ void setup()
 
 void loop() 
 {
-  calcDeltaTime();
+  bool redraw = calcDeltaTime();
 
 
+  shell.executeIfInput();
   if(loopFunc!=NULL){
     loopFunc();
   }
-  shell.executeIfInput();
-  
-  canvas.Update(deltaTime);
+
+  if(redraw){
+    deltaTime = redrawDeltaTime;
+    updateVisuals();    
+  }
 }
 
 void setLoopFunc(void func ())
@@ -62,9 +69,19 @@ void setLoopFunc(void func ())
   loopFunc = func;
 }
 
-inline void calcDeltaTime()
+inline bool calcDeltaTime()
 {
+  int minDeltaTime = 1000/drawRate;
+  
   uint32_t time = millis();
   deltaTime = time-lastLoop;
-  lastLoop = time;
+    lastLoop = time;
+  
+  bool redraw = (deltaTime>minDeltaTime);  
+  if(redraw){
+    redrawDeltaTime = time-lastRedraw;
+    lastRedraw = time;
+  }
+
+  return redraw;
 }
