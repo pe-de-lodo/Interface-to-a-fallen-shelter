@@ -26,10 +26,8 @@ int drawRate = 30;
 
 void setup() 
 {
-  Serial.begin(115200);
-  //while(!Serial && millis()<5000) delay(5);
-  shell.attach(Serial);
-  Serial.println("INIT");
+  // Serial.begin(115200);
+  // shell.attach(Serial);
   
   enablePeripherals();
   delay(20);
@@ -52,8 +50,9 @@ void loop()
 {
   bool redraw = calcDeltaTime();
 
-
-  shell.executeIfInput();
+  if(Serial){
+    shell.executeIfInput();
+  }
   if(loopFunc!=NULL){
     loopFunc();
   }
@@ -71,13 +70,13 @@ void setLoopFunc(void func ())
 
 inline bool calcDeltaTime()
 {
-  int minDeltaTime = 1000/drawRate;
+  uint32_t minRedrawDeltaTime = 1000/drawRate;
   
   uint32_t time = millis();
   deltaTime = time-lastLoop;
     lastLoop = time;
   
-  bool redraw = (deltaTime>minDeltaTime);  
+  bool redraw = (redrawDeltaTime-time)>minRedrawDeltaTime;  
   if(redraw){
     redrawDeltaTime = time-lastRedraw;
     lastRedraw = time;

@@ -14,6 +14,11 @@ extern CRGB leds[NUM_LEDS];
 void (*loopFunc) () = NULL;
 void sensorTestsLoop();
 
+void setLoopFunc(void func ())
+{
+  loopFunc = func;
+}
+
 void setup() {
 
   // put your setup code here, to run once:
@@ -53,16 +58,18 @@ void setup() {
   //   delay(5);
   // }
 
-  FastLED.addLeds<NEOPIXEL,LED_PIN_1>(leds, 200);
-  FastLED.addLeds<NEOPIXEL,LED_PIN_2>(leds, 200, 200);
+  // FastLED.addLeds<NEOPIXEL,LED_PIN_1>(leds, 200);
+  // FastLED.addLeds<NEOPIXEL,LED_PIN_2>(leds, 200, 200);
+  FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, 200);  
+  FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, 200, 200); 
   //FastLED.addLeds<NEOPIXEL, LED_PIN_1, GRB>(leds, 250);
   //FastLED.addLeds<NEOPIXEL, LED_PIN_2, GRB>(leds, 250, 250);
 
-  pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
-  pinMode(KNOCK_PIN,INPUT);
+  // pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
+  // pinMode(KNOCK_PIN,INPUT);
   
-  pinMode(DOOR_KNOB,INPUT_PULLDOWN);
-  pinMode(KEY_SENSOR,INPUT_PULLDOWN);
+  // pinMode(DOOR_KNOB,INPUT_PULLDOWN);
+  // pinMode(KEY_SENSOR,INPUT_PULLDOWN);
 
   addCommands();
 

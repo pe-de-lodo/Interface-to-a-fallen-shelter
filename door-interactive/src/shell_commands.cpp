@@ -66,7 +66,7 @@ void sensorLoop()
 
 int commandSensors(int argc, char **argv)
 {
-    if(argc==2 && strncasecmp(argv[1],"true",88)==0){
+    if(argc==2 && strncasecmp(argv[1],"true",5)==0){
         setLoopFunc(sensorLoop);
     }
     printAllSensorValues();

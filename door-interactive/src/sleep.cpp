@@ -12,7 +12,8 @@ void sleep()
     pinMode(LED_PIN_1,INPUT);
     pinMode(LED_PIN_2,INPUT);
     pinMode(LIGHT_SENSOR_PIN,INPUT);
-    pinMode(KNOCK_PIN,INPUT);  
+    pinMode(KNOCK_PIN,INPUT);
+ 
     // pinMode(SDA,INPUT);
     // pinMode(SCL,INPUT);
     
@@ -33,6 +34,8 @@ void QSPIF_sleep(void)
 void enablePeripherals()
 {
   pinMode(LED_BLUE,OUTPUT);
+  pinMode(LED_PIN_1,OUTPUT);
+  pinMode(LED_PIN_2,OUTPUT);
   digitalWrite(LED_BLUE,LOW);
   pinMode(MOSFET_PIN,OUTPUT);
   digitalWrite(MOSFET_PIN,HIGH);

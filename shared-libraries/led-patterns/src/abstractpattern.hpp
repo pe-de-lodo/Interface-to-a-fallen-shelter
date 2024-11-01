@@ -1,5 +1,6 @@
 #include <Tween.h>
 #include <FastLED.h>
+
 typedef struct{
     char section;
     int index;
@@ -80,20 +81,30 @@ class CycleLeds : public AbstractPattern
 {
     CRGB m_color;
     int index;
+    int m_cycleLength;
     public:
 
-    CycleLeds(CRGB color)
+    CycleLeds(CRGB color, int cycleLength)
     {
+        m_cycleLength = cycleLength;
         m_color = color;
     }
 
-    void Start(){
+    void Start()
+    {        
         AbstractPattern::Start();        
     }
 
+    void Update()
+    {
+        AbstractPattern::Update();
+        index++;
+    }
+
+
     CRGB Evaluate(ledData data)
     {
-        bool highlight = data.index==(index++%200);
+        bool highlight = data.index==(index%m_cycleLength);
         return highlight ? m_color : CRGB::Black;
     }
 };
