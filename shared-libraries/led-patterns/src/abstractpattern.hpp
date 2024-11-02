@@ -85,24 +85,26 @@ class SolidColorPattern : public AbstractPattern
 
 class MaskedPattern : public AbstractPattern
 {
-    CRGB m_color = CRGB::Black;
-    int m_offsetLED = 0;
-    int m_numLED = 0;
+    CRGB m_color;
+    int m_offsetLED;
+    int m_numLED;
 
     public:
     MaskedPattern()
     {
+        m_timeline.mode(Tween::Mode::REPEAT_SQ); 
     }
-    void Start()
-    {   
-        m_timeline.mode(Tween::Mode::REPEAT_SQ);  
-        AbstractPattern::Start();
-    }
+    
+    // void Start()
+    // {   
+         
+    //     AbstractPattern::Start();
+    // }
 
-    void Update()
-    {
-        AbstractPattern::Update();
-    }
+    // void Update()
+    // {
+    //     AbstractPattern::Update();
+    // }
 
     void Set(CRGB color, int offset, int num)
     {

@@ -10,6 +10,10 @@ PatternCanvas::PatternCanvas(CRGB *leds, ledData *ledData, int length)
 
 void PatternCanvas::TransitionToPattern(AbstractPattern *pattern,long duration)
 {
+    if(pattern==NULL){
+        Serial.println("Couldn't transition to pattern. Was null");
+        return;
+    }
     m_transitionStack.push( patternTransition{pattern,duration} );
     pattern->Start();   
 }
@@ -19,7 +23,6 @@ void PatternCanvas::Clear()
     m_transitionStack.clear();
     m_transitionElapsedTime = 0;
     FastLED.clear();
-    // FastLED.show();
 }
 
 void PatternCanvas::Update(long deltaTime)

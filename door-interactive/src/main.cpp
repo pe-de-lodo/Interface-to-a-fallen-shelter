@@ -36,11 +36,11 @@ void setup()
   bool wokeFromAlarm = initWakeAlarm();
   initVisuals();
 
-  // if(wokeFromAlarm){
-  //   setLoopFunc(initAlarmAttractor);
-  // } {
-  //   setLoopFunc(initKnock);
-  // }
+  if(wokeFromAlarm){
+    setLoopFunc(initAlarmAttractor);
+  } {
+    setLoopFunc(initKnock);
+  }
   
   addCommands();
 
