@@ -121,7 +121,7 @@ void loopAlarmAttractor()
     // leds[0] = ColorFromPalette(alarmAttractorGradient,(uint8_t)(millis()*3*255/1000));
     // FastLED.show();
     alarmElapsed+=deltaTime; 
-    if(digitalRead(WAKEUP_PIN)==LOW){
+    if(digitalRead(WAKEUP_PIN)==HIGH){
         setLoopFunc(initKnock);
         return;
     }

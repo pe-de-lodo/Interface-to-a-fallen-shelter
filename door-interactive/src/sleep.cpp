@@ -54,7 +54,7 @@ void enablePeripherals()
 
 void configSleep()
 {
-    pinMode(WAKEUP_PIN, INPUT_PULLUP_SENSE);
+    pinMode(WAKEUP_PIN, INPUT_PULLDOWN_SENSE);
     pinMode(ALARM_PIN, INPUT_PULLUP_SENSE); //INPUT_PULLUP_SENSE
 
     //QSPIF_sleep();
