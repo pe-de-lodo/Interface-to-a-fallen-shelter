@@ -4,6 +4,10 @@
 #include "main.h"
 #include "sleep.h"
 #include "visuals.h"
+#include "keys.h"
+#include "light_comms.h"
+#include "alarm.h"
+#include "sections/knockdetection.h"
 
 extern RTC_DS3231 rtc;
 
@@ -156,6 +160,24 @@ int commandMask(int argc, char **argv)
     return 0;
 }
 
+typedef void (*LoopFunc) (void);
+LoopFunc loopFuncs[] = { &initAlarmAttractor, &initKnock, &waitForDoorKnobTouch, &initLightComms, &initWaitForKey };
+int commandLoop(int argc, char **argv)
+{
+    if(argc==1){
+        Serial.println("loop #");
+        return 1;
+    }
+    int loopIndex = atoi(argv[1]);
+    int numLoopFuncs = sizeof(loopFuncs)/sizeof(LoopFunc);
+    if(loopIndex>=numLoopFuncs){
+        Serial.println("loop index out of range");
+        return 1;
+    }
+    setLoopFunc(loopFuncs[loopIndex]);
+    return 0;
+}
+
 void addCommands()
 {
     shell.addCommand(F("date"),commandDate);
@@ -167,4 +189,5 @@ void addCommands()
     shell.addCommand(F("pattern"),commandPattern);
     shell.addCommand(F("mask"),commandMask);
     shell.addCommand(F("bootinfo"),commandBootInfo);
+    shell.addCommand(F("loop"),commandLoop);
 }
