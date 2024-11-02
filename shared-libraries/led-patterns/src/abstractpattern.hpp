@@ -18,7 +18,7 @@ class AbstractPattern
         Serial.println("Starting pattern");
         m_timeline.start();
     }
-    virtual CRGB Evaluate(ledData) = 0;
+    virtual CRGB Evaluate(int, ledData) = 0;
     virtual void Update()
     {
         m_timeline.update();
@@ -56,7 +56,7 @@ class BlankPattern : public AbstractPattern
 
     }
 
-    CRGB Evaluate(ledData)
+    CRGB Evaluate(int, ledData)
     {
         return CRGB(0,0,0);
     }
@@ -68,19 +68,62 @@ class SolidColorPattern : public AbstractPattern
     public:
     SolidColorPattern(CRGB color)
     {
+        SetColor(color);
+        m_timeline.mode(Tween::Mode::REPEAT_SQ);
+    }
+
+    void SetColor(CRGB color)
+    {
         m_color = color;
     }
 
-    CRGB Evaluate(ledData)
+    CRGB Evaluate(int, ledData)
     {
         return m_color;
+    }
+};
+
+class MaskedPattern : public AbstractPattern
+{
+    CRGB m_color = CRGB::Black;
+    int m_offsetLED = 0;
+    int m_numLED = 0;
+
+    public:
+    MaskedPattern()
+    {
+    }
+    void Start()
+    {   
+        m_timeline.mode(Tween::Mode::REPEAT_SQ);  
+        AbstractPattern::Start();
+    }
+
+    void Update()
+    {
+        AbstractPattern::Update();
+    }
+
+    void Set(CRGB color, int offset, int num)
+    {
+        m_color = color;
+        m_offsetLED = offset;
+        m_numLED = num;
+    }
+
+    CRGB Evaluate(int indx, ledData data)
+    {
+        if(indx >= m_offsetLED && indx < m_offsetLED+m_numLED)
+            return m_color;
+
+        return CRGB::Black;
     }
 };
 
 class CycleLeds : public AbstractPattern
 {
     CRGB m_color;
-    int index;
+    int m_index;
     int m_cycleLength;
     public:
 
@@ -98,13 +141,13 @@ class CycleLeds : public AbstractPattern
     void Update()
     {
         AbstractPattern::Update();
-        index++;
+        m_index++;
     }
 
 
-    CRGB Evaluate(ledData data)
+    CRGB Evaluate(int index, ledData data)
     {
-        bool highlight = (data.index%m_cycleLength)==(index%m_cycleLength);
+        bool highlight = (data.index%m_cycleLength)==(m_index%m_cycleLength);
         return highlight ? m_color : CRGB::Black;
     }
 };

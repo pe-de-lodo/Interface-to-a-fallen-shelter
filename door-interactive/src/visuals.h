@@ -4,6 +4,8 @@ void playPatternAlarmAttractorPattern();
 void loopAlarmAttractor();
 void waitForKnockVisuals();
 void tryDoorKnobPatternLoop(void);
+void playPattern(int ptrnIndex, long duration = 500);
+void playMaskedPattern(int offset, int num);
 void playPatternTryDoorKnobPattern();
 void playPatternTorchAttractor();
 void playPatternKeyAttractor();

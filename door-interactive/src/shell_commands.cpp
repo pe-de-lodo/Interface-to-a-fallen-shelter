@@ -3,6 +3,7 @@
 #include <SimpleSerialShell.h>
 #include "main.h"
 #include "sleep.h"
+#include "visuals.h"
 
 extern RTC_DS3231 rtc;
 
@@ -107,6 +108,31 @@ int commandVisuals(int argc, char **argv)
     return 0;
 }
 
+
+int commandPattern(int argc, char **argv)
+{
+    if(argc==2){
+        playPattern(atoi(argv[1]), 500);
+    }
+    else {
+        Serial.println("pattern #");
+    }
+    return 0;
+}
+
+int commandMask(int argc, char **argv)
+{
+    if(argc==3){
+        int offsetLED = atoi(argv[1]);
+        int numLED = atoi(argv[2]);
+        playMaskedPattern(offsetLED, numLED);
+    }
+    else {
+        Serial.println("mask offset number");
+    }
+    return 0;
+}
+
 void addCommands()
 {
     shell.addCommand(F("date"),commandDate);
@@ -115,4 +141,6 @@ void addCommands()
     shell.addCommand(F("alarm"),commandAlarm);
     shell.addCommand(F("stop"),commandStop);
     shell.addCommand(F("visuals"),commandVisuals);
+    shell.addCommand(F("pattern"),commandPattern);
+    shell.addCommand(F("mask"),commandMask);
 }

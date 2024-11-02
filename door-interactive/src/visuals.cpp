@@ -14,6 +14,7 @@ CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
+MaskedPattern maskedPattern();
 CycleLeds alarmAttractorPattern(CRGB(0xd4,0x62,0x55),16); //reddish
 CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),16); //magenta
 CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13),16); //greenish
@@ -21,6 +22,8 @@ CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12),16); //dim yellow
 CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),16); //blue
 Ripples finalePattern;
 bool sendVisualsOverUart = false;
+
+AbstractPattern* patternArray[] = {&alarmAttractorPattern, &waitForKnockPattern, &tryDoorKnobPattern, &torchAttratorPattern, &keyAttractorPattern, &finalePattern};
 
 void initVisuals()
 {
@@ -37,6 +40,34 @@ void updateVisuals()
   }
   FastLED.show();
 
+}
+
+
+void playPattern(int ptrnIndex, long duration)
+// void playPattern(int ptrnIndex, long duration = 500) //Why doesn't the default argument work?
+{
+    if(ptrnIndex <= 0)
+        canvas.Clear();
+    else {
+        int patternBounds = sizeof(patternArray) / sizeof(AbstractPattern*);
+        if(ptrnIndex <= patternBounds)
+            canvas.TransitionToPattern(patternArray[ptrnIndex-1], duration);
+        else
+        {
+            Serial.print("Pattern index out of bounds. Num of patterns is: ");
+            Serial.println(patternBounds);
+        }
+    }
+}
+
+void playMaskedPattern(int offset, int num)
+{
+    Serial.println("and great");
+    delay(10);
+    maskedPattern.Set(CHSV(random(255), 255, 255), offset, num);
+    Serial.println("and wonderful");
+    delay(10);
+    canvas.TransitionToPattern(&maskedPattern, 500);
 }
 
 void playPatternAlarmAttractorPattern()

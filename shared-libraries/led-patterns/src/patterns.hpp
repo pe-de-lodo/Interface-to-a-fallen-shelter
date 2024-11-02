@@ -48,7 +48,7 @@ class BlinkPattern : public AbstractPattern
         m_timeline.start();
     }
 
-    CRGB Evaluate(ledData)
+    CRGB Evaluate(int, ledData)
     {
         return CHSV(0,255,(int)(blinkVal*255));        
     }
@@ -65,7 +65,7 @@ class Ripples : public AbstractPattern
         m_timeline.mode(Tween::Mode::REPEAT_SQ);
     }
 
-    CRGB Evaluate(ledData ledInfo)
+    CRGB Evaluate(int index, ledData ledInfo)
     {
         //uint16_t pulse=beatsin16(120,0,255,0,uint16_t(0xfffL*ledInfo.x));
 
@@ -99,7 +99,7 @@ class MeteorPattern : public AbstractPattern
 
     }
 
-    CRGB Evaluate(ledData ledInfo)
+    CRGB Evaluate(int index, ledData ledInfo)
     {        
         
         float d = this->ledDistanceFrom(0.5,0.5,ledInfo);
@@ -123,7 +123,7 @@ class TestPattern : public AbstractPattern
 
     }
 
-    CRGB Evaluate(ledData ledInfo)
+    CRGB Evaluate(int index, ledData ledInfo)
     {        
         
         // uint8_t d = this->ledSection(ledInfo);

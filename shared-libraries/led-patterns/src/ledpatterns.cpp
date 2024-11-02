@@ -18,6 +18,8 @@ void PatternCanvas::Clear()
 {
     m_transitionStack.clear();
     m_transitionElapsedTime = 0;
+    FastLED.clear();
+    // FastLED.show();
 }
 
 void PatternCanvas::Update(long deltaTime)
@@ -59,15 +61,15 @@ void PatternCanvas::Update(long deltaTime)
         if(isTransitioning){
             patternTransition destinationPattern = m_transitionStack[1];
             
-            CRGB pixelA = m_transitionStack[0].targetPattern->Evaluate(m_ledData[i]);
-            CRGB pixelB = destinationPattern.targetPattern->Evaluate(m_ledData[i]);
+            CRGB pixelA = m_transitionStack[0].targetPattern->Evaluate(i, m_ledData[i]);
+            CRGB pixelB = destinationPattern.targetPattern->Evaluate(i, m_ledData[i]);
             
             pixel = blend(pixelA,pixelB,(uint8_t)(0xff*alpha) );
 
             
         }
         else {
-            pixel = m_transitionStack[0].targetPattern->Evaluate(m_ledData[i]);
+            pixel = m_transitionStack[0].targetPattern->Evaluate(i, m_ledData[i]);
             // Serial.print(pixel.red);
             // Serial.print(" ");
             // Serial.print(pixel.green);
