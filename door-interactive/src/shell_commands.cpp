@@ -103,6 +103,14 @@ int commandStop(int argc, char **argv)
     return 0;
 }
 
+extern bool wokeFromAlarm;
+int commandBootInfo(int arc,char **argv)
+{
+    if(wokeFromAlarm){
+        Serial.println("Woke from alarm");        
+    }
+}
+
 extern bool sendVisualsOverUart;
 int commandVisuals(int argc, char **argv)
 {
@@ -130,4 +138,5 @@ void addCommands()
     shell.addCommand(F("alarm"),commandAlarm);
     shell.addCommand(F("stop"),commandStop);
     shell.addCommand(F("visuals"),commandVisuals);
+    shell.addCommand(F("bootinfo"),commandBootInfo);
 }
