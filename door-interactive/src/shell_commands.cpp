@@ -33,45 +33,60 @@ int commandDate(int argc, char **argv)
 int commandAlarm(int argc, char **argv)
 {
     DateTime alarm;
+    bool alarmSet=false;
     if(argc==2){
         alarm=(DateTime(argv[1]));
+        alarmSet=true;
     }
-    if(argc==3){
+    else if(argc==3){
         alarm=(DateTime(argv[1],argv[2]));
+        alarmSet=true;
+    }
+    else {
+        alarm=rtc.getAlarm1();
     }
     if(!alarm.isValid()){
         Serial.println("Invalid Alarm");
         return 1;
     }
 
-    if(!rtc.setAlarm1(
+    if(alarmSet && !rtc.setAlarm1(
         alarm,
         DS3231_A1_Date
-        //DS3231_A1_Second
-        )){
-            Serial.println("Error, alarm wasn't set!");
-        }
-        else {
-            char buf[] = "hh:mm:ss DD/MM/YY";
-            Serial.print("Alarm set for ");
-            Serial.println(alarm.toString(buf));
-        }
+    )){
+        Serial.println("Error, alarm wasn't set!");
+        return 1;
+    }
+        
+    char buf[] = "hh:mm:ss DD/MM/YY";
+    Serial.print("Alarm set for ");
+    Serial.println(alarm.toString(buf));
+    
 
 }
 
+int32_t sensorSamplesToTake = -1;
 void sensorLoop()
 {
+  if(sensorSamplesToTake==0){
+    return;
+  }
+  if(sensorSamplesToTake>0){
+    sensorSamplesToTake--;
+  }
+
   printAllSensorValues();
   Serial.print("\r");
 }
 
+extern int32_t sensorSamplesToTake;
 int commandSensors(int argc, char **argv)
 {
-    if(argc==2 && strncasecmp(argv[1],"true",5)==0){
-        setLoopFunc(sensorLoop);
-    }
-    printAllSensorValues();
-    Serial.println();
+    sensorSamplesToTake = 1;
+    if(argc==2){
+        sensorSamplesToTake=strtol(argv[1],0,10);
+    }    
+    setLoopFunc(sensorLoop);
     return 0;
 }
 
@@ -87,6 +102,14 @@ int commandStop(int argc, char **argv)
 {
     setLoopFunc(NULL);
     return 0;
+}
+
+extern bool wokeFromAlarm;
+int commandBootInfo(int arc,char **argv)
+{
+    if(wokeFromAlarm){
+        Serial.println("Woke from alarm");        
+    }
 }
 
 extern bool sendVisualsOverUart;
@@ -143,4 +166,5 @@ void addCommands()
     shell.addCommand(F("visuals"),commandVisuals);
     shell.addCommand(F("pattern"),commandPattern);
     shell.addCommand(F("mask"),commandMask);
+    shell.addCommand(F("bootinfo"),commandBootInfo);
 }

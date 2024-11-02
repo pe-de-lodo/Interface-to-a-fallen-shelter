@@ -37,7 +37,6 @@ void initLightComms(){
     Serial.print("initLightComms");
 
     playPatternKeyAttractor();
-    pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
     setLoopFunc(lightCommsLoop);
 
     duration = 0;

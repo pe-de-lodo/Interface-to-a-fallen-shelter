@@ -46,10 +46,11 @@ void printDateTime(DateTime time)
     }
 }
 
+bool wokeFromAlarm;
 bool initWakeAlarm()
 {
-    bool wokeFromAlarm = digitalRead( ALARM_PIN ) == LOW;
-
+    wokeFromAlarm = digitalRead( ALARM_PIN ) == LOW;
+    digitalWrite(LED_GREEN,wokeFromAlarm ? LOW : HIGH);
     // initializing the rtc
     if(!rtc.begin(&Wire)) {
         Serial.println("??? Couldn't find RTC! ???");
@@ -77,11 +78,11 @@ bool initWakeAlarm()
 
     int len = sizeof(alarmTimes)/sizeof(Time);
     while(alarmTimeIndex<len && nextAlarm<now){
-        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[alarmTimeIndex].hour,alarmTimes[alarmTimeIndex].minutes);
+        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[alarmTimeIndex].hour,alarmTimes[alarmTimeIndex].minutes,0);
         alarmTimeIndex++;
     }
     if(nextAlarm<now){
-        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[0].hour,alarmTimes[0].minutes)+TimeSpan(60*60*24);
+        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[0].hour,alarmTimes[0].minutes,0)+TimeSpan(60*60*24);
     }
 
 
@@ -120,7 +121,7 @@ void loopAlarmAttractor()
     // leds[0] = ColorFromPalette(alarmAttractorGradient,(uint8_t)(millis()*3*255/1000));
     // FastLED.show();
     alarmElapsed+=deltaTime; 
-    if(digitalRead(WAKEUP_PIN)==HIGH){
+    if(digitalRead(WAKEUP_PIN)==LOW){
         setLoopFunc(initKnock);
         return;
     }

@@ -32,8 +32,8 @@ void setup()
   enablePeripherals();
   Serial.println("enablePeripherals");
   delay(20);
-  bool wokeFromAlarm = initWakeAlarm();
   configSleep();
+  bool wokeFromAlarm = initWakeAlarm();
   initVisuals();
 
   // if(wokeFromAlarm){
@@ -78,12 +78,18 @@ inline bool calcDeltaTime()
   
   uint32_t time = millis();
   deltaTime = time-lastLoop;
-    lastLoop = time;
+  lastLoop = time;
   
-  bool redraw = (redrawDeltaTime-time)>minRedrawDeltaTime;  
+  bool redraw = (time-lastRedraw)>minRedrawDeltaTime;  
   if(redraw){
     redrawDeltaTime = time-lastRedraw;
     lastRedraw = time;
+    digitalWrite(LED_RED,LOW);
+    digitalWrite(LED_BLUE,HIGH);
+  }
+  else {
+    digitalWrite(LED_RED,HIGH);
+    digitalWrite(LED_BLUE,LOW);
   }
 
   return redraw;
