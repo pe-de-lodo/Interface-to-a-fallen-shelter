@@ -37,9 +37,11 @@ void QSPIF_sleep(void)
 void enablePeripherals()
 {
   pinMode(LED_BLUE,OUTPUT);
+  pinMode(LED_RED,OUTPUT);
+  digitalWrite(LED_BLUE,LOW);
   pinMode(LED_PIN_1,OUTPUT);
   pinMode(LED_PIN_2,OUTPUT);
-  digitalWrite(LED_BLUE,LOW);
+  
   pinMode(MOSFET_PIN,OUTPUT);
   digitalWrite(MOSFET_PIN,HIGH);
 }

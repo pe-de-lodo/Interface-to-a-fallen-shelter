@@ -77,11 +77,11 @@ bool initWakeAlarm()
 
     int len = sizeof(alarmTimes)/sizeof(Time);
     while(alarmTimeIndex<len && nextAlarm<now){
-        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[alarmTimeIndex].hour,alarmTimes[alarmTimeIndex].minutes);
+        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[alarmTimeIndex].hour,alarmTimes[alarmTimeIndex].minutes,0);
         alarmTimeIndex++;
     }
     if(nextAlarm<now){
-        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[0].hour,alarmTimes[0].minutes)+TimeSpan(60*60*24);
+        nextAlarm = DateTime(now.year(),now.month(),now.day(),alarmTimes[0].hour,alarmTimes[0].minutes,0)+TimeSpan(60*60*24);
     }
 
 

@@ -2,9 +2,9 @@
 #include "alarm.h"
 #include "main.h"
 
-
 void printAllSensorValues()
 {
+
   int knockSensorValue = analogRead(KNOCK_PIN);
   int lightSensorValue = analogRead(LIGHT_SENSOR_PIN);
 
@@ -13,7 +13,7 @@ void printAllSensorValues()
   bool handSensor = digitalRead(WAKEUP_PIN);
 
   
-  bool isCharging = digitalRead(23)==HIGH;
+  //bool isCharging = digitalRead(23)==HIGH;
 
   Serial.print("handSensor=");
   Serial.print(handSensor);
