@@ -10,6 +10,9 @@
 #define KEY_SENSOR 10
 #define NUM_LEDS 500
 
+#define INTERACTION_TIMEOUT 30000
+#define FINALE_DURATION 20000
+
 void setLoopFunc(void loopFunc());
 inline bool calcDeltaTime();
 void printAllSensorValues();

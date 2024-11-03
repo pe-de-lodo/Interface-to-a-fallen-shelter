@@ -16,7 +16,7 @@ PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
 CycleLeds alarmAttractorPattern(CRGB(0xd4,0x00,0x00),16); //reddish
 CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),16); //magenta
-CycleLeds tryDoorKnobPattern(CRGB(0x28,0x8c,0x13),16); //greenish
+CycleLeds tryDoorKnobPattern(CRGB(0x28,0xac,0x13),16); //greenish
 CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12),16); //dim yellow
 CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),16); //blue
 MaskedPattern maskedPattern;

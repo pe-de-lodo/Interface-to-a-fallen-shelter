@@ -125,7 +125,7 @@ void loopAlarmAttractor()
         setLoopFunc(initKnock);
         return;
     }
-    if(alarmElapsed>30000){
+    if(alarmElapsed>INTERACTION_TIMEOUT){
         sleep();
     }
 }

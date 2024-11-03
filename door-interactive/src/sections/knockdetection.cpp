@@ -9,9 +9,10 @@
 
 const uint32_t shortInterval = 600;
 const uint32_t longInterval = 1200;
-const uint32_t timeout = 30000;
+const uint32_t timeout = INTERACTION_TIMEOUT;
 
 extern uint32_t deltaTime;
+uint32_t timeElapsed = 0;
 
 uint32_t intervalTypes[] = {
     shortInterval,
@@ -34,6 +35,8 @@ int knockThreshold = 200;
 
 void initKnock()
 {
+    Serial.println("initKnock");
+    lastKnock = millis();
     delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
     setLoopFunc(listenForKnock);
     waitForKnockVisuals();
@@ -56,7 +59,9 @@ void listenForKnock()
     //delay(1000);
     uint32_t time = millis();
     uint32_t interval = time-lastKnock;
-        
+
+
+    
     long val =  analogRead(KNOCK_PIN);
     if(interval>timeout){
         sleep();        
@@ -97,6 +102,8 @@ void knockDetected(uint32_t interval)
 
     if(intervalType==0){
         playPatternTryDoorKnobPattern();
+        timeElapsed = 0;
+        Serial.println("waitForDoorKnobTouch");
         setLoopFunc(waitForDoorKnobTouch);
     }
     
@@ -106,6 +113,7 @@ void knockDetected(uint32_t interval)
 long doorKnobHeldElapsed = 0;
 void waitForDoorKnobTouch()
 {
+
     bool isHeld = digitalRead(DOOR_KNOB);
     
     if(isHeld){
@@ -119,6 +127,11 @@ void waitForDoorKnobTouch()
         //setLoopFunc();
         setLoopFunc(initLightComms);
     }
+
+    if( timeElapsed > timeout ){
+        sleep();
+    }
+    timeElapsed+=deltaTime;
 
 }
 

@@ -6,37 +6,6 @@
 
 Adafruit_FlashTransport_QSPI flashTransport;
 
-void sleep()
-{
-    digitalWrite(MOSFET_PIN,LOW);
-    digitalWrite(LED_BLUE,HIGH);
-    // pinMode(LED_PIN_1,INPUT);
-    // pinMode(LED_PIN_2,INPUT);
-    disconnectPin(LED_BLUE);
-    disconnectPin(LED_RED);
-    disconnectPin(LED_GREEN);
-    disconnectPin(LED_PIN_1);
-    disconnectPin(LED_PIN_2);
-    pinMode(LIGHT_SENSOR_PIN,INPUT);
-    pinMode(KNOCK_PIN,INPUT);
- 
-    // pinMode(SDA,INPUT);
-    // pinMode(SCL,INPUT);
-    
-    //This was weirdly setting one of the LED pins to GND
-    //NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos;
-    delay(10);
-    NRF_POWER->SYSTEMOFF=1;
-}
-
-
-void QSPIF_sleep(void)
-{
-  flashTransport.begin();
-  flashTransport.runCommand(0xB9);
-  flashTransport.end();
-}
-
 void enablePeripherals()
 {
   pinMode(LED_BLUE,OUTPUT);
@@ -52,8 +21,39 @@ void enablePeripherals()
   digitalWrite(MOSFET_PIN,HIGH);
 }
 
+void sleep()
+{
+    digitalWrite(MOSFET_PIN,LOW);
+    digitalWrite(LED_BLUE,HIGH);
+    disconnectPin(LED_BLUE);
+    disconnectPin(LED_RED);
+    disconnectPin(LED_GREEN);
+    disconnectPin(LED_PIN_1);
+    disconnectPin(LED_PIN_2);
+    pinMode(LIGHT_SENSOR_PIN,INPUT);
+    pinMode(KNOCK_PIN,INPUT);
+ 
+    // pinMode(SDA,INPUT);
+    // pinMode(SCL,INPUT);
+    
+    //disable i2c interface
+    NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos;
+    delay(10);
+    NRF_POWER->SYSTEMOFF=1;
+}
+
+void QSPIF_sleep(void)
+{
+  flashTransport.begin();
+  flashTransport.runCommand(0xB9);
+  flashTransport.end();
+}
+
+
+
 void configSleep()
 {
+
     pinMode(WAKEUP_PIN, INPUT_PULLDOWN_SENSE);
     pinMode(ALARM_PIN, INPUT_PULLUP_SENSE); //INPUT_PULLUP_SENSE
 

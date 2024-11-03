@@ -11,6 +11,7 @@
 
 extern CRGB leds[NUM_LEDS];
 
+uint32_t deltaTime;
 void (*loopFunc) () = NULL;
 void sensorTestsLoop();
 
