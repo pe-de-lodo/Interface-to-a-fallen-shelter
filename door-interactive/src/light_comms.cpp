@@ -9,7 +9,7 @@
 
 CircularBuffer<int,512> buffer;
 
-const double ease = 0.001; //out of 255
+const double ease = 0.0001; //out of 255
 double minVal=INT16_MAX;
 double maxVal=0;
 double average = 0;
@@ -38,7 +38,7 @@ void listenForPattern()
 void initLightComms(){
     Serial.println("initLightComms");
 
-    playPatternKeyAttractor();
+    playPatternTorchAttractor(); 
     setLoopFunc(lightCommsLoop);
 
     duration = 0;
@@ -72,6 +72,7 @@ void lightCommsLoop(){
         duration += deltaTime;
     }
 
+    
     timeElapsed += deltaTime;
 
     if(timeElapsed>INTERACTION_TIMEOUT){
@@ -79,7 +80,8 @@ void lightCommsLoop(){
     }
 
     if(duration>1000){
-        setLoopFunc(initWaitForKey);
+        
+        setLoopFunc(initFinale);
     }
     
 

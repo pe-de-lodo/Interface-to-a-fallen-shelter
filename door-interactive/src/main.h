@@ -8,7 +8,7 @@
 #define DOOR_KNOB 8
 #define WAKEUP_PIN 9
 #define KEY_SENSOR 10
-#define NUM_LEDS 500
+#define NUM_LEDS 270+270
 
 #define INTERACTION_TIMEOUT 30000
 #define FINALE_DURATION 20000

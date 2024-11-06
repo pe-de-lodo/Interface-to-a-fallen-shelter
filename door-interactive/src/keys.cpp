@@ -2,18 +2,18 @@
 #include "main.h"
 #include "sleep.h"
 #include "visuals.h"
+#include "keys.h"
 
 extern uint32_t deltaTime;
 extern uint32_t timeElapsed;
 uint32_t keyDetectElapsed = 0;
-
-void loopFinale();
 
 void initWaitForKey()
 {
     Serial.print("initWaitForKey");
     keyDetectElapsed = 0;
     timeElapsed = 0;
+    setLoopFunc(loopWaitForKey);
 }
 
 void loopWaitForKey()
@@ -39,8 +39,15 @@ void loopWaitForKey()
     
 }
 
+void initFinale()
+{
+    Serial.println("play finale");
+    setLoopFunc(loopFinale);
+}
+
 void loopFinale()
 {
+    playPatternFinale();
     timeElapsed+=deltaTime;
     if(timeElapsed>FINALE_DURATION){
         sleep();        

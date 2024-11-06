@@ -1,3 +1,4 @@
+#pragma once
 #include <Tween.h>
 #include <FastLED.h>
 
@@ -119,37 +120,5 @@ class MaskedPattern : public AbstractPattern
             return m_color;
 
         return CRGB::Black;
-    }
-};
-
-class CycleLeds : public AbstractPattern
-{
-    CRGB m_color;
-    int m_index;
-    int m_cycleLength;
-    public:
-
-    CycleLeds(CRGB color, int cycleLength)
-    {
-        m_cycleLength = cycleLength;
-        m_color = color;
-    }
-
-    void Start()
-    {        
-        AbstractPattern::Start();        
-    }
-
-    void Update()
-    {
-        AbstractPattern::Update();
-        m_index++;
-    }
-
-
-    CRGB Evaluate(int index, ledData data)
-    {
-        bool highlight = (data.index%m_cycleLength)==(m_index%m_cycleLength);
-        return highlight ? m_color : CRGB::Black;
     }
 };

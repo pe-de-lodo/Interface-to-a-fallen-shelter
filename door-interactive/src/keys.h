@@ -2,3 +2,5 @@
 
 void initWaitForKey();
 void loopWaitForKey();
+void loopFinale();
+void initFinale();

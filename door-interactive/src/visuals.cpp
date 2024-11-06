@@ -8,17 +8,18 @@
 #include "led_location_data.h"
 #include "patterns.hpp"
 #include "send_pixels_uart.h"
+#include "patterns/cycleleds.hpp"
 
 
 CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
-CycleLeds alarmAttractorPattern(CRGB(0xd4,0x00,0x00),16); //reddish
-CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),16); //magenta
-CycleLeds tryDoorKnobPattern(CRGB(0x28,0xac,0x13),16); //greenish
-CycleLeds torchAttratorPattern(CRGB(0x84,0x6d,0x12),16); //dim yellow
-CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),16); //blue
+CycleLeds alarmAttractorPattern(CRGB(0xd4,0x00,0x00),50,1,-1); //reddish
+CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),50); //magenta
+CycleLeds tryDoorKnobPattern(CRGB(0x28,0xac,0x13),100,5,-1); //greenish
+CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
+CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
 MaskedPattern maskedPattern;
 Ripples finalePattern;
 bool sendVisualsOverUart = false;
