@@ -202,7 +202,7 @@ class NoisePattern : public AbstractPattern
 
     uint8_t xScale;
     int yOffset;
-    float yOffsetScale;
+    float yOffsetUpscale;
     //uint8_t m_hue = random(255);
     // float noiseY = 0;
 
@@ -210,8 +210,8 @@ class NoisePattern : public AbstractPattern
     NoisePattern(int speed, int numled, float xscale, float yscale, int yoffset)
     {
         xScale = (USHRT_MAX / numled) * xscale;
-        //yOffset = yoffset;
-        //yOffsetScale = (yoffset / 255) + 1;
+        yOffset = yoffset;
+        yOffsetUpscale = 255 / (255-yoffset);
         m_timeline.add(noiseVal).init(0)
             .then(65535 * yscale,speed)
             .then(0,speed);
@@ -222,7 +222,7 @@ class NoisePattern : public AbstractPattern
     CRGB Evaluate(int indx, ledData)
     {
         uint8_t brightness = inoise8(indx*xScale, noiseVal);
-        //brightness = max(0, brightness - yOffset) * yOffsetScale;
+        brightness = max(0, brightness - yOffset) * yOffsetUpscale;
         return CHSV(0,0,brightness);        
     }
 };
