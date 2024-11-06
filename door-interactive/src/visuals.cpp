@@ -9,7 +9,12 @@
 #include "patterns.hpp"
 #include "send_pixels_uart.h"
 #include "patterns/cycleleds.hpp"
-
+#include "patterns/ripples.hpp"
+#include "patterns/glitch.hpp"
+#include "patterns/noise.hpp"
+#include "patterns/meteor.hpp"
+#include "patterns/mask.hpp"
+#include "patterns/range.hpp"
 
 CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
@@ -20,11 +25,13 @@ CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),50); //magenta
 CycleLeds tryDoorKnobPattern(CRGB(0x28,0xac,0x13),100,5,-1); //greenish
 CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
 CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
-MaskedPattern maskedPattern;
 Ripples finalePattern;
 PulsePattern pulsePattern(2000);
 NoisePattern noisePattern(300000, NUM_LEDS, 0.5, 0.5, 100);
 GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
+MeteorPattern meteorPattern;
+MaskPattern meteorPatternMasked(SECTION_CRACK_L | SECTION_CRACK_R, meteorPattern );
+RangePattern rangePattern;
 
 bool sendVisualsOverUart = false;
 
@@ -65,10 +72,10 @@ void playPattern(int ptrnIndex, long duration)
     }
 }
 
-void playMaskedPattern(int offset, int num)
+void playRangePattern(int offset, int num)
 {
-    maskedPattern.Set(CHSV(random(255), 255, 255), offset, num);
-    canvas.TransitionToPattern(&maskedPattern, 500);
+    rangePattern.Set(CHSV(random(255), 255, 255), offset, num);
+    canvas.TransitionToPattern(&rangePattern, 500);
 }
 
 void playPatternAlarmAttractorPattern()

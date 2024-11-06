@@ -13,6 +13,10 @@
 #define INTERACTION_TIMEOUT 30000
 #define FINALE_DURATION 20000
 
+#define SECTION_DOOR (1<<0)
+#define SECTION_CRACK_L (1<<1)
+#define SECTION_CRACK_R (1<<2)
+
 void setLoopFunc(void loopFunc());
 inline bool calcDeltaTime();
 void printAllSensorValues();

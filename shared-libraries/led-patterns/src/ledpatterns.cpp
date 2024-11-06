@@ -60,19 +60,23 @@ void PatternCanvas::Update(long deltaTime)
     }
 
     for(int i=0;i<m_length;i++){
+        patternTransition currentPattern = m_transitionStack[0];
+        bool currentPatternPixelVisible = currentPattern.targetPattern->IsVisible(i,m_ledData[i]);
         
         if(isTransitioning){
             patternTransition destinationPattern = m_transitionStack[1];
-            
-            CRGB pixelA = m_transitionStack[0].targetPattern->Evaluate(i, m_ledData[i]);
-            CRGB pixelB = destinationPattern.targetPattern->Evaluate(i, m_ledData[i]);
+            bool destinationPatternPixelVisible = destinationPattern.targetPattern->IsVisible(i,m_ledData[i]);
+            CRGB pixelA = currentPatternPixelVisible ? currentPattern.targetPattern->Evaluate(i, m_ledData[i]) : CRGB::Black;
+            CRGB pixelB = destinationPatternPixelVisible ? destinationPattern.targetPattern->Evaluate(i, m_ledData[i]) : CRGB::Black;
             
             pixel = blend(pixelA,pixelB,(uint8_t)(0xff*alpha) );
 
             
         }
         else {
-            pixel = m_transitionStack[0].targetPattern->Evaluate(i, m_ledData[i]);
+            bool visible = currentPattern.targetPattern->IsVisible(i,m_ledData[i]);
+            
+            pixel = visible ? currentPattern.targetPattern->Evaluate(i, m_ledData[i]) : CRGB::Black;
             // Serial.print(pixel.red);
             // Serial.print(" ");
             // Serial.print(pixel.green);

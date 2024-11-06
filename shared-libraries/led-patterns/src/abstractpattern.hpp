@@ -12,11 +12,7 @@ typedef struct{
 class AbstractPattern 
 {
     public :
-    // AbstractPattern()
-    // {
 
-    //     Serial.println("AbstractPattern Constructor");
-    // }
     virtual void Start()
     {
         m_timeline.restart();
@@ -35,14 +31,9 @@ class AbstractPattern
         // Serial.println( m_timeline.isRunning() ? "Running" : "Paused" );
     }
 
-    virtual void SetMask(int len) // I'm thinking we can store the masked LEDs in a bitmask. It has to be big though!
+    virtual bool IsVisible(int index, ledData data)
     {
-        m_ledMask = new uint32_t[(len>>5)+1];
-    }
-
-    virtual void MaskSection(int section)
-    {
-
+        return true;
     }
     
     protected:
@@ -99,41 +90,4 @@ class SolidColorPattern : public AbstractPattern
     }
 };
 
-class MaskedPattern : public AbstractPattern
-{
-    CRGB m_color;
-    int m_offsetLED;
-    int m_numLED;
 
-    public:
-    MaskedPattern()
-    {
-        m_timeline.mode(Tween::Mode::REPEAT_SQ); 
-    }
-    
-    void Start()
-    {   
-         
-        AbstractPattern::Start();
-    }
-
-    void Update()
-    {
-        AbstractPattern::Update();
-    }
-
-    void Set(CRGB color, int offset, int num)
-    {
-        m_color = color;
-        m_offsetLED = offset;
-        m_numLED = num;
-    }
-
-    CRGB Evaluate(int indx, ledData data)
-    {
-        if(indx >= m_offsetLED && indx < m_offsetLED+m_numLED)
-            return m_color;
-
-        return CRGB::Black;
-    }
-};
