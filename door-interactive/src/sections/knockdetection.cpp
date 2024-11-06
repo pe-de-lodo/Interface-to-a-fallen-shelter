@@ -7,11 +7,12 @@
 #include "visuals.h"
 #include "light_comms.h"
 
-const uint32_t shortInterval = 600;
-const uint32_t longInterval = 1200;
-const uint32_t timeout = 30000;
+const uint32_t shortInterval = 1000;
+const uint32_t longInterval = 2000;
+const uint32_t timeout = INTERACTION_TIMEOUT;
 
 extern uint32_t deltaTime;
+uint32_t timeElapsed = 0;
 
 uint32_t intervalTypes[] = {
     shortInterval,
@@ -28,12 +29,15 @@ unsigned long lastKnock;
 CircularBuffer<byte, 10> recordedIntervalTypes;
 CircularBuffer<long, 10> recordedIntervals;
 
-int knockThreshold = 200;
+float knockThreshVolts = 0.5f;
+int knockThreshold = 80;//1024*knockThreshVolts/3.3f
 
 
 
 void initKnock()
 {
+    Serial.println("initKnock");
+    lastKnock = max((int32_t)millis()-(int32_t)longInterval,0);
     delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
     setLoopFunc(listenForKnock);
     waitForKnockVisuals();
@@ -56,7 +60,9 @@ void listenForKnock()
     //delay(1000);
     uint32_t time = millis();
     uint32_t interval = time-lastKnock;
-        
+
+
+    
     long val =  analogRead(KNOCK_PIN);
     if(interval>timeout){
         sleep();        
@@ -92,11 +98,13 @@ void knockDetected(uint32_t interval)
     Serial.println(intervalType);
 
     FastLED.showColor(intervalColors[intervalType]);
-    delay(20);
+    delay(50);
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
         playPatternTryDoorKnobPattern();
+        timeElapsed = 0;
+        Serial.println("waitForDoorKnobTouch");
         setLoopFunc(waitForDoorKnobTouch);
     }
     
@@ -106,6 +114,7 @@ void knockDetected(uint32_t interval)
 long doorKnobHeldElapsed = 0;
 void waitForDoorKnobTouch()
 {
+
     bool isHeld = digitalRead(DOOR_KNOB);
     
     if(isHeld){
@@ -119,6 +128,11 @@ void waitForDoorKnobTouch()
         //setLoopFunc();
         setLoopFunc(initLightComms);
     }
+
+    if( timeElapsed > timeout ){
+        sleep();
+    }
+    timeElapsed+=deltaTime;
 
 }
 

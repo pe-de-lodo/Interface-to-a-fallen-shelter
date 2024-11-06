@@ -8,7 +8,14 @@
 #define DOOR_KNOB 8
 #define WAKEUP_PIN 9
 #define KEY_SENSOR 10
-#define NUM_LEDS 540
+#define NUM_LEDS 270+270
+
+#define INTERACTION_TIMEOUT 30000
+#define FINALE_DURATION 20000
+
+#define SECTION_DOOR (1<<0)
+#define SECTION_CRACK_L (1<<1)
+#define SECTION_CRACK_R (1<<2)
 
 void setLoopFunc(void loopFunc());
 inline bool calcDeltaTime();

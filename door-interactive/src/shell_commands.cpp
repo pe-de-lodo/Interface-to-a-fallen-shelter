@@ -147,12 +147,12 @@ int commandPattern(int argc, char **argv)
     return 0;
 }
 
-int commandMask(int argc, char **argv)
+int commandRange(int argc, char **argv)
 {
     if(argc==3){
         int offsetLED = atoi(argv[1]);
         int numLED = atoi(argv[2]);
-        playMaskedPattern(offsetLED, numLED);
+        playRangePattern(offsetLED, numLED);
     }
     else {
         Serial.println("mask offset number");
@@ -170,7 +170,7 @@ int commandLoop(int argc, char **argv)
     }
     int loopIndex = atoi(argv[1]);
     int numLoopFuncs = sizeof(loopFuncs)/sizeof(LoopFunc);
-    if(loopIndex>=numLoopFuncs){
+    if(loopIndex>=numLoopFuncs || loopIndex<0){
         Serial.println("loop index out of range");
         return 1;
     }
@@ -187,7 +187,7 @@ void addCommands()
     shell.addCommand(F("stop"),commandStop);
     shell.addCommand(F("visuals"),commandVisuals);
     shell.addCommand(F("pattern"),commandPattern);
-    shell.addCommand(F("mask"),commandMask);
+    shell.addCommand(F("range"),commandRange);
     shell.addCommand(F("bootinfo"),commandBootInfo);
     shell.addCommand(F("loop"),commandLoop);
 }

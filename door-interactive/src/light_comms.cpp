@@ -1,14 +1,15 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include <CircularBuffer.hpp>
-#include <main.h>
-#include <light_comms.h>
-#include <visuals.h>
-#include <keys.h>
+#include "main.h"
+#include "light_comms.h"
+#include "visuals.h"
+#include "keys.h"
+#include "sleep.h"
 
 CircularBuffer<int,512> buffer;
 
-const double ease = 0.001; //out of 255
+const double ease = 0.0001; //out of 255
 double minVal=INT16_MAX;
 double maxVal=0;
 double average = 0;
@@ -22,6 +23,7 @@ const uint32_t pattern[] = {
 
 uint32_t duration = 0;
 extern uint32_t deltaTime;
+extern uint32_t timeElapsed;
 
 void playPattern()
 {
@@ -34,12 +36,13 @@ void listenForPattern()
 }
 
 void initLightComms(){
-    Serial.print("initLightComms");
+    Serial.println("initLightComms");
 
-    playPatternKeyAttractor();
+    playPatternTorchAttractor(); 
     setLoopFunc(lightCommsLoop);
 
     duration = 0;
+    timeElapsed = 0;
 }
 
 void lightCommsLoop(){
@@ -69,19 +72,17 @@ void lightCommsLoop(){
         duration += deltaTime;
     }
 
+    
+    timeElapsed += deltaTime;
+
+    if(timeElapsed>INTERACTION_TIMEOUT){
+        sleep();
+    }
+
     if(duration>1000){
-        setLoopFunc(initWaitForKey);
+        
+        setLoopFunc(initFinale);
     }
     
-    // CRGB color = isHigh ? CRGB::Green : CRGB::Red;
-    // FastLED.showColor(color);
-    // Serial.print(isHigh?"HIGH ":"LOW  ");
-    // Serial.print(minVal);
-    // Serial.print(", ");
-    // Serial.print(maxVal);
-    // Serial.print(", ");
-    // Serial.print(average);
-    // Serial.print(", ");
-    // Serial.print(val);
-    // Serial.println();
+
 }
