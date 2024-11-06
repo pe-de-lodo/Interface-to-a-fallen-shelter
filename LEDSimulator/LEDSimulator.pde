@@ -7,7 +7,7 @@ import ch.bildspur.postfx.builder.*;
 import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
-boolean debug = true;
+boolean debug = false;
 
 PImage house;
 PShape file;
@@ -18,7 +18,7 @@ Serial myPort;  // Create object from Serial class
 PostFX fx;
 
 ArrayList<PVector> leds = new ArrayList<PVector>();
-byte[] colors = new byte[1350];
+byte[] colors = new byte[1633];
 
 String header = "\nHEADER >>\n";
 byte[] headerBytes = header.getBytes();
@@ -30,6 +30,7 @@ int bytesMissing = 0;
 boolean drawFrame = false;
 
 float spacing = 2.28;  // Specific distance between points
+int tintVal = 150;
 
 String structData = "structData.txt";
 StringList allData = new StringList();
@@ -61,6 +62,7 @@ void setup() {
   
   //println(file.getChildCount());
   
+  tint(tintVal);
   image(house, 0, 0);
   allData.append("header");
   
@@ -113,7 +115,7 @@ void setup() {
       ellipse(p.x, p.y, 5, 5);
     }
   }
-  
+  totalLED = 540;
   println("Total LED: " + totalLED);
   
   colors = new byte[totalLED*3];
@@ -139,12 +141,15 @@ void draw(){
   {
     int bytesAvailable = myPort.available();
     
-    //if(bytesMissing == 0)
-    if(bytesAvailable == 1363)
+    if(debug)
+      println("Available: " + bytesAvailable);
+    
+    if(bytesMissing == 0)
+    //if(bytesAvailable == 1633)
     {
       
       int readStart = 0;
-      println("myPort: " + myPort.available());
+      //println("myPort: " + myPort.available());
       
       myPort.readBytes(serialData);
       arrayCopy(serialData, readStart, headerData, 0, headerBytes.length);
@@ -177,24 +182,22 @@ void draw(){
         
         bytesMissing = numBytes - lengthToCopy;
         
-        
-        /*if(bytesMissing == 0)
-        {
+        if(debug)
+          println("bytesMissing: " + bytesMissing);
+        if(bytesMissing == 0)
           drawFrame = true;
-        }*/
-        drawFrame = true;
+          
+        //drawFrame = true;
       }
-    }
-    else
-    {
-      myPort.clear();
     }
     /*else
     {
+      myPort.clear();
+    }*/
+    else
+    {
       if(debug)
-      {
         println("available: " + myPort.available() + " bytes missing: " + bytesMissing);
-      }
         
       if(myPort.available() >= bytesMissing)
       {
@@ -205,14 +208,16 @@ void draw(){
         bytesMissing = 0;
         drawFrame = true;
       }
-    }*/
+    }
   }
   
   if(drawFrame)
   {
     background(0);
+    tint(tintVal);
     image(house, 0, 0);
     noStroke();
+    noTint();
     //strokeWeight(1);
     
     if(debug)
@@ -323,4 +328,19 @@ int UByte(byte b)
   float fColor = Byte.toUnsignedInt(b);
   float correctedColor = pow(fColor/255.0, 1/2.2)*255.0;
   return round(correctedColor);
+}
+
+void keyPressed() {
+  String str = "";
+  if(key == 's')
+    str = "stop";
+  else if(key == 'u')
+    str = "visuals uart";
+  else if((int)key >= (int)'0' && (int)key <= (int)'5')
+  {
+    str = "pattern " + key;
+  }
+  
+  println(str);
+  myPort.write(str + "\r");
 }

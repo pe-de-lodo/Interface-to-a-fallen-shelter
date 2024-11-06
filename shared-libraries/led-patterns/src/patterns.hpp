@@ -61,7 +61,6 @@ class Ripples : public AbstractPattern
     
     Ripples() : AbstractPattern()
     {
-        
         m_timeline.mode(Tween::Mode::REPEAT_SQ);
     }
 
@@ -131,6 +130,100 @@ class TestPattern : public AbstractPattern
         float k = constrain((pos-d),0,1);
 
         return ColorFromPalette(m_colorPalette,uint8_t(k*0xff));
+    }
+};
+
+class PulsePattern : public AbstractPattern
+{
+    float pulseVal;
+    uint8_t m_hue = random(255);
+
+    public:
+    PulsePattern(int speed)
+    {
+        m_timeline.add(pulseVal).init(0)
+            .then<Ease::Sine>(1,speed)
+            .then<Ease::Sine>(0,speed, [this]() {
+                m_hue = random(255);
+            });
+        m_timeline.mode(Tween::Mode::REPEAT_TL);
+        m_timeline.start();
+    }
+
+    CRGB Evaluate(int, ledData)
+    {
+        return CHSV(m_hue,255,(int)(pulseVal*255));        
+    }
+};
+
+class GlitchPattern : public AbstractPattern
+{
+    float glitchVal;
+    int glitchOffset = 0;
+    int glitchNum;
+    int numLED;
+
+    public:
+    GlitchPattern(int speed, int min, int max, int numled)
+    {
+        numLED = numled;
+        m_timeline.add(glitchVal).init(0)
+            // .then<Ease::Sine>(1,speed)
+            .then<Ease::Sine>(0,speed, [this, min, max]() {
+                glitchOffset = random(numLED);
+                glitchNum = random(min, max);
+            });
+        m_timeline.mode(Tween::Mode::REPEAT_TL);
+        m_timeline.start();
+    }
+
+    CRGB Evaluate(int indx, ledData)
+    {
+        bool masked = true;
+        int endLED = glitchOffset + glitchNum;
+        if(endLED > numLED)
+        {
+            if(indx >= glitchOffset || indx < endLED % numLED)
+                masked = false;
+        }
+        else if(indx >= glitchOffset && indx < (glitchOffset + glitchNum))
+            masked = false;
+
+        if(!masked)
+            return CHSV(0,0,255);
+        else
+            return CRGB::Black;
+    }
+};
+
+class NoisePattern : public AbstractPattern
+{
+    uint16_t noiseVal;
+
+    uint8_t xScale;
+    int yOffset;
+    float yOffsetScale;
+    //uint8_t m_hue = random(255);
+    // float noiseY = 0;
+
+    public:
+    NoisePattern(int speed, int numled, float xscale, float yscale, int yoffset)
+    {
+        xScale = (USHRT_MAX / numled) * xscale;
+        //yOffset = yoffset;
+        //yOffsetScale = (yoffset / 255) + 1;
+        m_timeline.add(noiseVal).init(0)
+            .then(65535 * yscale,speed)
+            .then(0,speed);
+        m_timeline.mode(Tween::Mode::REPEAT_TL);
+        m_timeline.start();
+    }
+
+    CRGB Evaluate(int indx, ledData)
+    {
+        uint8_t brightness = inoise8(indx*xScale, noiseVal);
+        //brightness = max(0, brightness - yOffset) * yOffsetScale;
+        return CHSV(0,0,brightness);        
     }
 };
 

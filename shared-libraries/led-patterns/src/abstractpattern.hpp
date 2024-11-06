@@ -12,9 +12,13 @@ typedef struct{
 class AbstractPattern 
 {
     public :
+    // AbstractPattern()
+    // {
+
+    //     Serial.println("AbstractPattern Constructor");
+    // }
     virtual void Start()
     {
-        
         m_timeline.restart();
         Serial.println("Starting pattern");
         m_timeline.start();
@@ -30,9 +34,20 @@ class AbstractPattern
         // Serial.print(" ");
         // Serial.println( m_timeline.isRunning() ? "Running" : "Paused" );
     }
+
+    virtual void SetMask(int len) // I'm thinking we can store the masked LEDs in a bitmask. It has to be big though!
+    {
+        m_ledMask = new uint32_t[(len>>5)+1];
+    }
+
+    virtual void MaskSection(int section)
+    {
+
+    }
     
     protected:
     Tween::Timeline m_timeline;
+    uint32_t* m_ledMask;
 
     static float ledDistanceFrom(float x, float y, ledData led)
     {
@@ -96,16 +111,16 @@ class MaskedPattern : public AbstractPattern
         m_timeline.mode(Tween::Mode::REPEAT_SQ); 
     }
     
-    // void Start()
-    // {   
+    void Start()
+    {   
          
-    //     AbstractPattern::Start();
-    // }
+        AbstractPattern::Start();
+    }
 
-    // void Update()
-    // {
-    //     AbstractPattern::Update();
-    // }
+    void Update()
+    {
+        AbstractPattern::Update();
+    }
 
     void Set(CRGB color, int offset, int num)
     {

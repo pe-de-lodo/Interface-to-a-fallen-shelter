@@ -22,9 +22,13 @@ CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
 CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
 MaskedPattern maskedPattern;
 Ripples finalePattern;
+PulsePattern pulsePattern(2000);
+NoisePattern noisePattern(300000, NUM_LEDS, 0.5, 0.5, 100);
+GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
+
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&alarmAttractorPattern, &waitForKnockPattern, &tryDoorKnobPattern, &torchAttratorPattern, &keyAttractorPattern, &finalePattern, &blankPattern, &meteorPattern};
+AbstractPattern* patternArray[] = {&pulsePattern, &glitchPattern, &noisePattern, &torchAttratorPattern, &keyAttractorPattern, &finalePattern, &blankPattern, &meteorPattern};
 
 void initVisuals()
 {
