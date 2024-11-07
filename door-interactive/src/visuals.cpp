@@ -31,7 +31,7 @@ PulsePattern pulsePattern(2000);
 NoisePattern noisePattern(60000, NUM_LEDS, 0.5, 0.3, 50);
 GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
 DesintegratePattern desintegratePattern(10000, NUM_LEDS);
-MeteorPattern meteorPattern;
+MeteorPattern meteorPattern(0.507,0.537);
 MaskPattern meteorPatternMasked(SECTION_CRACK_L | SECTION_CRACK_R, meteorPattern );
 MaskPattern doorGlitch(SECTION_DOOR,glitchPattern);
 RangePattern rangePattern;
