@@ -8,7 +8,7 @@ import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
 
-boolean debug = false;
+boolean debug = true;
 
 PImage house;
 PShape file;
@@ -64,13 +64,13 @@ void setup() {
   
   fx = new PostFX(this); 
   fx.preload(BloomPass.class);
-  // The file "bot1.svg" must be in the data folder
-  // of the current sketch to load successfully
+  
   house = loadImage("house.jpg");
   file = loadShape("house.svg");
   colorMode(RGB, 255, 255, 255);
   
-  //println(file.getChildCount());
+  if(debug)
+    println(file.getChildCount());
   
   tint(tintVal);
   image(house, 0, 0);
@@ -146,7 +146,6 @@ void setup() {
 } 
 
 void draw(){
-  
   
   if(myPort==null) return;
   //image(house, 0, 0);
