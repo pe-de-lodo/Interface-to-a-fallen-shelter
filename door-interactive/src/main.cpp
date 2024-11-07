@@ -6,7 +6,7 @@
 #include "main.h"
 #include "sleep.h"
 #include "sections/knockdetection.h"
-#include "light_comms.h"
+#include "sections/light_comms.h"
 #include "alarm.h"
 #include "visuals.h"
 #include "ledpatterns.h"

@@ -8,7 +8,7 @@ import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
 
-boolean debug = true;
+boolean debug = false;
 
 PImage house;
 PShape file;
@@ -58,6 +58,9 @@ void setup() {
     exit();
     return;
   }
+
+  myPort.write("stop\r\n");
+  myPort.write("visuals uart\r\n");
   
   fx = new PostFX(this); 
   fx.preload(BloomPass.class);
@@ -345,15 +348,47 @@ int UByte(byte b)
   return round(correctedColor);
 }
 
+String keyBuffer="";
+boolean consoleMode = false;
+
+void console()
+{
+  
+  if(key=='\n'){
+    println(keyBuffer);
+    if(keyBuffer.equals("console off")){
+      consoleMode=false;
+    }
+    else {
+      keyBuffer+="\r\n";
+      myPort.write(keyBuffer);
+    }
+    keyBuffer="";
+  }
+  else {
+    keyBuffer+=key;
+  }
+  
+}  
+
 void keyPressed() {
+  if(consoleMode){
+    console();
+    return;
+  }
   String str = "";
   if(key == 's')
     str = "stop";
   else if(key == 'u')
     str = "visuals uart";
-  else if((int)key >= (int)'0' && (int)key <= (int)'5')
+  else if((int)key >= (int)'0' && (int)key <= (int)'9')
   {
     str = "pattern " + key;
+  }
+  if(key == 'c')
+  {
+    println("console on");
+     consoleMode=true;
   }
   
   println(str);

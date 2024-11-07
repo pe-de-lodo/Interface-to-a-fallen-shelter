@@ -9,6 +9,11 @@ class MaskPattern : public AbstractPattern
         m_sectionMask = sectionMask;
     }
 
+    void SetSection(int section)
+    {
+        m_sectionMask = section;
+    }
+
     CRGB Evaluate(int index, ledData ledInfo)
     {
         return m_pattern.Evaluate(index,ledInfo);

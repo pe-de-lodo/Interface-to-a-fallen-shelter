@@ -33,11 +33,13 @@ GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
 DesintegratePattern desintegratePattern(10000, NUM_LEDS);
 MeteorPattern meteorPattern;
 MaskPattern meteorPatternMasked(SECTION_CRACK_L | SECTION_CRACK_R, meteorPattern );
+MaskPattern doorGlitch(SECTION_DOOR,glitchPattern);
 RangePattern rangePattern;
+MaskPattern sectionMask(0,rangePattern);
 
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&pulsePattern, &glitchPattern, &noisePattern, &desintegratePattern, &keyAttractorPattern, &finalePattern, &blankPattern, &meteorPattern};
+AbstractPattern* patternArray[] = {&pulsePattern, &glitchPattern, &noisePattern, &desintegratePattern, &keyAttractorPattern, &finalePattern, &doorGlitch, &meteorPattern};
 
 void initVisuals()
 {
@@ -80,6 +82,13 @@ void playRangePattern(int offset, int num)
     canvas.TransitionToPattern(&rangePattern, 500);
 }
 
+void highlightSection(int section)
+{
+    rangePattern.Set(CHSV(random(255), 255, 255), 0, NUM_LEDS);
+    sectionMask.SetSection(1<<section);
+    canvas.TransitionToPattern(&sectionMask,100);
+}
+
 void playPatternAlarmAttractorPattern()
 {
     canvas.TransitionToPattern(&alarmAttractorPattern,500);
@@ -88,6 +97,12 @@ void playPatternAlarmAttractorPattern()
 void waitForKnockVisuals()
 {
     canvas.TransitionToPattern(&waitForKnockPattern,500);
+}
+
+void knockPattern()
+{
+    canvas.TransitionToPattern(&doorGlitch,50);
+    canvas.TransitionToPattern(&waitForKnockPattern,50);
 }
 
 void playPatternTryDoorKnobPattern()

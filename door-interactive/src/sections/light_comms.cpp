@@ -2,7 +2,7 @@
 #include <FastLED.h>
 #include <CircularBuffer.hpp>
 #include "main.h"
-#include "light_comms.h"
+#include "sections/light_comms.h"
 #include "visuals.h"
 #include "keys.h"
 #include "sleep.h"

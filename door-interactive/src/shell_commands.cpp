@@ -5,7 +5,7 @@
 #include "sleep.h"
 #include "visuals.h"
 #include "keys.h"
-#include "light_comms.h"
+#include "sections/light_comms.h"
 #include "alarm.h"
 #include "sections/knockdetection.h"
 
@@ -160,6 +160,18 @@ int commandRange(int argc, char **argv)
     return 0;
 }
 
+int commandSection(int argc, char **argv)
+{
+    if(argc==2){
+        int section = atoi(argv[1]);
+        highlightSection(section);
+    }
+    else {
+        Serial.println("mask offset number");
+    }
+    return 0;
+}
+
 typedef void (*LoopFunc) (void);
 LoopFunc loopFuncs[] = { &initAlarmAttractor, &initKnock, &waitForDoorKnobTouch, &initLightComms, &initWaitForKey };
 int commandLoop(int argc, char **argv)
@@ -190,4 +202,5 @@ void addCommands()
     shell.addCommand(F("range"),commandRange);
     shell.addCommand(F("bootinfo"),commandBootInfo);
     shell.addCommand(F("loop"),commandLoop);
+    shell.addCommand(F("section"),commandSection);
 }
