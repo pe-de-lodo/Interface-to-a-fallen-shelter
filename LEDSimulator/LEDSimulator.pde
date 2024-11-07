@@ -8,7 +8,7 @@ import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
 
-boolean debug = true;
+boolean debug = false;
 
 PImage house;
 PShape file;
@@ -351,7 +351,7 @@ void keyPressed() {
     str = "stop";
   else if(key == 'u')
     str = "visuals uart";
-  else if((int)key >= (int)'0' && (int)key <= (int)'5')
+  else if((int)key >= (int)'0' && (int)key <= (int)'8')
   {
     str = "pattern " + key;
   }
