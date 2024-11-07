@@ -111,13 +111,25 @@ void waitForDoorKnobTouch()
 {
 
     bool isHeld = digitalRead(DOOR_KNOB);
-    
+
+
+    //rising edge
+    if(isHeld && doorKnobHeldElapsed==0 ){
+        playPatternDoorKnobHeld();
+    }
+
+    //falling edge
+    if(!isHeld && doorKnobHeldElapsed>0){
+        playPatternTryDoorKnob();
+    }
+
     if(isHeld){
         doorKnobHeldElapsed += deltaTime;
     }
     else {
         doorKnobHeldElapsed = 0;
     }
+
 
     if(doorKnobHeldElapsed > 200){
         //setLoopFunc();
