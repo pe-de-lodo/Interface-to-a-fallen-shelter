@@ -61,11 +61,22 @@ void lightCommsLoop(){
     minVal = minVal+ease*(average-minVal);
     maxVal = maxVal+ease*(average-maxVal);
 
-    bool isHigh = val > (minVal+(maxVal-minVal)/2);
+    bool dark = val > (minVal+(maxVal-minVal)/2);
     if((maxVal-minVal)<50){
-        isHigh = true;
+        dark = true;
     }
-    if(isHigh){
+
+    //rising edge
+    if(!dark && duration==0){
+        playPatternTorchDetected();        
+    }
+
+    //falling edge
+    if(dark && duration>0){
+        playPatternTorchAttractor();
+    }
+
+    if(dark){
         duration=0;
     }
     else {
