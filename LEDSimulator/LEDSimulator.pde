@@ -7,7 +7,7 @@ import ch.bildspur.postfx.builder.*;
 import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
-boolean debug = false;
+boolean debug = true;
 
 PImage house;
 PShape file;
@@ -74,9 +74,9 @@ void setup() {
     
   
   int sectionNum = 0;
-  for(int j = 0; j < file.getChildCount(); j++)
+  for(int j = file.getChildCount()-1; j >= 0; j--)
   {
-    for(int i = 0; i < file.getChild(j).getChildCount(); i++, sectionNum++)
+    for(int i = file.getChild(j).getChildCount()-1; i >= 0; i--, sectionNum++)
     {
       PShape shape = file.getChild(j).getChild(i);
       
@@ -84,6 +84,9 @@ void setup() {
       int numLED = Integer.parseInt(name.substring(1));
       if(shape.getChildCount() > 0)
         shape = shape.getChild(0);
+        
+      if(debug)
+        println(name);
             
       
       ArrayList<PVector> equallySpacedPoints = new ArrayList<PVector>();
