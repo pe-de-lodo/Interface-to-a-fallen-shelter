@@ -4,7 +4,7 @@ class MaskPattern : public AbstractPattern
 {
     public:
 
-    MaskPattern(int sectionMask, AbstractPattern &pattern): m_pattern(pattern)
+    MaskPattern(int sectionMask, AbstractPattern& pattern): m_pattern(pattern)
     {
         m_sectionMask = sectionMask;
     }
@@ -36,7 +36,7 @@ class MaskPattern : public AbstractPattern
 
     protected:
     int m_sectionMask;
-    AbstractPattern &m_pattern;
+    AbstractPattern& m_pattern;
 
     inline bool HasSection(int section)
     {

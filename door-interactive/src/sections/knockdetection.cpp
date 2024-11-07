@@ -97,7 +97,7 @@ void knockDetected(uint32_t interval)
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
-        playPatternTryDoorKnobPattern();
+        playPatternTryDoorKnob();
         timeElapsed = 0;
         Serial.println("waitForDoorKnobTouch");
         setLoopFunc(waitForDoorKnobTouch);

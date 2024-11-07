@@ -19,7 +19,7 @@ class AbstractPattern
         Serial.println("Starting pattern");
         m_timeline.start();
     }
-    virtual CRGB Evaluate(int, ledData) = 0;
+
     virtual void Update()
     {
         m_timeline.update();
@@ -31,10 +31,17 @@ class AbstractPattern
         // Serial.println( m_timeline.isRunning() ? "Running" : "Paused" );
     }
 
+
     virtual bool IsVisible(int index, ledData data)
     {
         return true;
     }
+
+    virtual CRGB Evaluate(int, ledData)
+    {
+        return CRGB::Black;
+    }
+
     
     protected:
     Tween::Timeline m_timeline;

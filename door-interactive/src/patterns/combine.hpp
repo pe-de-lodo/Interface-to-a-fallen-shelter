@@ -8,16 +8,33 @@ class CombinePattern : public AbstractPattern
     {
     }
 
+    void Start()
+    {
+        m_pattern1.Start();
+        m_pattern2.Start();
+    }
+
+    void Update()
+    {
+        m_pattern1.Update();
+        m_pattern2.Update();
+    }
+
+    bool IsVisible(int index, ledData data)
+    {
+        return m_pattern1.IsVisible(index,data)||m_pattern2.IsVisible(index,data);
+    }
+
     CRGB Evaluate(int index, ledData ledInfo)
     {
 
         CRGB pixel1 = m_pattern1.IsVisible(index,ledInfo) ? m_pattern1.Evaluate(index,ledInfo) : CRGB::Black;
-        CRGB pixel2 = m_pattern1.IsVisible(index,ledInfo) ? m_pattern2.Evaluate(index,ledInfo) : CRGB::Black;
+        CRGB pixel2 = m_pattern2.IsVisible(index,ledInfo) ? m_pattern2.Evaluate(index,ledInfo) : CRGB::Black;
 
         //blend based on luminance
-        uint8_t lum1 = CalcLum(pixel1);
-        uint8_t lum2 = CalcLum(pixel2);
-        uint8_t lumTotal = (lum1+lum2);
+        int lum1 = CalcLum(pixel1);
+        int lum2 = CalcLum(pixel2);
+        int lumTotal = (lum1+lum2);
         if(lumTotal==0){
             return CRGB::Black;
         }
@@ -25,24 +42,10 @@ class CombinePattern : public AbstractPattern
     }
 
     inline uint8_t CalcLum(CRGB pixel){
-        return 299+pixel.r+587+pixel.g+114*pixel.b/1000;
+        return min(299+pixel.r+587+pixel.g+114*pixel.b/1000,255);
     }
 
-    void Update()
-    {
-        m_pattern.Update();
-    }
-
-    bool IsVisible(int index, ledData data)
-    {
-        return true;
-    }
     
-    void Start()
-    {
-        m_pattern.Start();
-    }
-
     protected:
     AbstractPattern &m_pattern1;
     AbstractPattern &m_pattern2;
