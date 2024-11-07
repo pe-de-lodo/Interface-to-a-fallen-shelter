@@ -32,6 +32,7 @@ CircularBuffer<long, 10> recordedIntervals;
 float knockThreshVolts = 0.5f;
 int knockThreshold = 80;//1024*knockThreshVolts/3.3f
 
+long knockInteractionTimeout=0;
 
 
 void initKnock()
@@ -67,6 +68,13 @@ void listenForKnock()
     if(interval>timeout){
         sleep();        
     }
+    if(knockInteractionTimeout>0){
+        knockInteractionTimeout-=deltaTime;
+        if(knockInteractionTimeout<0){
+            knockInteractionTimeout=0;
+        }
+        return;
+    }
     if(val>knockThreshold){
         float volts = val*3.3f/1024;
         Serial.print(volts);
@@ -98,7 +106,7 @@ void knockDetected(uint32_t interval)
     Serial.println(intervalType);
 
     FastLED.showColor(intervalColors[intervalType]);
-    delay(50);
+    knockInteractionTimeout = 50;
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
