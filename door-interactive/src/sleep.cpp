@@ -13,12 +13,13 @@ void enablePeripherals()
   pinMode(LED_RED,OUTPUT);
   pinMode(LED_GREEN,OUTPUT);
   digitalWrite(LED_BLUE,LOW);
+  pinMode(LED_PIN_0,OUTPUT);
   pinMode(LED_PIN_1,OUTPUT);
-  pinMode(LED_PIN_2,OUTPUT);
   pinMode(DOOR_KNOB,INPUT);
   pinMode(KEY_SENSOR,KEY_SENSOR);
   pinMode(LIGHT_SENSOR_PIN,INPUT_PULLUP);
   pinMode(MOSFET_PIN,OUTPUT);
+  pinMode(KNOCK_PIN,INPUT);
   digitalWrite(MOSFET_PIN,HIGH);
 }
 
@@ -29,13 +30,13 @@ void sleep()
     // disconnectPin(LED_BLUE);
     // disconnectPin(LED_RED);
     // disconnectPin(LED_GREEN);
+    // disconnectPin(LED_PIN_0);
     // disconnectPin(LED_PIN_1);
-    // disconnectPin(LED_PIN_2);
     pinMode(LED_BLUE,INPUT);
     pinMode(LED_RED,INPUT);
     pinMode(LED_GREEN,INPUT);
+    pinMode(LED_PIN_0,INPUT);
     pinMode(LED_PIN_1,INPUT);
-    pinMode(LED_PIN_2,INPUT);
     pinMode(LIGHT_SENSOR_PIN,INPUT);
     pinMode(KNOCK_PIN,INPUT);
  

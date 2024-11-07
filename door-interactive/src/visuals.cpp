@@ -39,8 +39,8 @@ AbstractPattern* patternArray[] = {&pulsePattern, &glitchPattern, &noisePattern,
 
 void initVisuals()
 {
-    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, NUM_LEDS_0);  
-    FastLED.addLeds<WS2812, LED_PIN_2,GRB>(leds, NUM_LEDS_0, NUM_LEDS_1);  
+    FastLED.addLeds<WS2812, LED_PIN_0,GRB>(leds, NUM_LEDS_0);  
+    FastLED.addLeds<WS2812, LED_PIN_1,GRB>(leds, NUM_LEDS_0, NUM_LEDS_1);  
 }
 
 void updateVisuals()

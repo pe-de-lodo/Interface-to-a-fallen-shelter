@@ -1,6 +1,6 @@
 
-#define LED_PIN_1 0
-#define LED_PIN_2 1
+#define LED_PIN_0 0
+#define LED_PIN_1 1
 #define KNOCK_PIN A2
 #define LIGHT_SENSOR_PIN A3
 #define ALARM_PIN 6
