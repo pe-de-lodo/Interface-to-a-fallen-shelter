@@ -116,22 +116,22 @@ void knockPattern()
 
 void playPatternTryDoorKnob()
 {
-    canvas.TransitionToPattern(&tryDoorKnobPattern,500);
+    canvas.TransitionToPattern(&tryDoorKnobPattern,50);
 }
 
 void playPatternDoorKnobHeld()
 {
-    canvas.TransitionToPattern(&doorKnobHeldPattern,500);
+    canvas.TransitionToPattern(&doorKnobHeldPattern,50);
 }
 
 void playPatternTorchAttractor()
 {
-    canvas.TransitionToPattern(&torchAttratorPattern,500);
+    canvas.TransitionToPattern(&torchAttratorPattern,50);
 }
 
 void playPatternTorchDetected()
 {
-    canvas.TransitionToPattern(&torchDetectedPattern,500);
+    canvas.TransitionToPattern(&torchDetectedPattern,50);
 }
 
 // void playPatternKeyAttractor()
