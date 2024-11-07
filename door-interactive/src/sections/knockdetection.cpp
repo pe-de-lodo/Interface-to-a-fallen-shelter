@@ -32,6 +32,7 @@ CircularBuffer<long, 10> recordedIntervals;
 float knockThreshVolts = 0.5f;
 int knockThreshold = 80;//1024*knockThreshVolts/3.3f
 
+long knockInteractionTimeout=0;
 
 
 void initKnock()
@@ -41,13 +42,7 @@ void initKnock()
     delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
     setLoopFunc(listenForKnock);
     waitForKnockVisuals();
-    
-    // intervalColors[0] = CRGB::Green;
-    // intervalColors[1] = CRGB::Red;
-    // intervalColors[2] = CRGB::Black;
-    
-    //FastLED.showColor(CRGB(0,150,0));
-    
+        
     
     pinMode(KNOCK_PIN,INPUT);
 }
@@ -67,7 +62,15 @@ void listenForKnock()
     if(interval>timeout){
         sleep();        
     }
+    if(knockInteractionTimeout>0){
+        knockInteractionTimeout-=deltaTime;
+        if(knockInteractionTimeout<0){
+            knockInteractionTimeout=0;
+        }
+        return;
+    }
     if(val>knockThreshold){
+
         float volts = val*3.3f/1024;
         Serial.print(volts);
         Serial.print("v ");
@@ -78,7 +81,7 @@ void listenForKnock()
         recordedIntervals.push(interval);
         lastKnock = time;
         knockDetected(interval);
-        
+        knockInteractionTimeout = 50;
     }
 }
 
@@ -98,7 +101,7 @@ void knockDetected(uint32_t interval)
     Serial.println(intervalType);
 
     FastLED.showColor(intervalColors[intervalType]);
-    delay(50);
+    
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){

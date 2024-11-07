@@ -46,11 +46,18 @@ int totalLED = 0;
 void setup() {
   size(1402, 631, P3D);
   
-  printArray(Serial.list());
+  //printArray(Serial.list());
   
-  String portName = Serial.list()[Serial.list().length-1];
-  myPort = new Serial(this, portName, 115200);  
   
+  try {
+    String portName = Serial.list()[Serial.list().length-1];
+    myPort = new Serial(this, portName, 115200);  
+  }  
+  catch(Exception e){
+    println("Couldn't connect to device ");
+    exit();
+    return;
+  }
   
   fx = new PostFX(this); 
   fx.preload(BloomPass.class);
