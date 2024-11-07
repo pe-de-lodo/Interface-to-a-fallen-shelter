@@ -46,11 +46,11 @@ void PatternCanvas::Update(long deltaTime)
         }
         alpha = 1.0f*m_transitionElapsedTime/destinationPattern.duration;
 
-        Serial.print(m_transitionElapsedTime);
-        Serial.print(" ");
-        Serial.print(destinationPattern.duration);
-        Serial.print(" ");
-        Serial.println(alpha);
+        // Serial.print(m_transitionElapsedTime);
+        // Serial.print(" ");
+        // Serial.print(destinationPattern.duration);
+        // Serial.print(" ");
+        // Serial.println(alpha);
         
         if(m_transitionElapsedTime>=destinationPattern.duration){
             m_transitionStack.shift();

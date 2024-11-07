@@ -29,10 +29,9 @@ byte[] headerData = new byte[headerBytes.length];
 int bytesMissing = 0; 
 boolean drawFrame = false;
 
-float spacing = 2.28;  // Specific distance between points
 int tintVal = 150;
 
-String structData = "structData.txt";
+String structData = "led_location_data.h";
 StringList allData = new StringList();
 
 PVector xLimits = new PVector(220, 1200);
@@ -66,61 +65,60 @@ void setup() {
   image(house, 0, 0);
   allData.append("header");
   
+  if(debug)
+  {
+    println("File children: " + file.getChildCount());
+    println("Layer 0 children: " + file.getChild(0).getChildCount());
+    println("Layer 1 children: " + file.getChild(1).getChildCount());
+  }
+    
+  
+  int sectionNum = 0;
   for(int j = 0; j < file.getChildCount(); j++)
-  { 
-    aichi = file.getChild(j);
-    //println(aichi.getVertexCount());
-    
-    PVector[] vertices = new PVector[aichi.getVertexCount()];
-    ArrayList<PVector> equallySpacedPoints = new ArrayList<PVector>();
-    
-    for(int i = 0; i < aichi.getVertexCount(); i++)
-      vertices[i] = aichi.getVertex(i);
-    
-    equallySpacedPoints = getEquallySpacedPoints(vertices, spacing); 
-    
-    // Draw the shape
-    /*
-    beginShape();
-    stroke(0);
-    noFill();
-    for (PVector v : vertices) {
-      vertex(v.x, v.y);
-    }
-    endShape();
-    */
-    
-    // Draw the points
-    int sectionLED = 0;
-    
-    //allData = "tweenData ledData[ = {
-      
-    
-    fill((255 / file.getChildCount()) * j, 255, 255);
-    for (int i = 0; i < equallySpacedPoints.size(); i++)
+  {
+    for(int i = 0; i < file.getChild(j).getChildCount(); i++, sectionNum++)
     {
-      PVector p = equallySpacedPoints.get(i);
-      leds.add(p);
+      PShape shape = file.getChild(j).getChild(i);
       
-      PVector n = NormalizePoint(p);
-      String ledData = "{" + j + ", " + sectionLED + ", " + n.x + ", " + n.y + "}";
-      if(j != file.getChildCount()-1 || i != equallySpacedPoints.size()-1)
-        ledData += ",";
+      String name = shape.getName();
+      int numLED = Integer.parseInt(name.substring(1));
+      if(shape.getChildCount() > 0)
+        shape = shape.getChild(0);
+            
       
-      //println(ledData);
-      allData.append(ledData);      
-      //allData += ledData;
-      sectionLED++;
-      totalLED++;
-      ellipse(p.x, p.y, 5, 5);
+      ArrayList<PVector> equallySpacedPoints = new ArrayList<PVector>();
+      
+      equallySpacedPoints = getEquallySpacedPoints(shape, numLED);
+      
+      //allData = "tweenData ledData[ = {
+        
+      
+      fill((255 / file.getChildCount()) * j, 255, 255);
+      for (int k = 0; k < equallySpacedPoints.size(); k++)
+      {
+        PVector p = equallySpacedPoints.get(k);
+        leds.add(p);
+        
+        PVector n = NormalizePoint(p);
+        String ledData = "{" + sectionNum + ", " + k + ", " + n.x + ", " + n.y + "}";
+        if(j != file.getChildCount()-1 || i != equallySpacedPoints.size()-1)
+          ledData += ",";
+        
+        //println(ledData);
+        allData.append(ledData);      
+        //allData += ledData;
+        totalLED++;
+        ellipse(p.x, p.y, 5, 5);
+      }
     }
   }
-  totalLED = 540;
+  
+  //totalLED = 540;
   println("Total LED: " + totalLED);
   
   colors = new byte[totalLED*3];
   
-  allData.set(0, "tweenData ledData[" + totalLED + "] = {");
+  allData.set(0, "#include <ledpatterns.h>\n\nledData ledLocationData[" + totalLED + "] = {");
   allData.append(";");
   
   //println(totalLED);
@@ -131,6 +129,8 @@ void setup() {
 } 
 
 void draw(){
+  
+  
   if(myPort==null) return;
   //image(house, 0, 0);
   
@@ -190,10 +190,6 @@ void draw(){
         //drawFrame = true;
       }
     }
-    /*else
-    {
-      myPort.clear();
-    }*/
     else
     {
       if(debug)
@@ -237,18 +233,22 @@ void draw(){
     .bloom(0.7, 20, 40)
     .compose();
   }
+  
+  
 }
 
 
 
-ArrayList<PVector> getEquallySpacedPoints(PVector[] vertices, float spacing) {
+ArrayList<PVector> getEquallySpacedPoints(PShape s, int totalPoints) {
   ArrayList<PVector> points = new ArrayList<PVector>();
   
-  // Step 1: Calculate the total length of the polyline (without closing)
+  PVector[] vertices = new PVector[s.getVertexCount()];
+  for(int i = 0; i < s.getVertexCount(); i++)
+    vertices[i] = s.getVertex(i);
+      
   float totalLength = 0;
-  float[] segmentLengths = new float[vertices.length - 1];  // One less to avoid wrap
-  
-  for (int i = 0; i < vertices.length - 1; i++) {  // Stop at the second-to-last vertex
+  float[] segmentLengths = new float[vertices.length-1];  // One less to avoid wrap
+  for (int i = 0; i < vertices.length-1; i++) {  // Stop at the second-to-last vertex
     PVector v1 = vertices[i];
     PVector v2 = vertices[i + 1];
     float segmentLength = PVector.dist(v1, v2);
@@ -256,8 +256,8 @@ ArrayList<PVector> getEquallySpacedPoints(PVector[] vertices, float spacing) {
     totalLength += segmentLength;
   }
   
-  // Step 2: Calculate the total number of points that can fit along the polyline
-  int totalPoints = int(totalLength / spacing) +1;
+  float spacing = totalLength / (totalPoints-1);
+  
   
   // Step 3: Interpolate along the shape to get the points
   float currentDistance = 0;
@@ -269,6 +269,7 @@ ArrayList<PVector> getEquallySpacedPoints(PVector[] vertices, float spacing) {
       currentDistance -= segmentLengths[currentSegment];
       currentSegment++;
       if (currentSegment >= segmentLengths.length) {
+        points.add(vertices[currentSegment]);
         return points;  // Stop if we've placed all points along the polyline
       }
     }
@@ -283,7 +284,6 @@ ArrayList<PVector> getEquallySpacedPoints(PVector[] vertices, float spacing) {
     
     currentDistance += spacing;
   }
-  
   
   return points;
 }
