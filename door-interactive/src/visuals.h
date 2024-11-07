@@ -3,11 +3,14 @@ void updateVisuals();
 void playPatternAlarmAttractorPattern();
 void loopAlarmAttractor();
 void waitForKnockVisuals();
-void tryDoorKnobPatternLoop(void);
+void knockPattern();
 void playPattern(int ptrnIndex, long duration = 500);
 void playRangePattern(int offset, int num);
-void playPatternTryDoorKnobPattern();
+void highlightSection(int section);
+void playPatternTryDoorKnob();
+void playPatternDoorKnobHeld();
 void playPatternTorchAttractor();
+void playPatternTorchDetected();
 void playPatternKeyAttractor();
 void playPatternFinale();
 

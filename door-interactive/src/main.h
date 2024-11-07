@@ -15,9 +15,9 @@
 #define INTERACTION_TIMEOUT 30000
 #define FINALE_DURATION 20000
 
-#define SECTION_DOOR (1<<0)
-#define SECTION_CRACK_L (1<<1)
-#define SECTION_CRACK_R (1<<2)
+#define SECTION_DOOR (0b000011111100000)
+#define SECTION_CRACK_L (0b000000000011111)
+#define SECTION_CRACK_R (0b111100000000000)
 
 void setLoopFunc(void loopFunc());
 inline bool calcDeltaTime();

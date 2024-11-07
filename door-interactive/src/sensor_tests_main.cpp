@@ -3,7 +3,7 @@
 #include <SdFat.h>
 #include <FastLED.h>
 #include "main.h"
-#include "light_comms.h"
+#include "sections/light_comms.h"
 #include "sleep.h"
 #include "alarm.h"
 #include <SimpleSerialShell.h>

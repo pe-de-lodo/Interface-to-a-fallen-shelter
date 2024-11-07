@@ -1,3 +1,2 @@
-
 void initLightComms();
 void lightCommsLoop();

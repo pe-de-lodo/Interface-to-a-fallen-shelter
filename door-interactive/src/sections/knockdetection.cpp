@@ -5,7 +5,7 @@
 #include "sections/knockdetection.h"
 #include "sleep.h"
 #include "visuals.h"
-#include "light_comms.h"
+#include "sections/light_comms.h"
 
 const uint32_t shortInterval = 1000;
 const uint32_t longInterval = 2000;
@@ -42,21 +42,13 @@ void initKnock()
     delay(5); // fix for mysterious voltage spike on MCU ADC min on power up
     setLoopFunc(listenForKnock);
     waitForKnockVisuals();
-        
-    
     pinMode(KNOCK_PIN,INPUT);
 }
 
 void listenForKnock()
 {
-    // pixels.clear();
-    // pixels.setPixelColor(0, pixels.Color(255,0,255));
-    // pixels.show();
-    //delay(1000);
     uint32_t time = millis();
     uint32_t interval = time-lastKnock;
-
-
     
     long val =  analogRead(KNOCK_PIN);
     if(interval>timeout){
@@ -70,7 +62,7 @@ void listenForKnock()
         return;
     }
     if(val>knockThreshold){
-
+        knockPattern();
         float volts = val*3.3f/1024;
         Serial.print(volts);
         Serial.print("v ");
@@ -105,7 +97,7 @@ void knockDetected(uint32_t interval)
     FastLED.showColor(CRGB::Black);
 
     if(intervalType==0){
-        playPatternTryDoorKnobPattern();
+        playPatternTryDoorKnob();
         timeElapsed = 0;
         Serial.println("waitForDoorKnobTouch");
         setLoopFunc(waitForDoorKnobTouch);
@@ -119,13 +111,25 @@ void waitForDoorKnobTouch()
 {
 
     bool isHeld = digitalRead(DOOR_KNOB);
-    
+
+
+    //rising edge
+    if(isHeld && doorKnobHeldElapsed==0 ){
+        playPatternDoorKnobHeld();
+    }
+
+    //falling edge
+    if(!isHeld && doorKnobHeldElapsed>0){
+        playPatternTryDoorKnob();
+    }
+
     if(isHeld){
         doorKnobHeldElapsed += deltaTime;
     }
     else {
         doorKnobHeldElapsed = 0;
     }
+
 
     if(doorKnobHeldElapsed > 200){
         //setLoopFunc();

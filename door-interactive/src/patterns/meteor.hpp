@@ -17,20 +17,26 @@ class MeteorPattern : public AbstractPattern
 {
     float pos = 0;
     const CRGBPalette16 m_colorPalette = asteroidPalette;
-
+    float centerX;
+    float centerY;
     public:
+    MeteorPattern(float posX, float posY)
+    {
+        centerX=posX;
+        centerY=posY;
+    }
+
     void Start()
     {
         AbstractPattern::Start();
         m_timeline.mode(Tween::Mode::REPEAT_SQ);
         m_timeline.add(pos).init(0).then(0.5,4000);
-
     }
 
     CRGB Evaluate(int index, ledData ledInfo)
     {        
         
-        float d = this->ledDistanceFrom(0.5,0.5,ledInfo);
+        float d = this->ledDistanceFrom(centerX,centerY,ledInfo);
         float k = constrain(20*(pos-d),0,1);
 
         return ColorFromPalette(m_colorPalette,uint8_t(k*0xff));

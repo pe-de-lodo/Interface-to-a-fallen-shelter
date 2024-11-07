@@ -3,10 +3,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-
-
-
-
   DEFINE_GRADIENT_PALETTE( testPalette ) {
     0,   0, 0,  0,
     32,  255, 0, 0,
@@ -17,7 +13,6 @@
     192,  0, 255, 0,
     224,  255, 255, 255,
     255,  0, 0, 0};
-
 
 
 class BlinkPattern : public AbstractPattern
@@ -37,9 +32,6 @@ class BlinkPattern : public AbstractPattern
         return CHSV(0,255,(int)(blinkVal*255));        
     }
 };
-
-
-
 
 
 class TestPattern : public AbstractPattern 
