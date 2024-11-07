@@ -7,6 +7,7 @@ import ch.bildspur.postfx.builder.*;
 import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
+
 boolean debug = true;
 
 PImage house;
@@ -18,7 +19,7 @@ Serial myPort;  // Create object from Serial class
 PostFX fx;
 
 ArrayList<PVector> leds = new ArrayList<PVector>();
-byte[] colors = new byte[1633];
+byte[] colors;
 
 String header = "\nHEADER >>\n";
 byte[] headerBytes = header.getBytes();
@@ -104,7 +105,7 @@ void setup() {
         
         PVector n = NormalizePoint(p);
         String ledData = "{" + sectionNum + ", " + k + ", " + n.x + ", " + n.y + "}";
-        if(j != file.getChildCount()-1 || i != equallySpacedPoints.size()-1)
+        if(!(j == 0 && i == 0 && k == equallySpacedPoints.size()-1))
           ledData += ",";
         
         //println(ledData);
@@ -116,13 +117,16 @@ void setup() {
     }
   }
   
-  //totalLED = 540;
-  println("Total LED: " + totalLED);
+  if(debug)
+  {
+    println("Total LED: " + totalLED);
+    println("Header Bytes: " + headerBytes.length);
+  }
   
   colors = new byte[totalLED*3];
   
   allData.set(0, "#include <ledpatterns.h>\n\nledData ledLocationData[" + totalLED + "] = {");
-  allData.append(";");
+  allData.append("};");
   
   //println(totalLED);
   if(outputData);
@@ -302,7 +306,8 @@ void mouseClicked() {
   //println("mouse:" + mouseX + ", " + mouseY);
   int closestIndex = ClosestLED(mouseX, mouseY);
   int cIdx = closestIndex * 3;
-  println(UByte(colors[cIdx]) + ", " + UByte(colors[cIdx+1]) + ", " + UByte(colors[cIdx+2]));
+  if(debug)
+    println(UByte(colors[cIdx]) + ", " + UByte(colors[cIdx+1]) + ", " + UByte(colors[cIdx+2]));
 }
 
 

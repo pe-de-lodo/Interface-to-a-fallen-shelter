@@ -15,6 +15,7 @@
 #include "patterns/meteor.hpp"
 #include "patterns/mask.hpp"
 #include "patterns/range.hpp"
+#include "patterns/desintegrate.hpp"
 
 CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
@@ -29,13 +30,14 @@ Ripples finalePattern;
 PulsePattern pulsePattern(2000);
 NoisePattern noisePattern(60000, NUM_LEDS, 0.5, 0.3, 50);
 GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
+DesintegratePattern desintegratePattern(10000, NUM_LEDS);
 MeteorPattern meteorPattern;
 MaskPattern meteorPatternMasked(SECTION_CRACK_L | SECTION_CRACK_R, meteorPattern );
 RangePattern rangePattern;
 
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&pulsePattern, &glitchPattern, &noisePattern, &torchAttratorPattern, &keyAttractorPattern, &finalePattern, &blankPattern, &meteorPattern};
+AbstractPattern* patternArray[] = {&pulsePattern, &glitchPattern, &noisePattern, &desintegratePattern, &keyAttractorPattern, &finalePattern, &blankPattern, &meteorPattern};
 
 void initVisuals()
 {
