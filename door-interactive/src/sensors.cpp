@@ -13,6 +13,8 @@ void printAllSensorValues()
   bool keyInserted = digitalRead(KEY_SENSOR);
 
   bool alarmWake = digitalRead(ALARM_PIN);
+
+  //int batteryLevel = analogRead(PIN_VBAT);
   //bool isCharging = digitalRead(23)==HIGH;
 
   Serial.print("handSensor=");
