@@ -11,7 +11,6 @@
 #include "patterns/cycleleds.hpp"
 #include "patterns/ripples.hpp"
 #include "patterns/glitch.hpp"
-#include "patterns/additiveglitch.hpp"
 #include "patterns/noise.hpp"
 #include "patterns/meteor.hpp"
 #include "patterns/mask.hpp"
@@ -26,7 +25,7 @@ CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
 PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
-PulsePattern pulsePattern(2000, 0);
+PulsePattern pulsePattern(2000);
 NoisePattern noisePattern(60000, NUM_LEDS, 0.5, 0.3, 50);
 
 DesintegratePattern desintegratePattern(10000, NUM_LEDS);
@@ -38,12 +37,13 @@ RangePattern rangePattern;
 MaskPattern sectionMask(0,rangePattern);
 CycleLeds magentaCycle(CRGB(0xec,0x10,0xd4),24,2,1);
 CycleLeds bluePattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
-// MaskPattern rippleMask(SECTION_CRACK_L|SECTION_CRACK_R,ripplesForCombine);
-// GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
-// CombinePattern glitchAndRipples(glitchPattern,ripplesForCombine);
+Ripples ripplesForCombine;
+MaskPattern rippleMask(SECTION_CRACK_L|SECTION_CRACK_R,ripplesForCombine);
+GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
+CombinePattern glitchAndRipples(glitchPattern,ripplesForCombine);
 
 /* ALARM ATTRACTOR */
-PulsePattern pulseAttractorPattern(500, 255);
+PulsePattern pulseAttractorPattern(500);
 MaskPattern alarmAttractorPattern(SECTION_FLAG, pulseAttractorPattern);
 
 
@@ -70,64 +70,13 @@ MaskPattern torchAttratorPattern(SECTION_DOOR, torchAttPattern);
 GlitchPattern torchDetectedPattern(50, 10, NUM_LEDS, 2, NUM_LEDS);
 
 
-/* FINALE 1 - DESINTEGRATE & RIPPLES */
+/* FINALE */
 DesintegratePattern finaleDesintegratePattern(10000, NUM_LEDS);
-Ripples ripplesForCombine;
 CombinePattern desintegrateIntoRipples(finaleDesintegratePattern,ripplesForCombine);
-void playPatternFinale_1()
-{
-    desintegrateIntoRipples.Start();
-    canvas.TransitionToPattern(&desintegrateIntoRipples,50);    // IDEA: Would be nice to have an offset to chain several pattern transitions.
-}
+FadePattern finaleFadePatter(CHSV(0, 255, 255), 2000, true);
 
-/* FINALE 2  - RIPPLES */
-// void playPatternFinale_2()
-// {
-//     canvas.TransitionToPattern(&ripplesForCombine,500);
-// }
 
-/* FINALE 3 - RIPPLES & PULSE */
-uint8_t pulsingFinaleHue = 160;
-PulsePattern pulsingFinalePattern(2000, 255, pulsingFinaleHue);
-CombinePattern ripplesPulsing(ripplesForCombine, pulsingFinalePattern);
-void playPatternFinale_3()
-{
-    canvas.TransitionToPattern(&ripplesPulsing,500);
-}
-
-/* FINALE 4 - NOISE */
-// FadePattern finaleFadePattern(CHSV(pulsingFinaleHue, 255, 255), 2000, true);
-NoisePattern finaleNoisePattern(60000, NUM_LEDS, 0.5, 0.3, 50, 135, 50000, 0.2, 0.3, 20000);
-void playPatternFinale_4()
-{
-    finaleNoisePattern.Start();
-    canvas.TransitionToPattern(&finaleNoisePattern, 500);
-}
-
-/* FINALE 5 - METEOR */
-MeteorPattern finaleMeteorPattern(0.507,0.537);
-void playPatternFinale_5()
-{
-    canvas.TransitionToPattern(&finaleMeteorPattern, 500);
-}
-
-/* FINALE 6 - METEOR & ADDGLITCH */
-// AddGlitchPattern addGlitch(CHSV(0, 0, 0), 100, 10, 50, 3, NUM_LEDS);
-GlitchPattern finaleGlitchPattern(50, 10, NUM_LEDS, 2, NUM_LEDS);
-CombinePattern finaleMetorGlitch(finaleMeteorPattern, finaleGlitchPattern);
-void playPatternFinale_6()
-{
-    finaleGlitchPattern.Start();
-    canvas.TransitionToPattern(&finaleMetorGlitch, 500);
-}
-
-/* FINALE 7 - ADDGLITCH */
-void playPatternFinale_7()
-{
-    canvas.TransitionToPattern(&finaleGlitchPattern, 500);
-}
-
-// Ripples finalePattern;
+Ripples finalePattern;
 
 // CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
 // AbstractPattern& torchDetectedPattern = glitchAndRipples;
@@ -136,7 +85,7 @@ void playPatternFinale_7()
 
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&desintegrateIntoRipples, &ripplesPulsing, &finaleNoisePattern, &finaleMeteorPattern, &finaleMetorGlitch, &finaleGlitchPattern, &desintegrateIntoRipples, &ripplesForCombine};
+AbstractPattern* patternArray[] = {&alarmAttractorPattern, &waitForKnockPattern, &knockNoisePatter, &tryDoorKnobPattern, &doorKnobHeldPattern, &torchAttratorPattern, &torchDetectedPattern, &desintegrateIntoRipples, &glitchAndRipples};
 
 void initVisuals()
 {
@@ -228,4 +177,15 @@ void playPatternTorchDetected()
 //     canvas.TransitionToPattern(&keyAttractorPattern,500);
 // }
 
+void playPatternFinale_1()
+{
+    desintegrateIntoRipples.Start();
+    canvas.TransitionToPattern(&desintegrateIntoRipples,50);    // IDEA: Would be nice to have an offset to chain several pattern transitions.
+    // canvas.TransitionToPattern(&finalePattern,500);    
+}
 
+void playPatternFinale_2()
+{
+    finaleFadePatter.Start();
+    canvas.TransitionToPattern(&finaleFadePatter,500);
+}

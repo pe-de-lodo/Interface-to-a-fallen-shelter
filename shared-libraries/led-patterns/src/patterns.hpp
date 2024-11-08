@@ -89,7 +89,7 @@ class PulsePattern : public AbstractPattern
 
 
     public:
-    PulsePattern(int speed, uint8_t sat)
+    PulsePattern(int speed, bool sat = 255)
     {
         m_sat = sat;
         m_timeline.add(pulseVal).init(0)
@@ -97,17 +97,6 @@ class PulsePattern : public AbstractPattern
             .then<Ease::Sine>(0,speed, [this]() {
                 m_hue = random(255);
             });
-        m_timeline.mode(Tween::Mode::REPEAT_TL);
-        m_timeline.start();
-    }
-
-    PulsePattern(int speed, uint8_t sat, uint8_t hue)
-    {
-        m_sat = sat;
-        m_hue = hue;
-        m_timeline.add(pulseVal).init(0)
-            .then<Ease::Sine>(1,speed)
-            .then<Ease::Sine>(0,speed);
         m_timeline.mode(Tween::Mode::REPEAT_TL);
         m_timeline.start();
     }

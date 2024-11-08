@@ -40,15 +40,14 @@ void loopWaitForKey()
 
 void initFinale()
 {
-    timeElapsed = 0;
     Serial.println("play finale");
     setLoopFunc(loopFinale);
 }
 
 
 int finalePhase = 0;
-void (*finaleFunctionArray[])() =   {playPatternFinale_1, playPatternFinale_3, playPatternFinale_4, playPatternFinale_5, playPatternFinale_6, playPatternFinale_7, sleep};
-uint32_t finaleDuration[] = {0, 40000, 8000, 20000, 10000, 3000, 20000};
+void (*finaleFunctionArray[])() =   {playPatternFinale_1, playPatternFinale_2, sleep};
+uint32_t finaleDuration[] =         {0, 20000, 20000};
 
 void loopFinale()
 {
@@ -59,7 +58,7 @@ void loopFinale()
     {
         finaleFunctionArray[finalePhase]();
 
-        timeElapsed = 0;
+        timeElapsed -= finaleDuration[finalePhase];
         finalePhase++;
     }
 }
