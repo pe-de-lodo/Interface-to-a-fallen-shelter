@@ -46,7 +46,7 @@ void sleep()
     //disable i2c interface
     NRF_TWI1->ENABLE       = TWI_ENABLE_ENABLE_Disabled << TWI_ENABLE_ENABLE_Pos;
     FastLED.clear();
-    delay(1000);
+    delay(300);
     
     NRF_POWER->SYSTEMOFF=1;
 }
@@ -63,7 +63,7 @@ void QSPIF_sleep(void)
 void configSleep()
 {
 
-    pinMode(WAKEUP_PIN, INPUT_SENSE_HIGH);
+    pinMode(WAKEUP_PIN, INPUT_PULLDOWN_SENSE);
     pinMode(ALARM_PIN, INPUT_PULLUP_SENSE); //INPUT_PULLUP_SENSE
 
     //QSPIF_sleep();
