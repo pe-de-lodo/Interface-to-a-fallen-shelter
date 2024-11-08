@@ -62,7 +62,7 @@ void lightCommsLoop(){
     maxVal = maxVal+ease*(average-maxVal);
 
     bool dark = val > (minVal+(maxVal-minVal)/2);
-    if((maxVal-minVal)<50){
+    if((maxVal-minVal)<200){
         dark = true;
     }
 
