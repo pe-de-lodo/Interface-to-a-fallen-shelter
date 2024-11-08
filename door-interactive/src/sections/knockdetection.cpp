@@ -32,6 +32,8 @@ CircularBuffer<long, 10> recordedIntervals;
 float knockThreshVolts = 0.5f;
 int knockThreshold = 80;//1024*knockThreshVolts/3.3f
 
+int knobHeldTime = 2000;
+
 long knockInteractionTimeout=0;
 
 
@@ -131,7 +133,7 @@ void waitForDoorKnobTouch()
     }
 
 
-    if(doorKnobHeldElapsed > 200){
+    if(doorKnobHeldElapsed > knobHeldTime){
         //setLoopFunc();
         setLoopFunc(initLightComms);
     }

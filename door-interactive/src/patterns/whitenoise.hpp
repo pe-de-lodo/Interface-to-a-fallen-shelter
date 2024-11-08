@@ -4,26 +4,38 @@
 
 class WhiteNoisePattern : public AbstractPattern
 {
-    uint16_t* desintegrateValues;
-    uint16_t desintegrateVal;
-    // int glitchNum;
-    // int numLED;
+    uint8_t* noiseValues;
+    uint8_t timelineVal;
+
+    uint8_t lowTresh;
+    uint8_t highTresh;
+    int numLED;
 
     public:
-    WhiteNoisePattern(int speed, int numled)
+    WhiteNoisePattern(int speed, int numled, int low = 0, int high = 255)
     {
-        // numLED = numled;
-        desintegrateValues = new uint16_t[numled];
-        for(int i = 0; i < numled; i++)
-            desintegrateValues[i] = random(USHRT_MAX);
+        numLED = numled;
+        lowTresh = low;
+        highTresh = high;
+        noiseValues = new uint8_t[numled];
+        NoiseValues();
 
-        m_timeline.add(desintegrateVal).init(0).then(USHRT_MAX, speed);
+        m_timeline.add(timelineVal).init(0).then(1, speed, [this]() { NoiseValues(); });
         m_timeline.mode(Tween::Mode::REPEAT_TL);
         m_timeline.start();
     }
 
+    void NoiseValues()
+    {
+        for(int i = 0; i < numLED; i++)
+            noiseValues[i] = random(255);
+    }
+
     CRGB Evaluate(int indx, ledData)
     {
-        return CHSV(0,0,random(2)*255);
+        uint8_t b = noiseValues[indx];
+        b = b <= lowTresh || lowTresh == 255 ? 0 : b;
+        b = b > highTresh || highTresh == 0 ? 255 : b;
+        return CHSV(0, 0, b);
     }
 };

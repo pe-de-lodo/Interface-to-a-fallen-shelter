@@ -19,6 +19,7 @@
 #include "patterns/whitenoise.hpp"
 #include "patterns/combine.hpp"
 #include "patterns/superblink.hpp"
+#include "patterns/chase.hpp"
 
 CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
@@ -26,45 +27,60 @@ PatternCanvas canvas(leds,ledLocationData,NUM_LEDS);
 
 PulsePattern pulsePattern(2000);
 NoisePattern noisePattern(60000, NUM_LEDS, 0.5, 0.3, 50);
-GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
+
 DesintegratePattern desintegratePattern(10000, NUM_LEDS);
 WhiteNoisePattern whiteNoisePattern(10000, NUM_LEDS);
 
 MeteorPattern meteorPattern(0.507,0.537);
 MaskPattern meteorPatternMasked(SECTION_CRACK_L | SECTION_CRACK_R, meteorPattern );
-MaskPattern meteorPatternMaskedL(SECTION_CRACK_L, meteorPattern );
-MaskPattern meteorPatternMaskedR(SECTION_CRACK_R, meteorPattern );
-MaskPattern meteorPatternMaskedD(SECTION_DOOR, meteorPattern );
-MaskPattern meteorPatternMaskedP(SECTION_FLAG, meteorPattern );
-MaskPattern doorGlitch(SECTION_DOOR,glitchPattern);
 RangePattern rangePattern;
 MaskPattern sectionMask(0,rangePattern);
 CycleLeds magentaCycle(CRGB(0xec,0x10,0xd4),24,2,1);
 CycleLeds bluePattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
 Ripples ripplesForCombine;
 MaskPattern rippleMask(SECTION_CRACK_L|SECTION_CRACK_R,ripplesForCombine);
+GlitchPattern glitchPattern(50, 10, 50, NUM_LEDS);
 CombinePattern glitchAndRipples(glitchPattern,ripplesForCombine);
 
 /* ALARM ATTRACTOR */
 PulsePattern pulseAttractorPattern(500);
-MaskPattern alarmAttractorPattern(SECTION_FLAG, pulseAttractorPattern); //reddish
-
-/* DOOR - WAIT FOR KNOCK */
-SuperBlinkPattern doorBlinkPattern(100, 2, 500, 3000);
-MaskPattern waitForKnockPattern(SECTION_DOOR, doorBlinkPattern); //reddish
-// CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),50); //magenta
+MaskPattern alarmAttractorPattern(SECTION_FLAG, pulseAttractorPattern);
 
 
-CycleLeds tryDoorKnobPattern(CRGB(0x28,0xac,0x13),100,5,-1); //greenish
-MaskPattern doorKnobHeldPattern(SECTION_DOOR,glitchPattern);
-CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
-AbstractPattern& torchDetectedPattern = glitchAndRipples;
-CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
+/* WAIT FOR KNOCK & KNOCK PATTERN */
+SuperBlinkPattern doorBlinkPattern(100, 2, 300, 2000);
+MaskPattern waitForKnockPattern(SECTION_DOOR, doorBlinkPattern);
+
+WhiteNoisePattern doorNoisePattern(100, NUM_LEDS, 127, 127);
+MaskPattern knockNoisePatter(SECTION_DOOR,doorNoisePattern);
+
+
+/* WAIT FOR KNOB & KNOB PATTERN */
+int knobHue = random(255);
+ChasePattern doorKnobPattern(CHSV(knobHue, 255, 255), 4000, 112, 0, 7);
+MaskPattern tryDoorKnobPattern(SECTION_DOOR, doorKnobPattern);
+
+FadePattern knobFadePatter(CHSV(knobHue, 255, 255), 2000, true);
+MaskPattern doorKnobHeldPattern(SECTION_DOOR,knobFadePatter);
+
+
+/* WAIT FOR TORCH & TORCH PATTERN */
+PulsePattern torchAttPattern(2000, 0);
+MaskPattern torchAttratorPattern(SECTION_DOOR, torchAttPattern);
+GlitchPattern torchDetectedPattern(50, 10, NUM_LEDS, 2, NUM_LEDS);
+
+
+/* FINALE */
 Ripples finalePattern;
+
+// CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
+// AbstractPattern& torchDetectedPattern = glitchAndRipples;
+
+// CycleLeds keyAttractorPattern(CRGB(0x55,0x8d,0xd4),100,20,-1); //blue
 
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&alarmAttractorPattern, &meteorPatternMaskedL, &meteorPatternMaskedR, &meteorPatternMaskedD, &meteorPatternMaskedP, &finalePattern, &doorGlitch, &meteorPattern, &glitchAndRipples};
+AbstractPattern* patternArray[] = {&alarmAttractorPattern, &waitForKnockPattern, &knockNoisePatter, &tryDoorKnobPattern, &doorKnobHeldPattern, &torchAttratorPattern, &torchDetectedPattern, &meteorPattern, &glitchAndRipples};
 
 void initVisuals()
 {
@@ -126,7 +142,7 @@ void waitForKnockVisuals()
 
 void knockPattern()
 {
-    canvas.TransitionToPattern(&doorGlitch,50);
+    canvas.TransitionToPattern(&knockNoisePatter,50);
     canvas.TransitionToPattern(&waitForKnockPattern,50);
 }
 
@@ -137,6 +153,7 @@ void playPatternTryDoorKnob()
 
 void playPatternDoorKnobHeld()
 {
+    doorKnobHeldPattern.Start();
     canvas.TransitionToPattern(&doorKnobHeldPattern,50);
 }
 

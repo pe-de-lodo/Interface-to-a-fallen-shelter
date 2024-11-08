@@ -59,14 +59,39 @@ class TestPattern : public AbstractPattern
     }
 };
 
+class FadePattern : public AbstractPattern
+{
+    float fadeVal;
+    CHSV m_color;
+
+    public:
+    FadePattern(CHSV color, int time, bool fadeIn)
+    {
+        m_color = color;
+        if(fadeIn)
+            m_timeline.add(fadeVal).init(0).then<Ease::SineIn>(1, time); // TODO: Make the easing an argument
+        else
+            m_timeline.add(fadeVal).init(1).then<Ease::SineIn>(0, time);
+    }
+
+    CRGB Evaluate(int, ledData)
+    {
+        m_color.v = fadeVal * 255;
+        return m_color;
+    }
+};
+
 class PulsePattern : public AbstractPattern
 {
     float pulseVal;
     uint8_t m_hue = random(255);
+    uint8_t m_sat;
+
 
     public:
-    PulsePattern(int speed)
+    PulsePattern(int speed, bool sat = 255)
     {
+        m_sat = sat;
         m_timeline.add(pulseVal).init(0)
             .then<Ease::Sine>(1,speed)
             .then<Ease::Sine>(0,speed, [this]() {
@@ -78,7 +103,7 @@ class PulsePattern : public AbstractPattern
 
     CRGB Evaluate(int, ledData)
     {
-        return CHSV(m_hue,255,(int)(pulseVal*255));        
+        return CHSV(m_hue,m_sat,(int)(pulseVal*255));        
     }
 };
 
