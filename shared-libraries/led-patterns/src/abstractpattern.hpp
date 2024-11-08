@@ -16,7 +16,6 @@ class AbstractPattern
     virtual void Start()
     {
         m_timeline.restart();
-        Serial.println("Starting pattern");
         m_timeline.start();
     }
 

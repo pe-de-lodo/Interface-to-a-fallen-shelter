@@ -7,8 +7,8 @@
 #include "visuals.h"
 #include "sections/light_comms.h"
 
-const uint32_t shortInterval = 1000;
-const uint32_t longInterval = 2000;
+const uint32_t shortInterval = 2000;
+const uint32_t longInterval = 4000;
 const uint32_t timeout = INTERACTION_TIMEOUT;
 
 extern uint32_t deltaTime;
@@ -52,7 +52,11 @@ void listenForKnock()
     uint32_t time = millis();
     uint32_t interval = time-lastKnock;
     
-    long val =  analogRead(KNOCK_PIN);
+
+    long val = 0;
+    for(int i=100;i>0;i--){
+        val=max(val,analogRead(KNOCK_PIN));
+    }
     if(interval>timeout){
         sleep();        
     }
