@@ -173,7 +173,7 @@ int commandSection(int argc, char **argv)
 }
 
 typedef void (*LoopFunc) (void);
-LoopFunc loopFuncs[] = { &initAlarmAttractor, &initKnock, &waitForDoorKnobTouch, &initLightComms, &initWaitForKey };
+LoopFunc loopFuncs[] = { &initAlarmAttractor, &initKnock, &waitForDoorKnobTouch, &initLightComms, &initWaitForKey, &initFinale };
 int commandLoop(int argc, char **argv)
 {
     if(argc==1){

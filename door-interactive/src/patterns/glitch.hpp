@@ -8,6 +8,7 @@ class GlitchPattern : public AbstractPattern
     int glitchOffset = 0;
     float glitchNum;
     int numLED;
+    float glitchTime;
 
     public:
     GlitchPattern(int speed, int mmin, int mmax, int numled)
@@ -18,6 +19,24 @@ class GlitchPattern : public AbstractPattern
             .then<Ease::Sine>(0,speed, [this, mmin, mmax]() {
                 glitchOffset = random(numLED);
                 glitchNum = random(mmin, mmax);
+            });
+        m_timeline.mode(Tween::Mode::REPEAT_TL);
+        m_timeline.start();
+    }
+
+    GlitchPattern(int speed, float speedUp, int mmin, int mmax, float inc, int numled)
+    {
+        glitchTime = speed;
+        numLED = numled;
+        m_timeline.add(glitchVal).init(0)
+            // .then<Ease::Sine>(1,speed)
+            .then<Ease::Sine>(0, glitchTime, [this, mmin, mmax, speedUp, inc]() {
+                glitchOffset = random(numLED);
+                glitchNum = random(mmin, mmax);
+                glitchNum += inc;
+                glitchNum = min(glitchNum, mmax);
+                glitchTime -= speedUp;
+                glitchTime = max(glitchTime, 10);
             });
         m_timeline.mode(Tween::Mode::REPEAT_TL);
         m_timeline.start();
