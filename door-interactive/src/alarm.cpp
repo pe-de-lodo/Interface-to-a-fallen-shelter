@@ -98,7 +98,7 @@ bool initWakeAlarm()
 
     if(!rtc.setAlarm1(
             nextAlarm,
-            DS3231_A1_Date 
+            DS3231_A1_Hour 
     )) {
         Serial.println("Error, alarm wasn't set!");
     }else {
