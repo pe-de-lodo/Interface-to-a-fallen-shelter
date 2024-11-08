@@ -14,4 +14,9 @@ void playPatternTorchDetected();
 void playPatternKeyAttractor();
 void playPatternFinale_1();
 void playPatternFinale_2();
+void playPatternFinale_3();
+void playPatternFinale_4();
+void playPatternFinale_5();
+void playPatternFinale_6();
+void playPatternFinale_7();
 

@@ -6,7 +6,7 @@
 #include "main.h"
 #include "sleep.h"
 #include "sections/knockdetection.h"
-#include "sections/light_comms.h"
+#include "light_comms.h"
 #include "alarm.h"
 #include "visuals.h"
 #include "ledpatterns.h"
@@ -32,15 +32,15 @@ void setup()
   enablePeripherals();
   Serial.println("enablePeripherals");
   delay(20);
-  configSleep();
   bool wokeFromAlarm = initWakeAlarm();
+  configSleep();
   initVisuals();
 
-  if(wokeFromAlarm){
-    setLoopFunc(initAlarmAttractor);
-  } {
-    setLoopFunc(initKnock);
-  }
+  // if(wokeFromAlarm){
+  //   setLoopFunc(initAlarmAttractor);
+  // } {
+  //   setLoopFunc(initKnock);
+  // }
   
   addCommands();
 
@@ -78,18 +78,12 @@ inline bool calcDeltaTime()
   
   uint32_t time = millis();
   deltaTime = time-lastLoop;
-  lastLoop = time;
+    lastLoop = time;
   
-  bool redraw = (time-lastRedraw)>minRedrawDeltaTime;  
+  bool redraw = (redrawDeltaTime-time)>minRedrawDeltaTime;  
   if(redraw){
     redrawDeltaTime = time-lastRedraw;
     lastRedraw = time;
-    digitalWrite(LED_RED,LOW);
-    digitalWrite(LED_BLUE,HIGH);
-  }
-  else {
-    digitalWrite(LED_RED,HIGH);
-    digitalWrite(LED_BLUE,LOW);
   }
 
   return redraw;
