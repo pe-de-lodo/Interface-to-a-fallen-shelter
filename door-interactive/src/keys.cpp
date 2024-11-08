@@ -27,7 +27,6 @@ void loopWaitForKey()
     }    
 
     if(keyDetectElapsed>500){
-        playPatternFinale();
         timeElapsed = 0;
         setLoopFunc(loopFinale);
     }
@@ -45,12 +44,22 @@ void initFinale()
     setLoopFunc(loopFinale);
 }
 
+
+int finalePhase = 0;
+void (*finaleFunctionArray[])() =   {playPatternFinale_1, playPatternFinale_2, sleep};
+uint32_t finaleDuration[] =         {0, 20000, 20000};
+
 void loopFinale()
 {
-    playPatternFinale();
+    //playPatternFinale();
     timeElapsed+=deltaTime;
-    if(timeElapsed>FINALE_DURATION){
-        sleep();        
+
+    if(timeElapsed > finaleDuration[finalePhase])
+    {
+        finaleFunctionArray[finalePhase]();
+
+        timeElapsed -= finaleDuration[finalePhase];
+        finalePhase++;
     }
 }
 

@@ -12,5 +12,6 @@ void playPatternDoorKnobHeld();
 void playPatternTorchAttractor();
 void playPatternTorchDetected();
 void playPatternKeyAttractor();
-void playPatternFinale();
+void playPatternFinale_1();
+void playPatternFinale_2();
 

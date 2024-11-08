@@ -18,8 +18,7 @@ class DesintegratePattern : public AbstractPattern
             desintegrateValues[i] = random(USHRT_MAX);
 
         m_timeline.add(desintegrateVal).init(0).then(USHRT_MAX, speed);
-        m_timeline.mode(Tween::Mode::REPEAT_TL);
-        m_timeline.start();
+        // m_timeline.mode(Tween::Mode::REPEAT_TL);
     }
 
     CRGB Evaluate(int indx, ledData)
