@@ -8,7 +8,7 @@ import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 
 
-boolean debug = true;
+boolean debug = false;
 
 PImage house;
 PShape file;

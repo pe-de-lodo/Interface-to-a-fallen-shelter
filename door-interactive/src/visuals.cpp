@@ -34,6 +34,7 @@ MaskPattern meteorPatternMasked(SECTION_CRACK_L | SECTION_CRACK_R, meteorPattern
 MaskPattern meteorPatternMaskedL(SECTION_CRACK_L, meteorPattern );
 MaskPattern meteorPatternMaskedR(SECTION_CRACK_R, meteorPattern );
 MaskPattern meteorPatternMaskedD(SECTION_DOOR, meteorPattern );
+MaskPattern meteorPatternMaskedP(SECTION_FLAG, meteorPattern );
 MaskPattern doorGlitch(SECTION_DOOR,glitchPattern);
 RangePattern rangePattern;
 MaskPattern sectionMask(0,rangePattern);
@@ -54,7 +55,7 @@ Ripples finalePattern;
 
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&meteorPatternMasked, &meteorPatternMaskedL, &meteorPatternMaskedR, &meteorPatternMaskedD, &keyAttractorPattern, &finalePattern, &doorGlitch, &meteorPattern, &glitchAndRipples};
+AbstractPattern* patternArray[] = {&meteorPatternMasked, &meteorPatternMaskedL, &meteorPatternMaskedR, &meteorPatternMaskedD, &meteorPatternMaskedP, &finalePattern, &doorGlitch, &meteorPattern, &glitchAndRipples};
 
 void initVisuals()
 {
