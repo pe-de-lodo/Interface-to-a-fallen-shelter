@@ -18,6 +18,7 @@
 #include "patterns/desintegrate.hpp"
 #include "patterns/whitenoise.hpp"
 #include "patterns/combine.hpp"
+#include "patterns/superblink.hpp"
 
 CRGB leds[NUM_LEDS];
 extern uint32_t deltaTime;
@@ -44,8 +45,16 @@ Ripples ripplesForCombine;
 MaskPattern rippleMask(SECTION_CRACK_L|SECTION_CRACK_R,ripplesForCombine);
 CombinePattern glitchAndRipples(glitchPattern,ripplesForCombine);
 
-CycleLeds alarmAttractorPattern(CRGB(0xd4,0x00,0x00),50,1,-1); //reddish
-CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),50); //magenta
+/* ALARM ATTRACTOR */
+PulsePattern pulseAttractorPattern(500);
+MaskPattern alarmAttractorPattern(SECTION_FLAG, pulseAttractorPattern); //reddish
+
+/* DOOR - WAIT FOR KNOCK */
+SuperBlinkPattern doorBlinkPattern(100, 2, 500, 3000);
+MaskPattern waitForKnockPattern(SECTION_DOOR, doorBlinkPattern); //reddish
+// CycleLeds waitForKnockPattern(CRGB(0xcc,0x10,0xd4),50); //magenta
+
+
 CycleLeds tryDoorKnobPattern(CRGB(0x28,0xac,0x13),100,5,-1); //greenish
 MaskPattern doorKnobHeldPattern(SECTION_DOOR,glitchPattern);
 CycleLeds torchAttratorPattern(CRGB(0x8d,0x80,0x12),100,10,1); //dim yellow
@@ -55,7 +64,7 @@ Ripples finalePattern;
 
 bool sendVisualsOverUart = false;
 
-AbstractPattern* patternArray[] = {&meteorPatternMasked, &meteorPatternMaskedL, &meteorPatternMaskedR, &meteorPatternMaskedD, &meteorPatternMaskedP, &finalePattern, &doorGlitch, &meteorPattern, &glitchAndRipples};
+AbstractPattern* patternArray[] = {&alarmAttractorPattern, &meteorPatternMaskedL, &meteorPatternMaskedR, &meteorPatternMaskedD, &meteorPatternMaskedP, &finalePattern, &doorGlitch, &meteorPattern, &glitchAndRipples};
 
 void initVisuals()
 {
