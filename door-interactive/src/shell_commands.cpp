@@ -97,8 +97,21 @@ int commandSensors(int argc, char **argv)
 int commandSleep(int argc, char **argv)
 {
     Serial.println("going to sleep");
-    delay(1000);
+    delay(500);
     sleep();
+    return 0;
+}
+
+int commandMosfet(int argc, char **argv)
+{
+    if(argc<2){
+        Serial.println("mosfet [on|off]");
+        return 1;
+    }
+    bool on = strcmp(argv[1],"on")==0 || atoi(argv[1])==1;
+    Serial.print("turning mostfet");
+    Serial.println(on ? "on":"off");
+    pinMode(MOSFET_PIN,LOW);
     return 0;
 }
 
@@ -195,6 +208,7 @@ void addCommands()
     shell.addCommand(F("date"),commandDate);
     shell.addCommand(F("sensors"),commandSensors);
     shell.addCommand(F("sleep"),commandSleep);
+    shell.addCommand(F("mosfet"),commandMosfet);
     shell.addCommand(F("alarm"),commandAlarm);
     shell.addCommand(F("stop"),commandStop);
     shell.addCommand(F("visuals"),commandVisuals);

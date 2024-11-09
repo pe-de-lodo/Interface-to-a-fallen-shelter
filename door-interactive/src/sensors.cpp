@@ -1,11 +1,12 @@
 #include <Arduino.h>
 #include "alarm.h"
 #include "main.h"
+#include "sections/knockdetection.h"
 
 void printAllSensorValues()
 {
 
-  int knockSensorValue = analogRead(KNOCK_PIN);
+  int knockSensorValue = samplePiezo();
   int lightSensorValue = analogRead(LIGHT_SENSOR_PIN);
 
   bool doorKnobHeld = digitalRead(DOOR_KNOB);

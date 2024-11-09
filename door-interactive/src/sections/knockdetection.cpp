@@ -30,7 +30,7 @@ CircularBuffer<byte, 10> recordedIntervalTypes;
 CircularBuffer<long, 10> recordedIntervals;
 
 float knockThreshVolts = 0.5f;
-int knockThreshold = 100;//1024*knockThreshVolts/3.3f
+int knockThreshold = 95;//1024*knockThreshVolts/3.3f
 
 int knobHeldTime = 1500;
 
@@ -47,16 +47,22 @@ void initKnock()
     pinMode(KNOCK_PIN,INPUT);
 }
 
+int samplePiezo(){
+    int val=0;
+    for(int i=100;i>0;i--){
+        val=max(val,max(0,(int32_t)analogRead(KNOCK_PIN)));        
+    }
+    return val;
+}
+
 void listenForKnock()
 {
     uint32_t time = millis();
     uint32_t interval = time-lastKnock;
     
 
-    long val = 0;
-    for(int i=100;i>0;i--){
-        val=max(val,analogRead(KNOCK_PIN));
-    }
+    long val = samplePiezo();
+    
     if(interval>timeout){
         sleep();        
     }
