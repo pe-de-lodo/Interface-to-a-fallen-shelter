@@ -32,7 +32,7 @@ CircularBuffer<long, 10> recordedIntervals;
 float knockThreshVolts = 0.5f;
 int knockThreshold = 100;//1024*knockThreshVolts/3.3f
 
-int knobHeldTime = 2000;
+int knobHeldTime = 1500;
 
 long knockInteractionTimeout=0;
 

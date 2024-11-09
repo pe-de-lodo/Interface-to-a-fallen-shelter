@@ -8,8 +8,9 @@ class SuperBlinkPattern : public AbstractPattern
     uint8_t m_hue = 0;
 
     public:
-    SuperBlinkPattern(int blinkSpeed, int numBlinks, int holdTime, int waitTime)
+    SuperBlinkPattern(int blinkSpeed, int numBlinks, int holdTime, int waitTime, uint8_t hhue)
     {
+        m_hue = hhue;
         Tween::Sequence<float>& seq = m_timeline.add(blinkVal).init(0);
         for(int i = 0; i < numBlinks; i++)
             seq.then(1,blinkSpeed).hold(holdTime).then(0,blinkSpeed).hold(holdTime);
