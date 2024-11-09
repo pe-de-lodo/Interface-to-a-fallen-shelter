@@ -56,7 +56,7 @@ MaskPattern knockNoisePatter(SECTION_DOOR,doorNoisePattern);
 
 
 /* WAIT FOR KNOB & KNOB PATTERN */
-int knobHue = random(255);
+int knobHue = 70;
 ChasePattern doorKnobPattern(CHSV(knobHue, 255, 255), 4000, 112, 0, 7);
 MaskPattern tryDoorKnobPattern(SECTION_DOOR, doorKnobPattern);
 
@@ -65,7 +65,7 @@ MaskPattern doorKnobHeldPattern(SECTION_DOOR,knobFadePatter);
 
 
 /* WAIT FOR TORCH & TORCH PATTERN */
-PulsePattern torchAttPattern(2000, 0);
+PulsePattern torchAttPattern(2000, 0, 140);
 MaskPattern torchAttratorPattern(SECTION_DOOR, torchAttPattern);
 GlitchPattern torchDetectedPattern(50, 10, NUM_LEDS, 2, NUM_LEDS);
 

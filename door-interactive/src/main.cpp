@@ -6,7 +6,7 @@
 #include "main.h"
 #include "sleep.h"
 #include "sections/knockdetection.h"
-#include "light_comms.h"
+#include "sections/light_comms.h"
 #include "alarm.h"
 #include "visuals.h"
 #include "ledpatterns.h"
@@ -36,11 +36,11 @@ void setup()
   configSleep();
   initVisuals();
 
-  // if(wokeFromAlarm){
-  //   setLoopFunc(initAlarmAttractor);
-  // } {
-  //   setLoopFunc(initKnock);
-  // }
+  if(wokeFromAlarm){
+    setLoopFunc(initAlarmAttractor);
+  } {
+    setLoopFunc(initKnock);
+  }
   
   addCommands();
 

@@ -5,7 +5,7 @@
 class SuperBlinkPattern : public AbstractPattern
 {
     float blinkVal;
-    uint8_t m_hue = random(255);
+    uint8_t m_hue = 0;
 
     public:
     SuperBlinkPattern(int blinkSpeed, int numBlinks, int holdTime, int waitTime)
@@ -14,7 +14,7 @@ class SuperBlinkPattern : public AbstractPattern
         for(int i = 0; i < numBlinks; i++)
             seq.then(1,blinkSpeed).hold(holdTime).then(0,blinkSpeed).hold(holdTime);
         seq.hold(waitTime, [this]() {
-            m_hue = random(255);
+            //m_hue = random(255);
         });
 
         m_timeline.mode(Tween::Mode::REPEAT_TL);
