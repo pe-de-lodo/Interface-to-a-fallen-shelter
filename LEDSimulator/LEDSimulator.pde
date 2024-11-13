@@ -59,7 +59,7 @@ void setup() {
     return;
   }
 
-  myPort.write("stop\r\n");
+  //myPort.write("stop\r\n");
   myPort.write("visuals uart\r\n");
   
   fx = new PostFX(this); 
