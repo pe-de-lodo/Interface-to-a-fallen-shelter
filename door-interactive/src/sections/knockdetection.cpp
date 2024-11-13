@@ -49,8 +49,9 @@ void initKnock()
 
 int samplePiezo(){
     int val=0;
+    //TODO implement a sub 1khz low pass filter here to eliminate power draw noise from ws2812 strips.
     for(int i=100;i>0;i--){
-        val=max(val,max(0,(int32_t)analogRead(KNOCK_PIN)));        
+        val=max(val,max(0,(int32_t)analogRead(KNOCK_PIN)));
     }
     return val;
 }
