@@ -147,8 +147,12 @@ void setup() {
 
 void draw(){
   
-  if(myPort==null) return;
-  //image(house, 0, 0);
+  
+  if(myPort==null)
+  {
+    return;
+  }
+  
   
   //shape(aichi, 0, 0);
   
